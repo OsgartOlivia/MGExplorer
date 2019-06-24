@@ -27,10 +27,15 @@
 	fill: rgb(210,210,210);
 }
 
-.IC-grpBar rect {
+.IC-node {
+	fill: #D2691E;
+	cursor:pointer;
+}
+
+/*.IC-grpBar rect {
     fill: #D2691E;
 	cursor:pointer;	
-}
+}*/
 
 .IC-grpBar text.IC-active {
 	fill:#F48D2E;
