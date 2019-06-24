@@ -1,0 +1,537 @@
+require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
+		 "nodeEdgeChart","nodeEdgePanel", "clusterVisChart","clusterVisPanel", 
+		 "irisChart","irisPanel", "matrixGlyphChart","matrixGlyphPanel","historyTreeChart","historyTreePanel"],
+		 
+        function (Dashboard,DatabaseLib,LibCava,AlgCluster,NumericGlyph,
+			NodeEdgeChart,NodeEdgePanel, ClusterVisChart,ClusterVisPanel, 
+			IrisChart, IrisPanel, MatrixGlyphChart,MatrixGlyphPanel,HistoryTreeChart, HistoryTreePanel) {
+			
+	var ATN_ShortName = 0,   // ATN: Atributo Nodo
+		ATN_AuthorName = 1,
+		ATN_Category = 2,
+		ATN_LinhaPesq = 3,
+		ATN_Area = 4,
+		
+		ATN_AnoUltima = 1000,
+		ATN_QtLinhaPesq = 1001,
+		ATN_QtArea = 1002,		
+		
+		ATN_QtPublicacoes = 1003,
+		ATN_QtJournals = 1004,
+		ATN_QtBooks = 1005,
+		ATN_QtProceedings = 1006,
+		
+		ATN_ConnectComp = 1007,
+		ATN_EdgeBetW = 1008,
+		
+		ATN_CloseCent = 1009,
+		ATN_BetCent = 1010,
+		ATN_Degree = 1011,
+		
+		ATE_QtPublicacoes = 1000,   // ATE: Atributo aresta
+		ATE_QtJournals = 1001,
+		ATE_QtBooks = 1002,
+		ATE_QtProceedings = 1003,
+		ATE_Year = 1004,		
+		ATE_English = 1005,
+
+		TC_NodeEdge = 0,   // Técnica
+		TC_ClusterVis = 1,
+		TC_Iris = 2,
+		TC_GlyphMatrix = 3,
+
+		MG_WidthChart = 300;
+
+	var GLYPH_STAR = 4;
+	var _IdChartRoot = 0;  // Id do gráfico raiz da exploração. Nessa aplicação NodeEdge
+	
+//--------------- Variaveis do gerenciador de
+					 
+	var _dashboard = null,     	// Representa toda a área de visualização	
+		_data = null,           // Armazena os dados visualizados no nodeEdge
+		
+		_chart = {   // Estrutura com a view e chart a ser instanciado e armazenado no gerenciador 
+			view : null,  	// View associada ao nodo e arestas
+			chart : null 	// Gráfico de nodos e arestas
+		},
+
+		_historyTree = {   // Estrutura com a view e chart da arvore de historicco 
+			view : null,  	
+			chart : null 	
+		},
+		
+		_selectedQuery = 0,
+		_selectedCluster = 0,
+		
+		_alg =  AlgCluster(),  				// Instancia o algoritmo para gerar cluster
+		_subGraph =  LibCava().subGraph(),
+		_tooltips =  LibCava().tooltips(),
+		
+//		_glyphCircle = NumericGlyph(1),
+		_glyphStar = NumericGlyph(GLYPH_STAR);				
+		_glyphStar.indexMapAttr([ATE_QtPublicacoes-1000,ATE_QtJournals-1000,ATE_QtBooks-1000,ATE_QtProceedings-1000]);
+
+							//-----Inicializa select Query
+	$("#selectQuery").on("change", function() {
+		_selectedQuery = parseInt(this.value);
+		_showChartRoot(_IdChartRoot);
+	});
+	
+							//-----Inicializa select Cluster
+	$("#selectCluster").val(0).on("change", function() {
+		_selectedCluster = parseInt(this.value);
+		_showChartRoot(_IdChartRoot);
+	});	
+
+	
+// ---------------- Acoes de inicializacao
+	
+	_dashboard = Dashboard("viewArea");
+	
+	_selectedQuery = parseInt($("#selectQuery")[0].selectedIndex);
+	_selectedCluster = parseInt($("#selectCluster")[0].selectedIndex);
+	
+
+	_dashboard.setItensContextMenu(TC_NodeEdge, [
+									{label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented, fActionEdge:_fActionNotImplemented},
+									{label:"ClusterVis"	,  	fActionNode:_fActionNodeNE_CV, fActionEdge:_fActionNotImplemented},
+									{label:"Iris"		,	fActionNode:_fActionNodeNE_IC, fActionEdge:_fActionNotApplicable},
+									{label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM}
+								]);
+
+	_dashboard.setItensContextMenu(TC_ClusterVis, [
+									{label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented},
+									{label:"ClusterVis"	,  	fActionNode:_fActionNodeCV_CV},
+									{label:"Iris"		,	fActionNode:_fActionNodeCV_IC},
+									{label:"GlyphMatrix",  	fActionNode:_fActionNodeCV_GM}
+								]);
+
+	_dashboard.setItensContextMenu(TC_Iris, [
+									{label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented},
+									{label:"ClusterVis"	,  	fActionNode:_fActionNodeIC_CV},
+									{label:"Iris"		,	fActionNode:_fActionNodeIC_IC},
+									{label:"GlyphMatrix",  	fActionNode:_fActionNodeIC_GM}
+								]);	
+								
+	_dashboard.setItensContextMenu(TC_GlyphMatrix, [
+									{label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented},
+									{label:"ClusterVis"	,  	fActionNode:_fActionNodeGM_CV},
+									{label:"Iris"		,	fActionNode:_fActionNodeGM_IC},
+									{label:"GlyphMatrix",  	fActionNode:_fActionNodeGM_GM}
+								]);
+								
+
+	_chart.view = _dashboard
+						.configureView({barTitle:true, btClose:false, draggable:true, resizable:true,aspectRatio:true})
+						.newView(0,0);
+						
+	_chart.chart = NodeEdgeChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+	_chart.view.conectChart(_chart.chart,NodeEdgePanel);
+	
+	_IdChartRoot = _dashboard.addChart ( 0,{id:_chart.view.idChart(), title:"", typeChart: "NE", hidden:false, 
+											x:0, y:0, chart:_chart.chart, view:_chart.view});
+	
+	_historyTree.view = _dashboard
+							.configureView({barTitle:true, btClose:false, draggable:true, resizable:true,aspectRatio:true})
+							.newView(0,400);					
+	_historyTree.chart = HistoryTreeChart(_historyTree.view.idChart(),_dashboard)
+							.box ( {width:300, height:100})
+							.data(_dashboard.getTree());
+
+	_historyTree.view.conectChart(_historyTree.chart,HistoryTreePanel);
+	_historyTree.view.setTitle("History");
+
+	_dashboard.historyChart(_historyTree.chart);	
+
+//	console.log( _dashboard.getTree());
+//	console.log( _IdChartRoot);
+//	console.log(_dashboard.addChart ( _IdChartRoot,{id:_chart.view.idChart(),x:0, y:0,chart:_chart.chart, view:_chart.view})	);
+//	console.log(_dashboard.addChart ( _IdChartRoot,{id:_chart.view.idChart(),x:0, y:0,chart:_chart.chart, view:_chart.view})	);
+//	console.log(_chartManager.addChart ( 3,{chart:_chart.chart, view:_chart.view})	);
+
+	_showChartRoot(_IdChartRoot);	
+		   
+//--------------------------------- Funcoes privadas
+	function _showChartRoot( idChart) {
+		switch (_selectedQuery) {
+			case 0: _loadDataProcess("json/dataUFRGS-2004.json",0,idChart);
+					break;
+			case 1:	_loadDataProcess("json/dataUFRGS-2010.json",1,idChart);
+					break;
+			case 2: _loadDataProcess("json/dataUFRGS-2011.json",2,idChart);
+					break;
+			case 3: _loadDataProcess("json/dataUFRGS-2004-TF.json",3,idChart);
+					break;	
+			case 4: _loadDataProcess("json/dataUFRGS-2010-CG.json",4,idChart);
+					break;	
+			case 5: _loadDataProcess("json/dataUFRGS-2011-CG.json",5,idChart);
+					break;						
+		}
+	}
+//------ Carrega um novo conjunto de dados
+	function _loadDataProcess(url, codArquivo, idChart) {
+		d3.json(url, function(data) {
+			var objChart = _dashboard.getChart(idChart);
+			var title;
+			
+			_data = data;
+							// Inclui o atributo idOrig
+			_data.nodes.dataNodes.forEach( function (node) {
+				node.idOrig = node.id;
+			});
+
+			switch (codArquivo) {
+				case 0: title = "Year 2004";
+						break;
+				case 1: title = "Year 2010";
+						break;
+				case 2: title = "Year 2011";
+						break;
+				case 3: title = "Year 2004 - Fault Tolerance";
+						break;
+				case 4: title = "Year 2010 - Computer Graphics";
+						break;
+				case 5:	title = "Year 2011 - Computer Graphics";				
+						break;
+			}
+			
+			objChart.chart.setTTNormalNode( _tooltips.normalNode(_data,ATN_ShortName,[ATN_Category,ATN_LinhaPesq,ATN_QtLinhaPesq,ATN_QtPublicacoes],"co-authors") );
+			objChart.chart.setTTNormalEdge( _tooltips.normalEdge(_data,ATN_ShortName,[ATE_QtPublicacoes]) );			
+			
+			switch (_selectedCluster) {
+				case 0: _alg.byNone(_data);
+						break;	
+				case 1: _alg.byLouvain(_data);
+						title += " cluster by Louvain";
+						objChart.chart.setTTClusterNode(_tooltips.clusterLouvainNode());
+						objChart.chart.setTTClusterEdge(_tooltips.clusterLouvainEdge());					
+						break;					
+				case 2: title += " cluster by research area";
+						_alg.byAttribute(_data,ATN_LinhaPesq);
+						objChart.chart.setTTClusterNode(_tooltips.clusterAttributeNode(_data,ATN_LinhaPesq));
+						objChart.chart.setTTClusterEdge(_tooltips.clusterAttributeEdge(_data,ATN_LinhaPesq));					
+						break;
+				case 3: title += " cluster by research area";
+						_alg.byAttribute(_data,ATN_Area);
+						objChart.chart.setTTClusterNode(_tooltips.clusterAttributeNode(_data,ATN_Area));
+						objChart.chart.setTTClusterEdge(_tooltips.clusterAttributeEdge(_data,ATN_Area));					
+						break;	
+				case 4: title += " cluster by connected component";
+						_alg.byAttribute(_data,ATN_ConnectComp);
+						objChart.chart.setTTClusterNode(_tooltips.clusterAttributeNode(_data,ATN_ConnectComp));
+						objChart.chart.setTTClusterEdge(_tooltips.clusterAttributeEdge(_data,ATN_ConnectComp));					
+						break;
+						
+			}			
+		objChart.view.setTitle(title);			
+		objChart.chart.data(_data);
+		objChart.title = title;
+		_historyTree.chart.data (_dashboard.getTree());
+		});	
+		
+	}
+
+//=================== Acoes do cardapio de contexto para nodos
+//=======================
+// Acoes NE: NodeEdge
+//=======================
+//-------------
+// parentId: id da view pai a partir de onde a proxima view será aberta
+	function _fActionNodeNE_CV(node, parentId) {
+		_showClusterVis(node,parentId);
+	}
+	
+//---------------	
+	function _fActionNodeNE_IC(node, parentId) {
+		_showIris(node,parentId);
+	}
+	
+//---------------
+	function _fActionNodeNE_GM(node, parentId) {
+		_showGlyphMatrix(node,parentId);
+/*		
+		var data,posicaoPai,title;
+		
+		if (node.cluster) {
+			data = _subGraph.clusterMatrixGlyph(node,_data);
+		} else {
+			data = _subGraph.normalMatrixGlyph(node,_data);		
+		}		
+
+		posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+		_chart.view = _dashboard
+						.configureView({barTitle:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+						.newView(posicaoPai.x + 20, posicaoPai.y + 20);
+						
+		_chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+		_chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
+
+		if (node.cluster) {
+			title = node.key + "\'s cluster";
+			_chart.view.setTitle(title);
+		} else {
+			title = node.labels[ATN_ShortName] + " and coauthors"
+			_chart.view.setTitle(title);	
+		}		
+
+		_dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "GM", hidden:false, 
+									x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});		
+
+		setTimeout( function(){   // Foi colocado aqui para dar tempo do model funcionar
+			_chart.chart
+				.indexAttrSort(0)     // Atributo 0 numérico. Deve estar antes de data()
+				.indexAttrLegend(0)     //  Deve estar antes de data()
+				.indexAttrCellColor(1001)
+	//			.glyph(_glyphCircle)
+	//			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])			
+				.glyph(_glyphStar)
+				.cellColorsMap(["#99E6E6"]);		
+		
+			_chart.chart 
+				.data(data);		
+		
+			_chart.chart.setTTMatrixCell( _tooltips.matrixCell(data,_glyphStar,ATN_ShortName) );
+			_historyTree.chart.data (_dashboard.getTree());
+			_chart.view.show(true);			
+		}, 100);
+*/		
+	}	
+	
+//---------------	
+	function _fActionEdgeNE_GM(edge, parentId) {	
+		var data,posicaoPai,title;
+		
+		if (edge.source.cluster && edge.target.cluster) {
+			data = _subGraph.edgesBtClustersMatrixGlyph(edge,_data);
+		} else {
+			alert("Not implemented!!");
+			return;
+		}
+		
+		posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+		_chart.view = _dashboard
+						.configureView({barTitle:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+						.newView(posicaoPai.x + 20, posicaoPai.y + 20);
+						
+		_chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+		_chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
+		
+		title = edge.source.key + " x " + edge.target.key;
+		_chart.view.setTitle(title);	
+
+		_dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "GM", hidden:false, 
+									x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
+
+		setTimeout( function(){   // Foi colocado aqui para dar tempo do model funcionar
+			_chart.chart
+				.indexAttrSort(0)     // Atributo 0 numérico. Deve estar antes de data()
+				.indexAttrLegend(0)     //  Deve estar antes de data()
+				.indexAttrCellColor(1001)
+	//			.glyph(_glyphCircle)
+	//			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])			
+				.glyph(_glyphStar)
+				.cellColorsMap(["#99E6E6"]);		
+		
+			_chart.chart 
+				.data(data);		
+		
+			_chart.chart.setTTMatrixCell( _tooltips.matrixCell(data,_glyphStar,ATN_ShortName) );
+			_historyTree.chart.data (_dashboard.getTree());
+			_chart.view.show(true);			
+		}, 100);
+	
+	}
+
+//=======================
+// Acoes CV: ClusterVis
+//=======================
+	function _fActionNodeCV_CV(node, parentId) {
+		_showClusterVis(node,parentId);
+	}
+	
+//---------------	
+	function _fActionNodeCV_IC(node, parentId) {
+		_showIris(node, parentId);
+	}	
+
+//---------------
+	function _fActionNodeCV_GM(node, parentId) {
+		_showGlyphMatrix(node, parentId);	
+	}
+	
+//=======================
+// Acoes IC: Iris
+//=======================
+function _fActionNodeIC_CV(nodeIris, parentId) {
+	var node = _dashboard.getChart(parentId).chart.dataVisToNode(nodeIris.indexData);	
+	_showClusterVis(node,parentId);
+}
+
+//---------------
+function _fActionNodeIC_IC(nodeIris, parentId) {
+	var node = _dashboard.getChart(parentId).chart.dataVisToNode(nodeIris.indexData); 
+	_showIris(node,parentId);
+}	
+//---------------
+function _fActionNodeIC_GM(nodeIris, parentId) {
+	var node = _dashboard.getChart(parentId).chart.dataVisToNode(nodeIris.indexData); 
+	_showGlyphMatrix(node,parentId);
+}
+
+//=======================
+// Acoes GM: GlyphMatrix
+//=======================
+	function _fActionNodeGM_CV(node, parentId) {
+		_showClusterVis(node,parentId);
+	}
+	
+//---------------	
+	function _fActionNodeGM_IC(node, parentId) {
+		_showIris(node, parentId);
+	}
+	
+//---------------	
+	function _fActionNodeGM_GM(node, parentId) {
+		_showGlyphMatrix(node, parentId);
+	}	
+
+	
+//=======================
+// Acoes Gerais
+//=======================
+	function _fActionNotApplicable(node, parentId) {
+		alert("Not applicable!!");	
+	}
+//---------------	
+	function _fActionNotImplemented(node, parentId) {
+		alert("Not implemented!!");	
+	}
+
+//=======================
+// Exibe Técnicas
+//=======================
+
+//---------------------------------
+	function _showClusterVis(node, parentId) {
+		var data,posicaoPai, title;
+
+		if (node.cluster) {
+			data = _subGraph.clusterClusterVis(node,_data);
+		} else {
+			data = _subGraph.normalClusterVis(node,_data);	
+		}
+	
+		posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+		_chart.view = _dashboard
+						.configureView({barTitle:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+						.newView(posicaoPai.x + 20, posicaoPai.y + 20);
+						
+		_chart.chart = ClusterVisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+		_chart.view.conectChart(_chart.chart,ClusterVisPanel);
+
+		if (node.cluster) {
+			title = node.key + "\'s cluster";
+			_chart.view.setTitle(title);
+		} else {
+			title = node.labels[ATN_ShortName] + " and coauthors";
+			_chart.view.setTitle(title);	
+		}	
+
+		_dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "CV", hidden:false, 
+									x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
+		
+		_chart.chart
+			.indexAttrSort(1001)     // Atributo 0 numérico. Deve estar antes de data()		   
+			.data(data);
+		
+		_chart.chart
+//				.addAttribute(ATN_QtPublicacoes-1000,"V")
+				.addAttribute(ATN_QtJournals-1000,"V")
+				.addAttribute(ATN_QtBooks-1000,"V")
+				.addAttribute(ATN_QtProceedings-1000,"V");
+		_historyTree.chart.data (_dashboard.getTree());				
+		_chart.view.show(true);				
+	
+	}
+//---------------------------------	
+	function _showIris(node, parentId) {
+		var data,posicaoPai,title;
+		
+		if (node.cluster) {
+			alert("Not implemented!!");
+			return;
+		}
+		
+		data = _subGraph.normalIris(node,_data);
+
+		posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+		_chart.view = _dashboard
+						.configureView({barTitle:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+						.newView(posicaoPai.x + 20, posicaoPai.y + 20);
+						
+		_chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+		_chart.view.conectChart(_chart.chart,IrisPanel);
+	
+		title = node.labels[ATN_ShortName] + " and coauthors"
+		_chart.view.setTitle(title);	
+
+		_dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "IC", hidden:false, 
+									x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});		
+		_chart.chart   
+			.data(data);
+			
+		_historyTree.chart.data (_dashboard.getTree());				
+		_chart.view.show(true);				
+	}
+	
+//---------------------------------	
+	function _showGlyphMatrix(node, parentId) {
+		var data,posicaoPai,title;
+		
+		if (node.cluster) {
+			data = _subGraph.clusterMatrixGlyph(node,_data);
+		} else {
+			data = _subGraph.normalMatrixGlyph(node,_data);		
+		}		
+
+		posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+		_chart.view = _dashboard
+						.configureView({barTitle:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+						.newView(posicaoPai.x + 20, posicaoPai.y + 20);
+						
+		_chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+		_chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
+
+		if (node.cluster) {
+			title = node.key + "\'s cluster";
+			_chart.view.setTitle(title);
+		} else {
+			title = node.labels[ATN_ShortName] + " and coauthors"
+			_chart.view.setTitle(title);	
+		}		
+
+		_dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "GM", hidden:false, 
+									x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});		
+
+		setTimeout( function(){   // Foi colocado aqui para dar tempo do model funcionar
+			_chart.chart
+				.indexAttrSort(0)     // Atributo 0 numérico. Deve estar antes de data()
+				.indexAttrLegend(0)     //  Deve estar antes de data()
+				.indexAttrCellColor(1001)
+	//			.glyph(_glyphCircle)
+	//			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])			
+				.glyph(_glyphStar)
+				.cellColorsMap(["#99E6E6"]);		
+		
+			_chart.chart 
+				.data(data);		
+		
+			_chart.chart.setTTMatrixCell( _tooltips.matrixCell(data,_glyphStar,ATN_ShortName) );
+			_historyTree.chart.data (_dashboard.getTree());
+			_chart.view.show(true);			
+		}, 100);		
+	
+	
+	}
+	
+});

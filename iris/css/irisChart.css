@@ -1,0 +1,47 @@
+@CHARSET "ISO-8859-1";
+
+.IrisChart {
+	font-family: sans-serif;
+	font-size: 10px;
+}
+
+.IC-centroidBack {
+  stroke: blue;
+  stroke-width: 0.5;
+/*  fill: #e7ebff;*/
+  fill: #D8F2FF;  
+}
+
+.IC-centroidTitle {
+	text-anchor: middle;
+	font-weight:bold; 
+	fill: black;
+}
+
+.IC-centroidDegree {
+	text-anchor: middle;
+	fill: black;
+}
+
+.IC-focus {
+	fill: rgb(210,210,210);
+}
+
+.IC-grpBar rect {
+    fill: #D2691E;
+	cursor:pointer;	
+}
+
+.IC-grpBar text.IC-active {
+	fill:#F48D2E;
+}
+
+.IC-grpBar text {
+    fill: black;
+	font-family: Arial;
+/*    font-size  : 10px; */
+    font-weight:bold;  
+/*	alignment-baseline:central; */
+/*	letter-spacing: -1px; */ 
+	cursor:pointer;
+}
