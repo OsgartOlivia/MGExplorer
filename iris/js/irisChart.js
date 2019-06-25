@@ -63,12 +63,7 @@ define(["model","libCava"], function (Model,LibCava) {
                 textBar: 0             // Text that will be printed after the bars
             },
 
-            _colorsBars = {
-                blue: "#4286f4",
-                orange: "#D2691E",
-                green: "#41f462",
-                pink: "#f441e5"
-            };
+            _colorsBars = ["#4286f4", "#D2691E", "#15701e", "#f441e5"];
 
         // ---------------- Model
         let model = Model();
@@ -192,24 +187,34 @@ define(["model","libCava"], function (Model,LibCava) {
                     .enter()
                     .append("g")
                     .attr("class", "IC-grpBar")
-                    .attr("transform", function(d, i) { return "rotate(" + d.angleRot + ")"; 	})
-                    .on("click", function( d,i) {
+                    .attr("transform", function(d) { return "rotate(" + d.angleRot + ")"; })
+                    .on("click", function(d,i) {
                         if (i > _focusArea.indexCenter)
                             i_Rotate(i- _focusArea.indexCenter,1,i-1);
                         else
                             i_Rotate(_focusArea.indexCenter-i,-1,i+1);
                     });
 
-                _grpBars.append("rect")
-                    .attr("class", "IC-node")
-                    .attr("x", _innerRadius)
-                    .attr("y",      function (d) {
-                        return Math.round(-d.width / 2 );
-                    })
-                    .attr("height", function (d) { return d.width; })
-                    .attr("width",  function (d) { return _calcWidthBar(d) })
-                    .append("title")
-                    .text ( function (d) { return _tooltip(d)});
+                let j;
+                for (j = 0; j < _colorsBars.length; j++) {
+                    _grpBars.append("rect")
+                        .attr("class", "IC-node")
+                        .attr("x", function (d) {
+                            let prevWidth = 0;
+                            if (j !== 0) {
+                                prevWidth = _calcXBar(d, j-1);
+                            }
+                            return _innerRadius+prevWidth;
+                        })
+                        .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
+                        .attr("height", function (d) { return d.width; })
+                        .attr("width",  function (d) {
+                            return _calcWidthBar(d, j);
+                        })
+                        .attr("fill", _colorsBars[j])
+                        .append("title")
+                        .text ( function (d) { return _tooltip(d, j)});
+                }
 
                 _grpBars.append("text")
                     .attr("class", "IC-node")
@@ -217,26 +222,23 @@ define(["model","libCava"], function (Model,LibCava) {
                     .attr("x", _innerRadius + _maxHeightBar)
                     .attr("y", function(d){return d.widthText/2*0.48;})
                     .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
-                    //	    .on("mouseover", function (d){ console.log("teste");d3.select(this).classed("active", true);})
-                    //        .on("mouseout",function (d){ d3.selectAll(".grpBar text").classed("active", false);})
                     .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
                     .append("title")
-                    .text ( function (d) { return _tooltip(d)});
+                    .text ( function (d) { return _tooltipComplete(d, 0)});
 
                 //----------
                 function i_Rotate(qtBars,dir,origin) {
                     if (qtBars!==0) {
                         i_MoveDataVis(_focusArea.indexCenter+dir,_focusArea.indexCenter);
                         _grpIris.selectAll(".IC-grpBar > rect")
-                            .attr("width", function(d){ return _calcWidthBar(d); });
+                            .attr("width", function(d){ return _calcWidthBar(d, 0); });
                         _grpIris.selectAll(".IC-grpBar > rect > title")
-                            .text ( function (d) { return _tooltip(d)});
+                            .text ( function (d) { return _tooltip(d, 0)});
                         _grpIris.selectAll(".IC-grpBar > text")
                             .text( function(d) { return _text(d); })
                             .classed("IC-active", function(d,i) { return origin===i; })
                             .append("title")
-                            .text ( function (d) { return _tooltip(d)});
-
+                            .text ( function (d) { return _tooltip(d, 0)});
                         setTimeout( function() {
                             i_Rotate(qtBars-1,dir,origin-dir);
                         }, 45);
@@ -434,13 +436,32 @@ define(["model","libCava"], function (Model,LibCava) {
          * Calculates the bar width of the chart
          * If there is no slash (d.indexData == -1) do not draw
          */
-        function _calcWidthBar(d) {
+        function _calcWidthBar(d, i) {
             if (d.indexData !== -1) {
-                console.log(model.data.children.data[_vOrder[d.indexData]].edge.values[model.indexAttBar]);
-                return model.barScale(model.data.children.data[_vOrder[d.indexData]].edge.values[model.indexAttBar]);
+                return model.barScale(model.data.children.data[_vOrder[d.indexData]].edge.values[i]);
             }
             else
                 return 0;       // Do not draw the rectangle
+        }
+
+        /**
+         *
+         * _calcXBar
+         *
+         * Calculates the x position of the bar
+         *
+         * @param d
+         * @param i
+         * @returns {number}
+         * @private
+         */
+        function _calcXBar(d, i) {
+            let start = 0;
+            while (i >= 0) {
+                start += _calcWidthBar(d, i);
+                i--;
+            }
+            return start;
         }
 
         /**
@@ -474,11 +495,33 @@ define(["model","libCava"], function (Model,LibCava) {
          * returns the tooltip associated with the toolbar
          *
          */
-        function _tooltip(d) {
+        function _tooltip(d, i) {
             if (d.indexData !== -1) {
                 return	model.data.children.data[ _vOrder[d.indexData]].labels[1] + "\n" +  // Full name
-                    model.data.edges.valueTitle[model.indexAttBar] + ": " +
-                    model.data.children.data[ _vOrder[d.indexData]].edge.values[model.indexAttBar];
+                    model.data.edges.valueTitle[i] + ": " +
+                    model.data.children.data[ _vOrder[d.indexData]].edge.values[i];
+            }
+            else
+                return "";       // Empty Tooltip
+        }
+
+        /**
+         * _tooltipComplete
+         *
+         * returns the complete tooltip associated with the toolbar group
+         *
+         */
+        function _tooltipComplete(d) {
+            if (d.indexData !== -1) {
+                return	model.data.children.data[ _vOrder[d.indexData]].labels[1] + "\n" +  // Full name
+                    model.data.edges.valueTitle[0] + ": " +
+                    model.data.children.data[ _vOrder[d.indexData]].edge.values[0] + "\n" +
+                    model.data.edges.valueTitle[1] + ": " +
+                    model.data.children.data[ _vOrder[d.indexData]].edge.values[1] + "\n" +
+                    model.data.edges.valueTitle[2] + ": " +
+                    model.data.children.data[ _vOrder[d.indexData]].edge.values[2] + "\n" +
+                    model.data.edges.valueTitle[3] + ": " +
+                    model.data.children.data[ _vOrder[d.indexData]].edge.values[3] + "\n";
             }
             else
                 return "";       // Empty Tooltip
