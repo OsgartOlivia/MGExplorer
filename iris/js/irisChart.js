@@ -63,7 +63,8 @@ define(["model","libCava"], function (Model,LibCava) {
                 textBar: 0             // Text that will be printed after the bars
             },
 
-            _colorsBars = ["#4286f4", "#D2691E", "#15701e", "#f441e5"];
+            _nbOfTypesDoc = 4,     // number of types of documents in the base
+            _colorsBars = ["#4286f4", "#D2691E", "#15701e", "#f441e5"];     // colors for the different types
 
         // ---------------- Model
         let model = Model();
@@ -167,85 +168,74 @@ define(["model","libCava"], function (Model,LibCava) {
                         .endAngle( _degreeToRadian(_focusArea.angleSector/2) + Math.PI/2) );
 
                 _grpIris.select("text.IC-centroidTitle")
-                    .text( function(d) { return _adjustLengthText(data.root.data.labels[ _cfgIndexAttr.titleCentroid],13) } )
-                    .style("font-size", function (d) {
-                        return (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px";
-                    } );
+                    .text( _adjustLengthText(data.root.data.labels[ _cfgIndexAttr.titleCentroid],13))
+                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px");
 
                 _grpIris.select("text.IC-centroidDegree")
                     .attr("y", _innerRadius * 0.30)  // 30% of the radius
-                    .text( function(d) { return data.children.data.length + " " + _cfgIndexAttr.titleDegree} )
-                    .style("font-size", function (d) {
-                        return (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px";
-                    } );
+                    .text( data.children.data.length + " " + _cfgIndexAttr.titleDegree )
+                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px" );
 
                 if (_grpBars != null)
                     _grpBars.remove();
 
-                _grpBars =  _grpIris.selectAll(".IC-grpBar")
-                    .data(_dataVis)
-                    .enter()
-                    .append("g")
-                    .attr("class", "IC-grpBar")
-                    .attr("transform", function(d) { return "rotate(" + d.angleRot + ")"; })
-                    .on("click", function(d,i) {
-                        if (i > _focusArea.indexCenter)
-                            i_Rotate(i- _focusArea.indexCenter,1,i-1);
-                        else
-                            i_Rotate(_focusArea.indexCenter-i,-1,i+1);
-                    });
+                i_PutBarsOnIris();
 
-                let j;
-                for (j = 0; j < _colorsBars.length; j++) {
-                    _grpBars.append("rect")
-                        .attr("class", "IC-node")
-                        .attr("x", function (d) {
-                            let prevWidth = 0;
-                            if (j !== 0) {
-                                prevWidth = _calcXBar(d, j-1);
-                            }
-                            return _innerRadius+prevWidth;
-                        })
-                        .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
-                        .attr("height", function (d) { return d.width; })
-                        .attr("width",  function (d) {
-                            return _calcWidthBar(d, j);
-                        })
-                        .attr("fill", _colorsBars[j])
+                function i_PutBarsOnIris() {
+                    _grpBars =  _grpIris.selectAll(".IC-grpBar")
+                        .data(_dataVis)
+                        .enter()
+                        .append("g")
+                        .attr("class", "IC-grpBar")
+                        .attr("transform", function(d) { return "rotate(" + d.angleRot + ")"; })
+                        .on("click", function(d,i) {
+                            if (i > _focusArea.indexCenter)
+                                i_Rotate(i- _focusArea.indexCenter,1,i-1);
+                            else
+                                i_Rotate(_focusArea.indexCenter-i,-1,i+1);
+                        });
+
+                    let j;
+                    for (j = 0; j < _nbOfTypesDoc; j++) {
+                        _grpBars.append("rect")
+                            .attr("class", "IC-node")
+                            .attr("x", function (d) {
+                                let prevWidth = 0;
+                                if (j !== 0) {
+                                    prevWidth = _calcXBar(d, j-1); //calculates from where the new bar should begin
+                                }
+                                return _innerRadius+prevWidth;
+                            })
+                            .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
+                            .attr("height", function (d) { return d.width; })
+                            .attr("width",  function (d) { return _calcWidthBar(d, j); })
+                            .attr("fill", _colorsBars[j])
+                            .append("title")
+                            .text ( function (d) { return _tooltip(d, j)});
+                    }
+
+                    _grpBars.append("text")
+                        .attr("class", "IC-grpBar")
+                        .text( function(d) { return _text(d); })
+                        .attr("x", _innerRadius + _maxHeightBar)
+                        .attr("y", function(d){return d.widthText/2*0.48;})
+                        .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
+                        .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
                         .append("title")
-                        .text ( function (d) { return _tooltip(d, j)});
-                }
+                        .text ( function (d) { return _tooltipComplete(d)});
+                } // End i_PutBarsOnIris
 
-                _grpBars.append("text")
-                    .attr("class", "IC-node")
-                    .text( function(d) { return _text(d); })
-                    .attr("x", _innerRadius + _maxHeightBar)
-                    .attr("y", function(d){return d.widthText/2*0.48;})
-                    .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
-                    .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
-                    .append("title")
-                    .text ( function (d) { return _tooltipComplete(d, 0)});
-
-                //----------
                 function i_Rotate(qtBars,dir,origin) {
                     if (qtBars!==0) {
                         i_MoveDataVis(_focusArea.indexCenter+dir,_focusArea.indexCenter);
-                        _grpIris.selectAll(".IC-grpBar > rect")
-                            .attr("width", function(d){ return _calcWidthBar(d, 0); });
-                        _grpIris.selectAll(".IC-grpBar > rect > title")
-                            .text ( function (d) { return _tooltip(d, 0)});
-                        _grpIris.selectAll(".IC-grpBar > text")
-                            .text( function(d) { return _text(d); })
-                            .classed("IC-active", function(d,i) { return origin===i; })
-                            .append("title")
-                            .text ( function (d) { return _tooltip(d, 0)});
+                        _grpBars.remove();
+                        i_PutBarsOnIris();
                         setTimeout( function() {
                             i_Rotate(qtBars-1,dir,origin-dir);
                         }, 45);
                     }
-                }
+                } // End i_Rotate
 
-                //----------
                 function i_MoveDataVis( source, target) {
                     let i,index,sizeData;
 
@@ -267,7 +257,8 @@ define(["model","libCava"], function (Model,LibCava) {
                         }
                     }
                 } // End i_MoveDataVis
-            });
+            } // End
+        );
 //--------------------------------- Private functions
 
         /**
@@ -427,7 +418,6 @@ define(["model","libCava"], function (Model,LibCava) {
                         _dataVis[i].indexData = index;
                 }
             } // End i_BindDataVisToData
-
         }
 
         /**
@@ -513,15 +503,13 @@ define(["model","libCava"], function (Model,LibCava) {
          */
         function _tooltipComplete(d) {
             if (d.indexData !== -1) {
-                return	model.data.children.data[ _vOrder[d.indexData]].labels[1] + "\n" +  // Full name
-                    model.data.edges.valueTitle[0] + ": " +
-                    model.data.children.data[ _vOrder[d.indexData]].edge.values[0] + "\n" +
-                    model.data.edges.valueTitle[1] + ": " +
-                    model.data.children.data[ _vOrder[d.indexData]].edge.values[1] + "\n" +
-                    model.data.edges.valueTitle[2] + ": " +
-                    model.data.children.data[ _vOrder[d.indexData]].edge.values[2] + "\n" +
-                    model.data.edges.valueTitle[3] + ": " +
-                    model.data.children.data[ _vOrder[d.indexData]].edge.values[3] + "\n";
+                let result = model.data.children.data[ _vOrder[d.indexData]].labels[1] + "\n";
+                let j;
+                for (j = 0; j < _nbOfTypesDoc; j++) {
+                    result += model.data.edges.valueTitle[j] + ": " +
+                        model.data.children.data[ _vOrder[d.indexData]].edge.values[j] + "\n";
+                }
+                return result;
             }
             else
                 return "";       // Empty Tooltip
@@ -672,7 +660,6 @@ define(["model","libCava"], function (Model,LibCava) {
                 _sort.exec(model.indexAttBar+1000);
                 _vOrder = _sort.getVetOrder();
             }
-
         };
         //---------------------
         return chart;
