@@ -15,7 +15,7 @@ define([], function () {
 		_selectOrder = null,
 		_idPanel;     // Atribuido na função create
 
-    function _addItensSelectLegend() {
+    function _addItemsSelectLegend() {
 		var selOption,sizeLabelTitle,i;
 	  
 		if (_matrixGlyphChart.data() != null ) {
@@ -35,7 +35,7 @@ define([], function () {
 		}			
 	}
 
-    function _addItensSelectOrder() {
+    function _addItemsSelectOrder() {
 		var selOption,sizeLabelTitle,i,sizeValueTitle;
 		
 		if (_matrixGlyphChart.data() != null ) {
@@ -67,14 +67,14 @@ define([], function () {
     function _addSelectLegend( idDivPanel) {
 	  _selectLegend = $("<select>", { class: "MG-selLegend"});
 	  $(idDivPanel).append( $("<br/>") ).append( $("<label>").append("&nbsp;Node:")).append(_selectLegend);	  
-	  _addItensSelectLegend();
+	  _addItemsSelectLegend();
 	}
 		
 //-------------------------
     function _addSelectOrder( idDivPanel) {
 		_selectOrder = $("<select>", { class: "MG-selOrder"});
 		$(idDivPanel).append( $("<br/>") ).append( $("<label>").append("&nbsp;Order by:")).append(_selectOrder);
-		_addItensSelectOrder();	
+		_addItemsSelectOrder();
 	}
 
 //-------------------------
@@ -142,8 +142,8 @@ define([], function () {
 	
 	// Criado para ser chamado somente quando os dados foram atualizados 
 	panel.updateSelect = function() {
-		_addItensSelectLegend();
-		_addItensSelectOrder();			
+		_addItemsSelectLegend();
+		_addItemsSelectOrder();
 		
 		return panel;
 	}

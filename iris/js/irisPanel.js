@@ -14,7 +14,7 @@ define([], function () {
             _vAttrEdgesSelecionaveis = [],
             _idPanel;     // Assigned in create
 
-        function _addItensSelectOrder() {
+        function _addItemsSelectOrder() {
             let selOption;
 
             selOption = d3.select("#" + _idPanel + " .IC-selOrderBy").selectAll("option");
@@ -40,7 +40,7 @@ define([], function () {
         function _addSelectOrder( idDivPanel) {
             _selectOrder = $("<select>", { class: "IC-selOrderBy"});
             $(idDivPanel).append( $("<br/>") ).append( $("<label>").append("&nbsp;Order by:")).append(_selectOrder);
-            _addItensSelectOrder();
+            _addItemsSelectOrder();
         }
 
         //-----------------------------------
@@ -62,13 +62,13 @@ define([], function () {
 
         //---------------------
         panel.update = function() {
-            //_addItensSelectOrder();
+            //_addItemsSelectOrder();
         };
 
         //---------------------
         // Includes select for all attributes
 
-        panel.incluiSelectAttr = function ( vAttrEdgesSelecionaveis) {
+        panel.includeSelectAttr = function ( vAttrEdgesSelecionaveis) {
             let i;
             for (i=0; i<vAttrEdgesSelecionaveis.length; i++)
                 _vAttrEdgesSelecionaveis[i] = vAttrEdgesSelecionaveis[i];
@@ -82,7 +82,6 @@ define([], function () {
 
             _selectAttr.change( function(){
                 let valor = +this.value;
-
                 _irisChart.acChangeAttrBar(valor);
             });
         };

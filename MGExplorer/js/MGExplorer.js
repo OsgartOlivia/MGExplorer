@@ -262,7 +262,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     }
                 } else {
                     if (!_selectSizeAttrExiste) {
-                        objChart.chart.panel().incluiSelectAttr(_vAttrSizeSelecionaveis);
+                        objChart.chart.panel().includeSelectAttr(_vAttrSizeSelecionaveis);
                         _selectSizeAttrExiste = true;
                     }
                 }
@@ -562,7 +562,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _chart.chart.data(data);
 
             _historyTree.chart.data(_dashboard.getTree());
-            _chart.chart.panel().incluiSelectAttr(_vAttrEdgesSelecionaveis);
+            _chart.chart.panel().includeSelectAttr(_vAttrEdgesSelecionaveis);
             _chart.view.show(true);
         }
 

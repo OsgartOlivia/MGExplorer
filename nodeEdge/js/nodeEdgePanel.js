@@ -227,7 +227,7 @@ define([], function () {
 	//---------------------
 	// Inclui os select para todos os atributos	
 
-	panel.incluiSelectAttr = function ( vAttrSizeSelecionaveis) {
+	panel.includeSelectAttr = function ( vAttrSizeSelecionaveis) {
 	var i;
 		for (i=0; i<vAttrSizeSelecionaveis.length; i++)
 			_vAttrSizeSelecionaveis[i] = vAttrSizeSelecionaveis[i];

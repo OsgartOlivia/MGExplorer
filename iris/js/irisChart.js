@@ -64,7 +64,7 @@ define(["model","libCava"], function (Model,LibCava) {
             },
 
             _nbOfTypesDoc = 4,     // number of types of documents in the base
-            _colorsBars = ["#4286f4", "#D2691E", "#15701e", "#f441e5"];     // colors for the different types
+            _colorsBars = ["#B1D877", "#DE6D43", "#4D4D4D", "#f441e5"];     // colors for the different types
 
         // ---------------- Model
         let model = Model();
@@ -133,7 +133,14 @@ define(["model","libCava"], function (Model,LibCava) {
 
         //---------------------
         model.when(["data", "widthChart","indexAttBar","pMaxHeightBar"], function (data, widthChart,indexAttBar,pMaxHeightBar) {
-            let maxValue = d3.max( data.children.data, function(d){return d.edge.values[indexAttBar];});
+            let maxValue = d3.max( data.children.data, function(d){
+                let max = 0;
+                let j;
+                for (j = 0; j < _nbOfTypesDoc; j++) {
+                    max += d.edge.values[j];
+                }
+                return max;
+            });
             _maxHeightBar = Math.floor(widthChart  * pMaxHeightBar);
             model.barScale = d3.scale.linear().range([ 0, _maxHeightBar ]).domain([ 0, maxValue ]);
         });
@@ -153,7 +160,7 @@ define(["model","libCava"], function (Model,LibCava) {
 
         //---------------------
         model.when(["data","widthChart","heightChart","barScale","pInnerRadius","pOuterRadius","redraw"],
-            function (data,widthChart,heightChart) {
+            function _createIris(data,widthChart,heightChart) {
                 _xIrisCenter = Math.floor(widthChart / 2) - Math.floor(widthChart*_pDesloc);  // To move center to left
                 _yIrisCenter = Math.floor(heightChart / 2);
 
@@ -179,84 +186,7 @@ define(["model","libCava"], function (Model,LibCava) {
                 if (_grpBars != null)
                     _grpBars.remove();
 
-                i_PutBarsOnIris();
-
-                function i_PutBarsOnIris() {
-                    _grpBars =  _grpIris.selectAll(".IC-grpBar")
-                        .data(_dataVis)
-                        .enter()
-                        .append("g")
-                        .attr("class", "IC-grpBar")
-                        .attr("transform", function(d) { return "rotate(" + d.angleRot + ")"; })
-                        .on("click", function(d,i) {
-                            if (i > _focusArea.indexCenter)
-                                i_Rotate(i- _focusArea.indexCenter,1,i-1);
-                            else
-                                i_Rotate(_focusArea.indexCenter-i,-1,i+1);
-                        });
-
-                    let j;
-                    for (j = 0; j < _nbOfTypesDoc; j++) {
-                        _grpBars.append("rect")
-                            .attr("class", "IC-node")
-                            .attr("x", function (d) {
-                                let prevWidth = 0;
-                                if (j !== 0) {
-                                    prevWidth = _calcXBar(d, j-1); //calculates from where the new bar should begin
-                                }
-                                return _innerRadius+prevWidth;
-                            })
-                            .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
-                            .attr("height", function (d) { return d.width; })
-                            .attr("width",  function (d) { return _calcWidthBar(d, j); })
-                            .attr("fill", _colorsBars[j])
-                            .append("title")
-                            .text ( function (d) { return _tooltip(d, j)});
-                    }
-
-                    _grpBars.append("text")
-                        .attr("class", "IC-grpBar")
-                        .text( function(d) { return _text(d); })
-                        .attr("x", _innerRadius + _maxHeightBar)
-                        .attr("y", function(d){return d.widthText/2*0.48;})
-                        .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
-                        .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
-                        .append("title")
-                        .text ( function (d) { return _tooltipComplete(d)});
-                } // End i_PutBarsOnIris
-
-                function i_Rotate(qtBars,dir,origin) {
-                    if (qtBars!==0) {
-                        i_MoveDataVis(_focusArea.indexCenter+dir,_focusArea.indexCenter);
-                        _grpBars.remove();
-                        i_PutBarsOnIris();
-                        setTimeout( function() {
-                            i_Rotate(qtBars-1,dir,origin-dir);
-                        }, 45);
-                    }
-                } // End i_Rotate
-
-                function i_MoveDataVis( source, target) {
-                    let i,index,sizeData;
-
-                    sizeData = model.data.children.data.length;
-                    if (sizeData >= _dataVis.length){
-                        index = (sizeData + _dataVis[source].indexData - target) % sizeData;
-                        for (i=0; i< _dataVis.length; i++) {
-                            _dataVis[i].indexData = index;
-                            index = (index+1) % sizeData;
-                        }
-                    } else {
-                        index = (_indexFirstData - source + target + _dataVis.length) % _dataVis.length;
-                        _indexFirstData = index;
-                        for (i=0; i< _dataVis.length; i++)
-                            _dataVis[i].indexData = -1;
-                        for (i=0; i<sizeData; i++) {
-                            _dataVis[index].indexData = i;
-                            index = (index+1) % _dataVis.length;
-                        }
-                    }
-                } // End i_MoveDataVis
+                chart.putBarsOnIris();
             } // End
         );
 //--------------------------------- Private functions
@@ -348,22 +278,22 @@ define(["model","libCava"], function (Model,LibCava) {
                 // Determines as the initial rotation angle of the bar with index 0 the angle of the upper line of the sector of the not visible area
                 angleRotBar = 180 + _hiddenArea.angleSector/2;
 
-// ---------- Minimum Area 1
+                // ---------- Minimum Area 1
                 angleRotBar = i_CalcGeometryFixedArea(angleRotBar, 0, _minArea.numBars-1, _minArea.widthBar,_minArea.angleBar);
 
-// ---------- Fish Eye Area 1
+                // ---------- Fish Eye Area 1
                 angleRotBar = i_CalcGeometryFishEyeArea(angleRotBar, _minArea.numBars, _minArea.numBars + _fishEyeArea.numBars-1,true);
 
-// ---------- Focus Area
+                // ---------- Focus Area
                 angleRotBar = i_CalcGeometryFixedArea(angleRotBar, _minArea.numBars + _fishEyeArea.numBars,
                     _minArea.numBars + _fishEyeArea.numBars + _focusArea.numBars-1,
                     _focusArea.widthBar, _focusArea.angleBar); // Focus Area
-// ---------- Fish Eye Area 2
+                // ---------- Fish Eye Area 2
                 angleRotBar = i_CalcGeometryFishEyeArea(angleRotBar, _minArea.numBars + _fishEyeArea.numBars + _focusArea.numBars,
                     _minArea.numBars + 2*_fishEyeArea.numBars + _focusArea.numBars-1,
                     false);
 
-// ---------- Minimum Area 2
+                // ---------- Minimum Area 2
                 angleRotBar = i_CalcGeometryFixedArea(angleRotBar, _minArea.numBars + 2*_fishEyeArea.numBars + _focusArea.numBars,
                     2*_minArea.numBars + 2*_fishEyeArea.numBars + _focusArea.numBars-1,
                     _minArea.widthBar, _minArea.angleBar);
@@ -371,7 +301,6 @@ define(["model","libCava"], function (Model,LibCava) {
                 //--------
                 function i_CalcGeometryFixedArea (angleRotBar, startIndex, finalIndex, width, angleBar) {
                     let radiusText = _innerRadius + _maxHeightBar;
-
                     for (let i=startIndex; i<=finalIndex; i++) {         // adjusts the angle of rotation to the center of the bar
                         _dataVis[i].angleRot = (angleRotBar + angleBar/2)%360;
                         _dataVis[i].indexData = -1;
@@ -441,15 +370,25 @@ define(["model","libCava"], function (Model,LibCava) {
          * Calculates the x position of the bar
          *
          * @param d
-         * @param i
+         * @param beginning
+         * @param end
          * @returns {number}
          * @private
          */
-        function _calcXBar(d, i) {
+        function _calcXBar(d, beginning, end) {
             let start = 0;
-            while (i >= 0) {
-                start += _calcWidthBar(d, i);
-                i--;
+            if (beginning < end) {
+                let tmpBegin = beginning + _nbOfTypesDoc;
+                while (tmpBegin >= end) {
+                    start += _calcWidthBar(d, beginning);
+                    tmpBegin--;
+                    beginning++;
+                }
+            } else {
+                while (beginning >= end) {
+                    start += _calcWidthBar(d, beginning);
+                    beginning--;
+                }
             }
             return start;
         }
@@ -563,7 +502,6 @@ define(["model","libCava"], function (Model,LibCava) {
             if (!arguments.length)
                 return model.pInnerRadius;
             model.pInnerRadius = _;
-
             return chart;
         };
 
@@ -653,13 +591,113 @@ define(["model","libCava"], function (Model,LibCava) {
             model.redraw += 1;
         };
 
+        chart.putBarsOnIris = function() {
+            _grpBars =  _grpIris.selectAll(".IC-grpBar")
+                .data(_dataVis)
+                .enter()
+                .append("g")
+                .attr("class", "IC-grpBar")
+                .attr("transform", function(d) { return "rotate(" + d.angleRot + ")"; })
+                .on("click", function(d,i) {
+                    if (i > _focusArea.indexCenter)
+                        chart.rotate(i- _focusArea.indexCenter,1,i-1);
+                    else
+                        chart.rotate(_focusArea.indexCenter-i,-1,i+1);
+                });
+
+            let j;
+            for (j = model.indexAttBar; j < _nbOfTypesDoc; j++) {
+                let previous = ((j - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
+                _grpBars.append("rect")
+                    .attr("class", "IC-node")
+                    .attr("x", function (d) {
+                        let prevWidth = 0;
+                        if (j !== model.indexAttBar) {
+                            prevWidth = _calcXBar(d, previous, model.indexAttBar); //calculates from where the new bar should begin
+                        }
+                        return _innerRadius+prevWidth;
+                    })
+                    .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
+                    .attr("height", function (d) { return d.width; })
+                    .attr("width",  function (d) { return _calcWidthBar(d, j); })
+                    .attr("fill", _colorsBars[j])
+                    .append("title")
+                    .text ( function (d) { return _tooltip(d, j)});
+            }
+            for (j = 0; j < model.indexAttBar; j++) {
+                let previous = ((j - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
+                _grpBars.append("rect")
+                    .attr("class", "IC-node")
+                    .attr("x", function (d) {
+                        let prevWidth = _calcXBar(d, previous, model.indexAttBar); //calculates from where the new bar should begin
+                        return _innerRadius+prevWidth;
+                    })
+                    .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
+                    .attr("height", function (d) { return d.width; })
+                    .attr("width",  function (d) { return _calcWidthBar(d, j); })
+                    .attr("fill", _colorsBars[j])
+                    .append("title")
+                    .text ( function (d) { return _tooltip(d, j)});
+            }
+
+            _grpBars.append("text")
+                .attr("class", "IC-grpBar")
+                .text( function(d) { return _text(d); })
+                .attr("x", _innerRadius + _maxHeightBar)
+                .attr("y", function(d){return d.widthText/2*0.48;})
+                .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
+                .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
+                .append("title")
+                .text ( function (d) { return _tooltipComplete(d)});
+
+            return chart;
+        };
+
+         chart.rotate = function(qtBars,dir,origin) {
+            if (qtBars!==0) {
+                chart.moveDataVis(_focusArea.indexCenter+dir,_focusArea.indexCenter);
+                _grpBars.remove();
+                chart.putBarsOnIris();
+                setTimeout( function() {
+                    chart.rotate(qtBars-1,dir,origin-dir);
+                }, 45);
+            }
+            return chart;
+        };
+
+        chart.moveDataVis = function( source, target) {
+            let i,index,sizeData;
+
+            sizeData = model.data.children.data.length;
+            if (sizeData >= _dataVis.length){
+                index = (sizeData + _dataVis[source].indexData - target) % sizeData;
+                for (i=0; i< _dataVis.length; i++) {
+                    _dataVis[i].indexData = index;
+                    index = (index+1) % sizeData;
+                }
+            } else {
+                index = (_indexFirstData - source + target + _dataVis.length) % _dataVis.length;
+                _indexFirstData = index;
+                for (i=0; i< _dataVis.length; i++)
+                    _dataVis[i].indexData = -1;
+                for (i=0; i<sizeData; i++) {
+                    _dataVis[index].indexData = i;
+                    index = (index+1) % _dataVis.length;
+                }
+            }
+            return chart;
+        };
+
         //---------------------
         chart.acChangeAttrBar = function(atributo) {
             model.indexAttBar = atributo;
-            if ( !_sortByText) {
+            _grpBars.remove();
+            chart.putBarsOnIris();
+            /*if ( !_sortByText) {
                 _sort.exec(model.indexAttBar+1000);
                 _vOrder = _sort.getVetOrder();
-            }
+            }*/
+            return chart;
         };
         //---------------------
         return chart;

@@ -19,7 +19,7 @@ define([], function () {
     function _addSelectOrder( idDivPanel) {
 	  _selectOrder = $("<select>", { class: "CV-selOrderBy"});
 	  $(idDivPanel).append( $("<br/>") ).append( $("<label>").append("&nbsp;Order by:")).append(_selectOrder);
-	  _addItensSelectOrder();
+	  _addItemsSelectOrder();
 	}
 	
   //-----------------------------------		
@@ -121,7 +121,7 @@ define([], function () {
 	}	
 
   //-----------------------------------	
-    function _addItensSelectOrder() {
+    function _addItemsSelectOrder() {
 	  var selOption,sizeLabelTitle,i,sizeValueTitle;
 	  
 	  if (_clusterVisChart.data() != null ) {
@@ -202,7 +202,7 @@ define([], function () {
 
 	//---------------------
 	panel.update = function() {
-	  _addItensSelectOrder();
+	  _addItemsSelectOrder();
 	}
 	
 	//---------------------
