@@ -6,72 +6,72 @@
 define(["model","libCava"], function (Model,LibCava) {
   return function ClusterVis (idDiv) {
 
-    var _clusterVisPanel = null,  // Representa o panel associado aao grafico
+    let _clusterVisPanel = null,  // Represents the panel associated with the graphic
 	    _xClusterCenter = 0,
         _yClusterCenter = 0,
-		_innerRadius = 0,     // (calculado) Raio interno do círculo onde o gráfico é desenhado 
+		_innerRadius = 0,     // (calculated) Internal circle radius where the graph is drawn
         _outerRadius = 0,
-//        _widthAllFaixas = 0,  // (calculado) Largura disponível para o desenho de todas as faixas		
-        _grpCluster = null,   // Grupo que representa o ClusterVis
-		_grpRings = null,    // Seleção que contém todos os grupos que armazenam os anéis
+//        _widthAllFaixas = 0,  // (calculated) Width available for drawing all tracks
+        _grpCluster = null,   // Group representing ClusterVis
+		_grpRings = null,    // Selection that contains all groups that store the rings
         _grpBars = null,
         _grpLinks = null,
-        _links    = null,   // Seleção que contém os links
-	  	_sameScale = false,  // Indica que deve ser usada a mesma escala para todas as barras	
+        _links    = null,   // Selection that contains the links
+	  	_sameScale = false,  // Indicates that the same scale should be used for all bars
 		
-		_vRings = [],       // Lista com os dados dos aneis: 
-		                     // { indexAttr, typeAttr ("L"-label, "V"-value), pHeight (percentual de _widthAllFaixas, maxValue (valor maximo dos dados para o anel }						 
+		_vRings = [],       // List with the data of the rings:
+		                     // { indexAttr, typeAttr ("L"-label, "V"-value), pHeight (percentage of _widthAllFaixas, maxValue (maximum value of the data for the ring }
 
         _barsArea = {
-		   widthBar: 0,       // (Calculada) Largura da barra na área de largura máxima (foco) Original: 11
-		   angleBar: 0.0,     // (calculada) Ângulo do setor ocupado pelas barras que estão no Foco
-		   startSector: 0,     // Posição do setor onde a primeira barra é posicionada
+		   widthBar: 0,       // (calculated) Width of bar in the area of maximum width (focus) Original: 11
+		   angleBar: 0.0,     // (calculated) Angle of the sector occupied by the bars that are in Focus
+		   startSector: 0,     // Position of the sector where the first bar is positioned
 	       marginBar: 1,      //
 		   pMarginBar: 0.0033,
-           maxBars: 0,        // (Calculado) número máximo de barras considerando o anel mais interno da clusterVis	
-           numBars: 0         //  Número de barras existentes na clusterVis 		   
+           maxBars: 0,        // (calculated) maximum number of bars considering the innermost ring of the clusterVis
+           numBars: 0         //  Number of bars in the clusterVis
         },
 		
 		_dataLinks = {
-		   heightTree: 2,       // Altura da árvore que será gerada 
-		   degreeTree: 2,       // Grau dos nodos intermediarios
-		   tree : null,         // Árvore gerada artificialmente
-		   vBundleLinks : null,  // Vetor de arestas
-		   tension : 0.85,        // Tensão utilizada no desenho das arestas
-		   bundle  : d3.layout.bundle()   // Gerador do feixe de arestas
+		   heightTree: 2,       // Height of the tree to be generated
+		   degreeTree: 2,       // Degree of intermediate nodes
+		   tree : null,         // Artificially generated tree
+		   vBundleLinks : null,  // Vector of edges
+		   tension : 0.85,        // Voltage used in drawing the edges
+		   bundle  : d3.layout.bundle()   // Beam generator
 		},
 		
-		_indexAttrSort = 0,  // Índice do atributo utilizado para o sort (0-primeiro labels[] 1000-primeiro values[])
-							 // Vetor de cores com 20 elementos invertido (da d3)		
+		_indexAttrSort = 0,  // Index of the attribute used for sort (0-first labels[] 1000-first values[])
+							 // Vector of colors with 20 elements inverted (da d3)
 		_vCores20Inv = ["#17becf","#bcbd22","#7f7f7f","#e377c2","#8c564b","#9467bd","#9edae5","#dbdb8d","#c7c7c7","#f7b6d2",
 						"#c49c94","#c5b0d5","#ff9896","#d62728","#98df8a","#2ca02c","#ffbb78","#ff7f0e","#aec7e8","#1f77b4"],   
-		_vOrder = null,      // Vetor indireto de ordenacao
-		_vAngle = null,      // Vetor que contém a medida angular de cada barra. Calculado na _calcGeometry
-		_grpBarsRotScale = d3.scale.ordinal(),    // Escala usada para definir o angulo de rotação de cada barra
+		_vOrder = null,      // Indirect ordering vector
+		_vAngle = null,      // Vector that contains the angular measurement of each bar. Calculated at _calcGeometry
+		_grpBarsRotScale = d3.scale.ordinal(),    // Scale used to set the angle of rotation of each bar
         _ringScale = d3.scale.linear().domain([ 0, 100 ]),
         _colorScale = d3.scale.category10();		
 
-// ---------------- Modelo 
-    var model = Model();
-	var lcv   = LibCava();
+// ---------------- Model
+    let model = Model();
+	let lcv   = LibCava();
 
-// ---------------- Atributos geométricos do grafico	
+// ---------------- Geometric attributes of the graph
         model.margin = {top: 2, right: 2, bottom: 2, left: 2};
         model.box = { width:150, height:150};
-		model.pInnerRadius = 0.20;    // Percentual em relação a largura do gráfico para cálculo do _innerRadius
-		model.pOuterRadius = 0.47;    // Percentual em relação a largura do gráfico para cálculo do _OuterRadiu
-        model.pWidthBar =  0.0275;    // Percentual em relação a largura do gráfico para cálculo da largura das barras
+		model.pInnerRadius = 0.20;    // Percentage of the width of the graph for calculating the _innerRadius
+		model.pOuterRadius = 0.47;    // Percentage of the width of the graph for calculating the _OuterRadius
+        model.pWidthBar =  0.0275;    // Percentage relative to the width of the graph for calculating the width of the bars
 		
-        model.redraw = 0;        // Quando alterado executa um redesenho
-//        model.innerRadius = 0;        // (calculado) Raio do círculo onde o centróide está inserido 		
+        model.redraw = 0;        // When changed perform a redraw
+//        model.innerRadius = 0;        // (calculated) Radius of the circle where the centroid is inserted
 //        model.outerRadius = 0;
 		
 		
-// ---------------- Acoes de inicializacao
-    var _svg = d3.select("#"+idDiv).append("svg"),  // Cria o svg sem dimensoes 
-	    _grpChart = _svg.append("g"),                       // Não existe na Iris original
-	    _sort  = lcv.sort(),                     // Cria função de ordenação
-		_drawLine = d3.svg.line.radial()         // Gerador das splines que compoe as arestas
+// ---------------- Initialization Actions
+    let _svg = d3.select("#"+idDiv).append("svg"),  //Create dimensionless svg
+	    _grpChart = _svg.append("g"),                       // Does not exist in the original Iris
+	    _sort  = lcv.sort(),                     // Creates sorting function
+		_drawLine = d3.svg.line.radial()         // Generator of splines that makes up the edges
                       .interpolate("bundle")
                       .tension(_dataLinks.tension)
                       .radius(function(d) { return d.y; })
@@ -85,7 +85,7 @@ define(["model","libCava"], function (Model,LibCava) {
 
 //===================================================
     model.when(["box", "margin"], function (box, margin) {
-      model.widthChart = box.width - margin.left - margin.right,
+      model.widthChart = box.width - margin.left - margin.right;
       model.heightChart = box.height - margin.top - margin.bottom;
     });
 	
@@ -104,7 +104,7 @@ define(["model","libCava"], function (Model,LibCava) {
 //	  _widthAllFaixas = model.outerRadius - model.innerRadius;
 	  _grpCluster.select(".CV-Inner").attr("r",_innerRadius);
       _ringScale.range([ _innerRadius, _outerRadius ]);
-	  model.redraw += 1;    // Para forçar o redesenho	     
+	  model.redraw += 1;    // To force the redesign
     });	
 	
   //---------------------	
@@ -113,7 +113,7 @@ define(["model","libCava"], function (Model,LibCava) {
 //	  _widthAllFaixas = model.outerRadius - model.innerRadius;	  
 //	  _grpCluster.select(".CV-Outer").attr("r",model.outerRadius); 
       _ringScale.range([ _innerRadius, _outerRadius ]);
-      model.redraw += 1;    // Para forçar o redesenho	   
+      model.redraw += 1;    // To force the redesign
     });
 	
 
@@ -133,7 +133,7 @@ define(["model","libCava"], function (Model,LibCava) {
 //    });
 	
   //--------------------- 
-    model.when(["data","widthChart","heightChart","redraw"], function (data,widthChart,heightChart, redraw ) {
+    model.when(["data","widthChart","heightChart","redraw"], function (data,widthChart,heightChart) {
 
 	  
 	  _xClusterCenter = Math.floor(widthChart / 2); 
@@ -141,7 +141,7 @@ define(["model","libCava"], function (Model,LibCava) {
 	  
 	  _grpCluster.attr("transform", "translate(" + _xClusterCenter + "," + _yClusterCenter + ")");
 	  
-	  // Traça uma linha para testar o posicionamento das barras
+	  // Draw a line to test the positioning of the bars
 /*	  _grpCluster.append("line")
 	                .attr("x1",widthChart/2)
 	                .attr("y1",0)
@@ -153,21 +153,19 @@ define(["model","libCava"], function (Model,LibCava) {
 	  _calcGeometry(data);  
 	  _grpBarsRotScale.range(_vAngle).domain(_vOrder);
 	  _calcCoordinates(data.nodes.dataNodes);
-	  
- 
       _appendRings();
       _appendBars(data);
       _appendLinks();	  				   					   	  
     });	  
-//--------------------------------- Funcoes privadas
+//--------------------------------- Private functions
 
 /**
  * _appendRings
  * 
- * Adiciona os elementos SVG relativos aos aneis
+ * Adds the SVG elements relative to the rings
  */
     function _appendRings() {
-	  var vetAux = [];
+	  //let vetAux = [];
 /*		  cores = ["#99ccff","#add6ff","#c2e0ff","#d6ebff"];
 	  for (var i=_vRings.length-1; i>=0; i--)
 	    vetAux.push(_vRings[i]);
@@ -179,26 +177,26 @@ define(["model","libCava"], function (Model,LibCava) {
 	      .data(_vRings)    // Original _vRings
           .enter()
 		  .append("g")
-			.attr("class", "CV-grpRings")
+			.attr("class", "CV-grpRings");
 			
 	  _grpRings.append("circle")
 			   .attr("r", function (d){ return _ringScale(d.pHeight)} );
-//  		       .style("fill", function (d,i) { return cores[i]; })	// Original: sem esse comando
+//  		       .style("fill", function (d,i) { return cores[i]; })	// Original: without this command
 /*
-	  _grpRings.append("circle") // Desenha o último círculo
+	  _grpRings.append("circle") // Draw the last circle
               .attr("r", _innerRadius )
-  		       .style("fill", "#ebf5ff")	// Original: sem esse comando			  
+  		       .style("fill", "#ebf5ff")	// Original: without this command
 */			   
 	}
 
 /**
  * _appendBars
  * 
- * Adiciona os elementos SVG relativos as barras
+ * Adds the SVG elements relative to the bars
  */
     function _appendBars(data) {
-	  var i, j,k, achei, maxDoAnel, categoriasAux=[], categorias=[];
-	  var barScale = d3.scale.linear(),
+	  let i, j,k, achei, maxDoAnel, categoriasAux=[], categorias=[];
+	  let barScale = d3.scale.linear(),
 		  circleScale = d3.scale.ordinal();
 		  
       if (_grpBars != null)
@@ -220,16 +218,16 @@ define(["model","libCava"], function (Model,LibCava) {
 		  .attr("y2",  0);
 
 	  for (i=0; i<_vRings.length; i++) {
-		if (_vRings[i].typeAttr=="L")
+		if (_vRings[i].typeAttr==="L")
 		   categoriasAux = categoriasAux.concat( _vRings[i].vLabelDomain.sort());
 	  }
 	  
-	  // Retira elementos duplicados do vetor
+	  // Removes duplicate vector elements
 	  k=0;
 	  for (i=0; i<categoriasAux.length; i++) {
 		achei = false;
 		for (j=0; j<categorias.length; j++)
-			if (categoriasAux[i] == categorias[j]) {
+			if (categoriasAux[i] === categorias[j]) {
 				achei = true;
 				break;
 			}
@@ -246,7 +244,7 @@ define(["model","libCava"], function (Model,LibCava) {
 				maxDoAnel = _vRings[i].maxValue;
 		}
 		for (i=0; i<_vRings.length; i++) {
-			if (_vRings[i].typeAttr=="V") {
+			if (_vRings[i].typeAttr==="V") {
 				_vRings[i].barCircleScale.range( [1, Math.floor(_vRings[i].pHeightBar* (_outerRadius - _innerRadius))]).domain([0,maxDoAnel]);
 			 } else {
 				_vRings[i].barCircleScale.range(_vCores20Inv).domain(categorias);		 
@@ -254,7 +252,7 @@ define(["model","libCava"], function (Model,LibCava) {
 		}		
       } else {     	  
 		  for (i=0; i<_vRings.length; i++) {
-			 if (_vRings[i].typeAttr=="V") {
+			 if (_vRings[i].typeAttr==="V") {
 				_vRings[i].barCircleScale.range( [1, Math.floor(_vRings[i].pHeightBar* (_outerRadius - _innerRadius))]).domain([0,_vRings[i].maxValue]);
 			 } else {
 				_vRings[i].barCircleScale.range(_vCores20Inv).domain(categorias);		 
@@ -262,15 +260,15 @@ define(["model","libCava"], function (Model,LibCava) {
 		  }
 	  }
       for (i=0; i<_vRings.length; i++) {
-		if (_vRings[i].typeAttr=="V") {
+		if (_vRings[i].typeAttr==="V") {
 //			barScale.range( [1, Math.floor(_vRings[i].pHeightBar* (_outerRadius - _innerRadius))]).domain([0,_vRings[i].maxValue]);
 			_grpBars.append("rect")
 				.attr("class", "CV-node")
 				.attr("x", _ringScale(_vRings[i].pX))
-				.attr("y", function (d) {return -_barsArea.widthBar/2;})
-				.attr("height", function (d) { return _barsArea.widthBar; }) 
+				.attr("y", function () {return -_barsArea.widthBar/2;})
+				.attr("height", function () { return _barsArea.widthBar; })
 				.attr("width",  function (d) { return _vRings[i].barCircleScale( d.values[ _vRings[i].indexAttr]); })
-				.style("fill", function (d) { return _colorScale(_vRings[i].indexAttr); })
+				.style("fill", function () { return _colorScale(_vRings[i].indexAttr); })
 //				.attr("title", function(d) { return d.labels[0] + "\n" + data.nodes.valueTitle[_vRings[i].indexAttr] + ": " + d.values[ _vRings[i].indexAttr]})
 				.on("mouseover", _mouseOverNode)
 				.on("mouseout", _mouseOutNode)
@@ -283,7 +281,7 @@ define(["model","libCava"], function (Model,LibCava) {
 				.attr("cx",  _ringScale(_vRings[i].pX) + _barsArea.widthBar/2 )
 				.attr("cy", 0) 				
 				.attr("r", _barsArea.widthBar/2)
-				.style("fill", function (d) { return _vRings[i].barCircleScale(d.labels[ _vRings[i].indexAttr]); })	//<-- Verificar como colocar a cor
+				.style("fill", function (d) { return _vRings[i].barCircleScale(d.labels[ _vRings[i].indexAttr]); })	//<-- Check how to put the color
 //				.attr("title", function(d) { return d.labels[0] + "\n" + data.nodes.labelTitle[_vRings[i].indexAttr] + ": " + d.labels[ _vRings[i].indexAttr]})				
 				.on("mouseover", _mouseOverNode)
 				.on("mouseout", _mouseOutNode)
@@ -298,11 +296,11 @@ define(["model","libCava"], function (Model,LibCava) {
 /**
  * _appendLinkss
  * 
- * Adiciona os elementos SVG relativos as arestas
+ * Adds the SVG elements relative to the edges
  */
     function _appendLinks() {
 	
-			 /*------------------- Para desenhar a arvore */		 
+			 /*------------------- To draw the tree */
 /*	  _grpLinks2 =  _grpCluster.append("g") 
 	  				   .attr("class","CV-grpLinks2")
                        .attr("transform","rotate(90)");			 
@@ -329,13 +327,7 @@ define(["model","libCava"], function (Model,LibCava) {
 			 .append("path")
 			 .attr("d", _drawLine);
 			 
-			 /* para imprimir a árvores */
-			 
-			 
-
-			 		
-			 
-		 
+			 /* to print trees */
 	}
 
 /**
@@ -355,17 +347,17 @@ define(["model","libCava"], function (Model,LibCava) {
 /**
  * _mouseOutNode
  */
-    function _mouseOutNode( d) {
+    function _mouseOutNode() {
 	   _grpBars.classed("CV-nodeHL", false);
 	   _links.classed("CV-linkHL", false);
 	}	
 /**
  * _calcGeometry
  * 
- * Calcula todos os parâmetros geométricos para exibição da ClusterVis
+ * Calculates all geometric parameters for ClusterVis display
  */
     function _calcGeometry(data) {
-		var largBarra, percMargin, percBar; // Percentual da margem em relação a largura ocupada pelo setor
+		let largBarra, percMargin, percBar; // Percentage of the margin in relation to the width occupied by the sector
 	  
       _barsArea.angleBar = _widthToAngle( _barsArea.widthBar + _barsArea.marginBar , _innerRadius );
 
@@ -396,11 +388,11 @@ define(["model","libCava"], function (Model,LibCava) {
 /**
  * _calcCoordinates
  * 
- * Calcula as coordenadas dos nodos folhas
+ * Calculates the coordinates of the leaf nodes
  */
 function _calcCoordinates(dataNodes) {
-  var dist = _innerRadius/ _dataLinks.heightTree;
-  var distScale = d3.scale.linear().range([20,_innerRadius]).domain([0,_dataLinks.heightTree]);  
+  //let dist = _innerRadius/ _dataLinks.heightTree;
+  let distScale = d3.scale.linear().range([20,_innerRadius]).domain([0,_dataLinks.heightTree]);
   //distScale = d3.scale.pow().exponent(2).range([0,_innerRadius]).domain([0,alturaTree]);  
   
   _vOrder.forEach( function (d,i) {
@@ -418,9 +410,9 @@ function _calcCoordinates(dataNodes) {
 
   
   function posOrdem(raiz) {
-     var xPrim, xUlt;
+     let xPrim, xUlt;
 	 
-     if (raiz.children != undefined) {
+     if (raiz.children !== undefined) {
 	    raiz.children.forEach( function (d) {
 		    posOrdem(d);
 		});
@@ -445,44 +437,44 @@ function _calcCoordinates(dataNodes) {
 /**
  * _widthToAngle
  * 
- * Calcula o angulo do setor ocupado por uma largura
+ * Calculates the angle of the occupied sector by a width
  * E: width, radius
- * S: angulo em graus
+ * S: angle in degrees
  */
 function _widthToAngle ( width, radius) {
 	return Math.acos(1.0 - width*width / (2*radius*radius))*180.0 / Math.PI;
-};
+}
 
 /**
  * _angleToWidth
  * 
- * Calcula a largura do setor a partir do ângulo e um raio
+ * Calculates the sector width from the angle and a radius
  * E: width, radius
- * S: angulo em graus
+ * S: angle in degrees
  */
 function _angleToWidth ( angle, radius) {
-	var angRadianos = angle * Math.PI/ 180.0;
+	let angRadianos = angle * Math.PI/ 180.0;
 	return Math.sqrt( 2*radius*radius - 2*radius*radius*Math.cos(angRadianos));
-};	
+}
 
 /**
  * _getTree
  * 
- * Gera uma arvore no formato { id:..., chidren[] }
+ * Generates a tree in the format { id:..., chidren[] }
  */
 function _getTree(heightTree, dados, degree, vOrder) {
-  var children = null;
-  var levelMax = heightTree-1;
-  var result = createTree(0,vOrder);
+  let children = null;
+  let levelMax = heightTree-1;
+  let result = createTree(0,vOrder);
   result.depth = 0;
 
   function createTree(nivel, vNodos) {
-     var obj=[], objPai, inic, fim , delta;
+     let obj=[], objPai, inic, fim , delta;
      if (nivel < levelMax) {
 	    delta = Math.floor(vNodos.length/degree);
 	    inic = 0;
 		fim = delta;
-		for (var i=0; i<degree-1; i++) {
+		for (let i=0; i<degree-1; i++) {
 		   obj.push ( createTree(nivel+1, vNodos.slice(inic, fim)));
 		   inic = fim;
 		   fim += delta;
@@ -490,7 +482,7 @@ function _getTree(heightTree, dados, degree, vOrder) {
 		obj.push ( createTree(nivel+1, vNodos.slice(inic)));
 		objPai = { id:"N"+nivel, children:obj};
 	 } else 
-	    if (nivel==levelMax) {
+	    if (nivel===levelMax) {
 		    children = [];
 			vNodos.forEach( function (d) {
 			   children.push( dados[d]);
@@ -509,14 +501,14 @@ function _getTree(heightTree, dados, degree, vOrder) {
 /**
  * _getEdges
  * 
- * Gera um vetor com a listas de arestas no formato: [ {source:Object, target: Object},...]
+ * Generates a vector with the list of edges in the format: [ {source:Object, target: Object},...]
  */
 function _getEdges(dados) {
-  var nodos = dados.nodes.dataNodes,
+  let nodos = dados.nodes.dataNodes,
       edges = dados.edges.dataEdges,
 	  objSource, objTarget;
 	  
-  var result = [];
+  let result = [];
   edges.forEach( function (d) {
      objSource = findNodo(d.src);
 	 objTarget = findNodo(d.tgt);
@@ -524,34 +516,33 @@ function _getEdges(dados) {
   }) ; 
 
   function findNodo(id) {
-     for (var i=0; i< nodos.length; i++)
-	   if (nodos[i].id == id)
+     for (let i=0; i< nodos.length; i++)
+	   if (nodos[i].id === id)
 	      return nodos[i];
 	 return  null;
-  } 
-  
+  }
   return result;
 }
 
-// Essa função só é valida para atributos numéricos
+// This function is only valid for numeric attributes
 function _updateMaxRings() {
 	_vRings.forEach( function(ring) {
-		if (ring.typeAttr=="V")
+		if (ring.typeAttr==="V")
 		   ring.maxValue = d3.max( model.data.nodes.dataNodes, function (d) { return d.values[ring.indexAttr];});
 		else
-			ring.maxValue = 0;	// Copiar aqui o que foi feito no addAttribute()
+			ring.maxValue = 0;	// Copy here what was done in the addAttribute()
 	});
 }
 
-//--------------------------------- Funcoes publicas	  
+//--------------------------------- Public functions
 	
     function chart() {}
 
 	//----------------
-	// Foi colocada para o panel poder alterar o comboBox de ordenação
+	// It was put to the panel to be able to change the ordering comboBox
 	chart.obtemRings = function () {
 		return _vRings;
-	}
+	};
 	
  	//---------------------	 
 	chart.box = function(_) {
@@ -560,18 +551,18 @@ function _updateMaxRings() {
 	  model.box = _;
  
 	  return chart;
-	}
+	};
 	
 	//---------------------
-    // Essa função é necessário em todas as técnicas
-    // É chamada internamente na conectChart	
+    // This function is required in all techniques
+    //It is called internally in connectChart
 	chart.panel = function(_) {
 	  if (!arguments.length)
 	     return _clusterVisPanel;	 
 	  _clusterVisPanel = _;
  
 	  return chart;
-	}	
+	};
 
  	//---------------------	 
   	chart.data = function(_) {
@@ -586,13 +577,13 @@ function _updateMaxRings() {
 	  _dataLinks.tree = _getTree( _dataLinks.heightTree,model.data.nodes.dataNodes,_dataLinks.degreeTree,_vOrder );
       _dataLinks.vBundleLinks = _dataLinks.bundle(_getEdges(model.data));
 
-	                      // Acrescenta os atributos source e target para os dados de cada aresta
-	  _dataLinks.vBundleLinks.forEach(function(d) { d.source = d[0], d.target = d[d.length - 1]; });
+	                      // Appends the source and target attributes to the data of each edge
+	  _dataLinks.vBundleLinks.forEach(function(d) { d.source = d[0]; d.target = d[d.length - 1]; });
       model.data.nodes.dataNodes.forEach( function(d) { d.highLight=false;});		  
 	  _updateMaxRings();
-	  _clusterVisPanel.update();   // Por enquanto está somente aqui
+	  _clusterVisPanel.update();   // For now it's only here.
 	  return chart;
-	}
+	};
 
  	//---------------------	 
 	chart.pInnerRadius = function(_) {
@@ -601,7 +592,7 @@ function _updateMaxRings() {
 	  model.pInnerRadius = _;
  
 	  return chart;
-	}
+	};
 
  	//---------------------	 
 	chart.pOuterRadius = function(_) {
@@ -610,16 +601,16 @@ function _updateMaxRings() {
 	  model.pOuterRadius = _;
 
 	  return chart;
-	}
+	};
 
  	//---------------------	 
 	chart.removeAnelExterno = function() {
-		var i,deltaHeight,pHeight,pX;
+		let i,deltaHeight,pHeight,pX;
 
-		_vRings.pop();  // Remove os dados do anel
+		_vRings.pop();  // Removes the data from the ring
 		deltaHeight = 100/_vRings.length;
 
-	    // Ajusta todo o _vRings
+	    // Adjust todo o _vRings
 	  for (i=0, pHeight=deltaHeight; i< _vRings.length; i++, pHeight+=deltaHeight) {  
 	    _vRings[i].pHeight = pHeight;
 	    _vRings[i].pHeightBar = deltaHeight/100; 
@@ -636,18 +627,18 @@ function _updateMaxRings() {
 	  model.redraw += 1;
 	  return chart;
 	  
-    }
+    };
 	
  	//---------------------	 
 	chart.addAttribute = function( _indexAttr, _typeAttr) {
-	  var 	maxValue, tempKeys,i,pX, 
+	  let 	maxValue, tempKeys,i,pX,
 			deltaHeight = 100/ (_vRings.length+1),
 			_vLabelDomain = [];
 	  
-	      if (_typeAttr=="V") {
+	      if (_typeAttr==="V") {
 	          maxValue = d3.max( model.data.nodes.dataNodes, function(d){return d.values[_indexAttr];});			  
 		  }
-		  else {    // Determina o dominio para atributos categoricos (deve ser colocado também na função chart.data)
+		  else {    // Determines domain for categorical attributes (deve ser colocado também na função chart.data)
 		      maxValue = -1;
 			  tempKeys = d3.nest().key ( function(d){return d.labels[_indexAttr];}).sortKeys(d3.ascending).entries(model.data.nodes.dataNodes);
 			  for (i=0; i<tempKeys.length; i++)
@@ -657,7 +648,7 @@ function _updateMaxRings() {
 		  pX = 0;
 //		  barScale = d3.scale.linear().range(0, model.ringScale(deltaHeight)-_innerRadius).domain(0,maxValue);
 		  
-	    // Ajusta todo o _vRings
+	    // Adjust todo o _vRings
 	  for (i=0, pHeight=deltaHeight; i< _vRings.length; i++, pHeight+=deltaHeight) {  
 	    _vRings[i].pHeight = pHeight;
 	    _vRings[i].pHeightBar = deltaHeight/100; 
@@ -672,7 +663,7 @@ function _updateMaxRings() {
 	       _vRings[i].pX = _vRings[i-1].pHeight;
       }		 
 
-	if (_typeAttr == "V") 
+	if (_typeAttr === "V")
       _vRings.push(	{	indexAttr:_indexAttr, typeAttr:_typeAttr, pHeight:pHeight, pX:pX, 
 						pHeightBar:deltaHeight/100,maxValue: maxValue, vLabelDomain:_vLabelDomain, barCircleScale : d3.scale.linear()});
 	else
@@ -681,16 +672,16 @@ function _updateMaxRings() {
 					
 	  model.redraw += 1;
 	  return chart;
-	}
+	};
 
  	//---------------------	 
 	chart.alteraAttribute = function( _indexAnel, _indexAttr, _typeAttr) {
-	  var 	maxValue, tempKeys,i,
+	  let 	maxValue, tempKeys,i,
 			_vLabelDomain = [];
 			
-		if (_typeAttr=="V") {
+		if (_typeAttr==="V") {
 			maxValue = d3.max( model.data.nodes.dataNodes, function(d){return d.values[_indexAttr];});			  
-		} else {    // Determina o dominio para atributos categoricos (deve ser colocado também na função chart.data)
+		} else {    // Determines or domain for categorical attributes (should also be placed in the function chart.data)
 			maxValue = -1;
 			tempKeys = d3.nest().key ( function(d){return d.labels[_indexAttr];}).sortKeys(d3.ascending).entries(model.data.nodes.dataNodes);
 			for (i=0; i<tempKeys.length; i++)
@@ -701,14 +692,14 @@ function _updateMaxRings() {
       _vRings[_indexAnel].typeAttr = _typeAttr;
       _vRings[_indexAnel].maxValue = maxValue;
       _vRings[_indexAnel].vLabelDomain = _vLabelDomain;	  
-	  if (_typeAttr=="V") 
+	  if (_typeAttr==="V")
 		 _vRings[_indexAnel].barCircleScale = d3.scale.linear();
 	  else
 		 _vRings[_indexAnel].barCircleScale = d3.scale.ordinal();
 	  model.redraw += 1;
 	
   	  return chart;
-	}
+	};
 
  	//---------------------	 
 	chart.indexAttrSort = function(_) {
@@ -717,9 +708,9 @@ function _updateMaxRings() {
 	  _indexAttrSort = _;
  
 	  return chart;
-	}
+	};
 
-   	//======== Funçoes de ações	 
+   	//======== Actions Functions
 	chart.acSortExec = function(_) {
 	  _indexAttrSort = _;
 	  _sort.exec(_indexAttrSort);
@@ -728,7 +719,7 @@ function _updateMaxRings() {
 	  
 	  _dataLinks.tree = _getTree( _dataLinks.heightTree,model.data.nodes.dataNodes,_dataLinks.degreeTree,_vOrder );
       _dataLinks.vBundleLinks = _dataLinks.bundle(_getEdges(model.data));
-	  _dataLinks.vBundleLinks.forEach(function(d) { d.source = d[0], d.target = d[d.length - 1]; });	  
+	  _dataLinks.vBundleLinks.forEach(function(d) { d.source = d[0]; d.target = d[d.length - 1]; });
 	  _calcCoordinates(model.data.nodes.dataNodes);	  
 		  
 	  _grpBars.transition().duration(800)
@@ -738,11 +729,11 @@ function _updateMaxRings() {
 		  .data(_dataLinks.vBundleLinks).transition().duration(800).attr("d", _drawLine);
  
 	  return chart;
-	}
+	};
 	
 	//-------------------------
 	chart.acAlteraAnel = function(indexAnel, indexAttr) {
-		var indexAtributo,typeAttr;
+		let indexAtributo;
 
 		indexAtributo = +indexAttr;
 
@@ -751,16 +742,15 @@ function _updateMaxRings() {
 		else
 			this.alteraAttribute(indexAnel, indexAtributo, "L");
 		_clusterVisPanel.alteraSelectOrder();			
-	}
+	};
 	
 		//-------------------------
 	chart.acSameScale = function(checked) {
 		_sameScale = checked;
 		model.redraw += 1;		
-	}
+	};
 	
     return chart; 
   }
-  
 	
 });

@@ -1,6 +1,6 @@
 require.config({
 
-// A referência é o local do require.js 
+// The reference is the location of the require.js
 
   paths: {
     model: '../../lib/model-min',

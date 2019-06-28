@@ -2,26 +2,26 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 
   return function View (idView, dashboard) {
 
-    var _dimView = {width:10, height:10},   // Dimensoes da view
+    let _dimView = {width:10, height:10},   // View dimensions
         _dimChart = {width:_dimView.width, height:_dimView.height},
    
-		_barTitleHeight = 15,       // Altura da barra de título
-		_yPanel =  15,              // Posicao inicial do painel de controle em relação ao topo da janela
-		_marginButton = 2,          // Margens dos botoes em relacao a barra de título
-		_divView = null,            // Div que representa a view incluída
-		_objChart= null,            // Chart associado a view
-		_objPanel = null,           // Panel associado ao chart e a view
-		_idChart = (idView + "-c"), // id da Div onde o <svg> será incluído
-	    _idPanel = (idView + "-p"), // id da <div> onde o painel de controle da técnica será inserido
+		_barTitleHeight = 15,       // Title bar height
+		_yPanel =  15,              // Initial position of the control panel relative to the top of the window
+		_marginButton = 2,          // Margins of the buttons in relation to the title bar
+		_divView = null,            // Div that represents the view included
+		_objChart= null,            // Chart associated with view
+		_objPanel = null,           // Panel associated with the chart and the view
+		_idChart = (idView + "-c"), // div id where <svg> will be included
+	    _idPanel = (idView + "-p"), // id of <div> where the control panel of the technique will be inserted
 		_config = null,
 		_position = {x:0, y:0},
 		_center = {cx:0, cy:0},
-		_svgBarTitle = null,  // svg da barra de títulos
-		_rectBtClose = null,  // retângulo do botão de fechar
-		_lineClose   = null;  // Linha (ícone) do botão de fechar
+		_svgBarTitle = null,  // title bar svg
+		_rectBtClose = null,  // close button rectangle
+		_lineClose   = null;  // Close button line (icon)
 
 		
-//--------------------------------- Funcoes privadas
+//--------------------------------- Private functions
 	function _refreshBarTitle() {
 		_svgBarTitle.attr("width", _dimChart.width).attr("height", _barTitleHeight);
 
@@ -37,8 +37,8 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 
 //---------------------		
 	view.create = function (x, y, config) {
-	  var viewDiv,barDiv,chartDiv, panelDiv, idBar, stDisplay, thisView = this; 
-	  var selLinkPai,selLinkFilhos,selConect;
+	  let viewDiv,barDiv,chartDiv, panelDiv, idBar, stDisplay, thisView = this;
+	  let selLinkPai,selLinkFilhos,selConect;
 
 	  _config = { barTitle:config.barTitle, btTool:config.btTool, btClose:config.btClose, draggable:config.draggable,
 				  resizable: config.resizable, aspectRatio: config.aspectRatio,visible:config.visible};
@@ -53,7 +53,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 	  
 	  
 	  _dimView.height = _dimView.height + _barTitleHeight;
-                //-----  Cria a janela externa	
+                //-----  Creates the external window
 	  viewDiv = $("<div/>", {
 		id: idView,
 		class:"view-view"
@@ -69,9 +69,9 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 	  _divView = $(idView);
 	  _divView.css("z-index",dashboard.nextZIndex());	  
 	  
-    			//----------------------- Cria a barra de título
+	  //----------------------- Creates the title bar
 	  if (_config.barTitle) {
-        					//----------- Cria o container para o título
+		//----------- Creates the container for the title
 		barDiv = $("<div/>", {
 			  class:"view-bar"
 		}).css({"height":_barTitleHeight});	
@@ -79,7 +79,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 		
 		idBar    = idView + " .view-bar";
 		
-			_svgBarTitle = d3.select(idBar).append("svg");		// Retirei de dentro do if
+			_svgBarTitle = d3.select(idBar).append("svg");		// I removed from inside if
         if (_config.btTool) {
 					
 			_svgBarTitle.append("rect")   // Botao tools
@@ -87,8 +87,8 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 				.attr("y", _marginButton)
 				.attr("width", _barTitleHeight - 2* _marginButton)
 				.attr("height", _barTitleHeight - 2* _marginButton)
-					.on("click", function (d) { 						
-						var panel = $("#"+_idPanel);
+					.on("click", function () {
+						let panel = $("#"+_idPanel);
 						if (panel.css("display") === "none")
 							panel.css({"display":"block"});
 						else	
@@ -103,7 +103,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 					.attr("x1",8).attr("y1",5)
 					.attr("x2",8).attr("y2",11).style({"stroke":"black"});					
 		}				
-							//--------------- Adiciona um título vazio que será alterado por setTitle
+		//--------------- Adds an empty title that will be changed by setTitle
 		if (_config.btTool) {
 			_svgBarTitle.append("text").text("")
 				.attr("class","view-bar-titulo")
@@ -125,7 +125,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 						.attr("y", _marginButton)
 						.attr("width", _barTitleHeight - 2* _marginButton)
 						.attr("height", _barTitleHeight - 2* _marginButton)
-						.on("click", function (d) {
+						.on("click", function () {
 							dashboard.closeView(thisView);
 						} );			
 				_rectBtClose.append("title")
@@ -141,10 +141,10 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 			$(idView).append(panelDiv);			 		
 //		}		
 				
-        if (_config.draggable) {     //----------- Torna a view draggable
+        if (_config.draggable) {     //----------- Make the view draggable
 		  _divView.draggable({ 
 			handle: $(idBar),
-			start: function( event, ui ) { 
+			start: function() {
 //			  dashboard.activeView().divView().css("z-index",90);
 //			  _divView.css("z-index",100);
 			  _divView.css("z-index",dashboard.nextZIndex());
@@ -176,7 +176,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 				_center.cy = _position.y + _dimView.height/2;
 				
 				if (!selLinkPai.empty()) {
-					var dt = selConect.datum();				
+					let dt = selConect.datum();
 					selLinkPai.attr("x2",_center.cx).attr("y2",_center.cy);
 
 					selConect.attr("x",_center.cx-6).attr("y",_center.cy-6);
@@ -191,19 +191,19 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 	    }
 	  }
 
-	//----------------------------------- Cria o container para o gráfico (<svg>)
+	//----------------------------------- Creates the container for the chart (<svg>)
 	  chartDiv = $("<div/>", {
 		  id: _idChart,
 		  class: "view-chart"
 	  }).css({"top":_barTitleHeight, "height": _dimChart.height});
 	  $(idView).append(chartDiv);
 	  
-	  if (_config.resizable) {             //----------- Torna a view resizeble
+	  if (_config.resizable) {             //----------- Make the view resizable
 		$(idView).resizable({
 		  helper     : "resizable-helper",
 		  aspectRatio: config.aspectRatio,
 		  autoHide   : true,
-		  start      : function( event, ui ) { 
+		  start      : function() {
 //		    dashboard.activeView().divView().css("z-index",90);
 
 //		    _divView.css("z-index",100);
@@ -218,16 +218,16 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 			selConect = dashboard.getSvg().select("."+_idChart);			
 	      },
 		  stop       : function( event, ui ) {
-		    var aspect = _dimChart.height/ _dimChart.width;
+		    let aspect = _dimChart.height/ _dimChart.width;
 			
-			                             // Atualiza as dimensoes das <div>
+		 	// Updates the dimensions of the <div>
 			_dimChart.width = ui.size.width-2;
 			_dimView.width = _dimChart.width;		
             _dimView.height = ui.size.height-2;
 			_dimChart.height =  _dimView.height - _barTitleHeight;
 			
 			if (_config.aspectRatio) {
-			                             // Ajusta a altura para manter o aspecRatio
+				 // Adjusts height to maintain appearance
 			    _dimChart.height = aspect * _dimChart.width;
 				_dimView.height = _dimChart.height + _barTitleHeight;
 
@@ -240,7 +240,7 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 			_center.cy = _position.y + _dimView.height/2;
 			dashboard.refreshSvg();	
 			if (!selLinkPai.empty()) {
-				var dt = selConect.datum();			
+				let dt = selConect.datum();
 				selLinkPai.attr("x2",_center.cx).attr("y2",_center.cy);
 				selConect.attr("x",_center.cx-6).attr("y",_center.cy-6);
 				dt[0].x = _center.cx;
@@ -251,12 +251,12 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 		});	
 	  }
 	  
-	}
+	};
 
 //---------------------	
     view.divView = function() {  
 	  return _divView;
-	}
+	};
 	
 //---------------------	
     view.show = function( status) {  
@@ -264,16 +264,16 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 		_divView.css( {"display":"block"});
 	  else
 	  	_divView.css( {"display":"none"});
-	}
+	};
 	
 //---------------------	
     view.idChart = function() {  
 	  return _idChart;
-	}
+	};
 	
 //---------------------
     view.conectChart = function(objChart, ConstPanel) {
-      var box = objChart.box();
+      let box = objChart.box();
 	  _dimView.width = box.width;
 	  _dimChart.width = box.width;
       
@@ -295,22 +295,22 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 	  }
 	  _center.cx = _position.x + _dimView.width/2;
 	  _center.cy = _position.y + _dimView.height/2;	  
-	}
+	};
 
 //---------------------	
     view.setTitle = function( stTitle) {
 		d3.select(idView + " .view-bar text").text(stTitle);	  
-	}
+	};
 	
 //---------------------	
     view.getPosition = function() {
 		return _position;	
-	}
+	};
 
 //---------------------	
     view.getCenter = function() {
 		return _center;	
-	}
+	};
 
 //---------------------	
     view.setCenter = function(x,y) {
@@ -318,16 +318,14 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 		_center.y = y;
 		_position.x = _center.x - _dimView.width/2;
 		_position.y = _center.y - _dimView.height/2;
-	}
+	};
 
 	view.refresh = function () {	
 		_divView.css({"top":_position.y, "left":_position.x});
-	}
+	};
 	
 //---------------------		
 	 return view;
 	 
   }
-
-
 });

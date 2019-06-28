@@ -1,19 +1,19 @@
 require(["dashboard","databaseUFRGS2004","clusterVisChart","clusterVisPanel"],function (Dashboard,DatabaseUFRGS2004,ClusterVisChart,ClusterVisPanel) {
 
-	var databaseUFRGS = DatabaseUFRGS2004();
+	let databaseUFRGS = DatabaseUFRGS2004();
 //	var dados = databaseUFRGS.getDataGraph();
-	var dados = databaseUFRGS.getDataClusterVis(37);
+	let dados = databaseUFRGS.getDataClusterVis(37);
 	console.log(dados);
-	var dashboard = Dashboard("viewArea");
+	let dashboard = Dashboard("viewArea");
 	
-	var v1 = dashboard
+	let v1 = dashboard
 	           .configureView({barTitle:true, draggable:true, resizable:true,aspectRatio:true})
 	           .newView(0,0);  
-	var clusterVisChart = ClusterVisChart(v1.idChart());  
+	let clusterVisChart = ClusterVisChart(v1.idChart());
  
     clusterVisChart
 	       .box ( {width:300, height:300})
-           .indexAttrSort(1001)     // Atributo 0 numérico. Deve estar antes de data()		   
+           .indexAttrSort(1001)     // Numeric attribute 0. Must be before data()
 		   .data(dados)
 		   .addAttribute(0,"V")
 		   .addAttribute(1,"V")
@@ -23,7 +23,7 @@ require(["dashboard","databaseUFRGS2004","clusterVisChart","clusterVisPanel"],fu
 
 		   v1.conectChart(clusterVisChart,ClusterVisPanel);
 		   
-// Testa alteracao de dados
+// Test change data
 /*	
     setTimeout(function () { 
 	    clusterVisChart.data(databaseUFRGS.getDataClusterVis(20));
@@ -43,19 +43,17 @@ require(["dashboard","databaseUFRGS2004","clusterVisChart","clusterVisPanel"],fu
     }, 5000);	
  */ 
 
- 	var v2 = dashboard
+ 	let v2 = dashboard
 	           .configureView({barTitle:true, draggable:true, resizable:true,aspectRatio:true})
 	           .newView(100,0);  
-	var clusterVisChart2 = ClusterVisChart(v2.idChart());  
+	let clusterVisChart2 = ClusterVisChart(v2.idChart());
  
     clusterVisChart2
 	       .box ( {width:300, height:300})
-           .indexAttrSort(1001)     // Atributo 0 numérico. Deve estar antes de data()		   
+           .indexAttrSort(1001)     // Numeric attribute 0. Must be before data()
 		   .data(dados)
 		   .addAttribute(1,"V")
 		   .addAttribute(2,"V");
-
-
 		   v2.conectChart(clusterVisChart2,ClusterVisPanel);
 		   
 });

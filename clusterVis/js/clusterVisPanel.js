@@ -6,28 +6,28 @@
 define([], function () {
 
   return function ClusterVisPanel (clusterVisChart) {
-	var _clusterVisChart = clusterVisChart,
+	let _clusterVisChart = clusterVisChart,
 	    _width = 170,
 		_height = 105,
 		_selectOrder = null,
 		_vSelectAneis = [],
 		_vDivAneis = [],
 		_vAttrSelecionaveis = [],
-		_idPanel;     // Atribuido na função create
+		_idPanel;     // Assigned in create
  
-  //-----------------------------------		
+    //-----------------------------------
     function _addSelectOrder( idDivPanel) {
 	  _selectOrder = $("<select>", { class: "CV-selOrderBy"});
 	  $(idDivPanel).append( $("<br/>") ).append( $("<label>").append("&nbsp;Order by:")).append(_selectOrder);
 	  _addItemsSelectOrder();
 	}
 	
-  //-----------------------------------		
+    //-----------------------------------
 	function _addCheckBoxScale( idDivPanel) {
-		var div, checkbox;
+		let div, checkbox;
 		checkbox = $("<input>", { 
 			type: "checkbox"
-		}).click( function (event){
+		}).click( function (){
 			_clusterVisChart.acSameScale(this.checked);
 		});
 		
@@ -41,31 +41,31 @@ define([], function () {
 //	  $(idDivPanel).append( checkbox);	
 	}
 	
-  //-----------------------------------		
+    //-----------------------------------
     function _addBotoesSelect( idDivPanel) {
-		var idDiv = $("<div>", { class: "CV-aneis"});
+		let idDiv = $("<div>", { class: "CV-aneis"});
 		$(idDivPanel).append(  $("<label>").append("&nbsp;"));		
 		$(idDivPanel).append(idDiv);
         $(idDivPanel + " .CV-aneis").append(  $("<label>").append("&nbsp;Rings:"));
 		$(idDivPanel + " .CV-aneis").append($("<button>",{class: "CV-BtMais"}));			
 		$(idDivPanel + " .CV-aneis").append($("<button>",{class: "CV-BtMenos"}));
 		
-		   //------- Botao mais
+		   //------- More button
 		$( idDivPanel + " .CV-BtMais" ).button({
 					label : "+"
-		}).click( function(event) {   //------------- Clique do botão mais
-			var vRings,indexUltimo,divAneis,i,indexProcurado;
+		}).click( function() {   //------------- Click the plus button
+			let vRings,indexUltimo,divAneis,i,indexProcurado;
 
 			vRings = _clusterVisChart.obtemRings();		
 			indexUltimo = vRings.length-1;
 			if (indexUltimo <= 5) {
-				if (vRings[indexUltimo].typeAttr=="V")
+				if (vRings[indexUltimo].typeAttr==="V")
 					_clusterVisChart.addAttribute(vRings[indexUltimo].indexAttr,"V");			
 				else
 					_clusterVisChart.addAttribute(vRings[indexUltimo].indexAttr,"L");
 				divAneis = "#"+ _idPanel + " .CV-aneis";
 
-				vRings = _clusterVisChart.obtemRings();   // Atualiza os dados dos aneis		
+				vRings = _clusterVisChart.obtemRings();   // Updates the ring data
 				indexUltimo = vRings.length-1;
 				
 				_vSelectAneis[indexUltimo] =  $("<select>", { class: "CV-selAneis"});
@@ -85,13 +85,13 @@ define([], function () {
 				}
 
 		
-				if (vRings[indexUltimo].typeAttr == "V")
+				if (vRings[indexUltimo].typeAttr === "V")
 					indexProcurado = vRings[indexUltimo].indexAttr + 1000;
 				else
 					indexProcurado = vRings[indexUltimo].indexAttr;
 			
 				for (i=0; i< _vAttrSelecionaveis.length; i++) {
-					if (_vAttrSelecionaveis[i] == indexProcurado) {
+					if (_vAttrSelecionaveis[i] === indexProcurado) {
 						_vSelectAneis[indexUltimo][0].selectedIndex = i;
 						break;
 					}
@@ -102,11 +102,11 @@ define([], function () {
 					
 		});
 		
-		   //------- Botao menos			
+       //------- Button less
 		$( idDivPanel + " .CV-BtMenos" ).button({
 					label : "-"
-		}).click( function(event) {
-			var vRings;
+		}).click( function() {
+			let vRings;
 			vRings = _clusterVisChart.obtemRings();	
 			
 			if (vRings.length >1 ) {
@@ -117,12 +117,11 @@ define([], function () {
 				$("#"+_idPanel+" .CV-panel").css({"height": _height + vRings.length*19});				
 			}
 		}); //.css({"width":25,"text-align": "center"});
-				
 	}	
 
   //-----------------------------------	
     function _addItemsSelectOrder() {
-	  var selOption,sizeLabelTitle,i,sizeValueTitle;
+	  let selOption,sizeLabelTitle,i,sizeValueTitle;
 	  
 	  if (_clusterVisChart.data() != null ) {
 		selOption = d3.select("#" + _idPanel + " .CV-selOrderBy").selectAll("option");
@@ -134,7 +133,7 @@ define([], function () {
 	
 		sizeValueTitle = _clusterVisChart.data().nodes.valueTitle.length;
 		for (i=0; i<sizeValueTitle; i++)
-			_selectOrder.append(new Option(_clusterVisChart.data().nodes.valueTitle[i], i+1000));  // 100 começa índice numéricos	  
+			_selectOrder.append(new Option(_clusterVisChart.data().nodes.valueTitle[i], i+1000));  // 100 starts numerical index
 
 		if (_clusterVisChart.indexAttrSort() < 1000)  
 			_selectOrder[0].selectedIndex = _clusterVisChart.indexAttrSort();
@@ -149,66 +148,64 @@ define([], function () {
 	
   //-----------------------------------		
     function _addChangeSelectAnel(indice) {
-			if (indice==0) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(0,this.value); // Acionar a alteração do atributo do anel
-				});
-			} else if (indice==1) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(1,this.value); // Acionar a alteração do atributo do anel
-				});			
-			} else if (indice==2) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(2,this.value); // Acionar a alteração do atributo do anel
-				});			
-			} else if (indice==3) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(3,this.value); // Acionar a alteração do atributo do anel
-				});			
-			} else if (indice==4) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(4,this.value); // Acionar a alteração do atributo do anel
-				});			
-			} else if (indice==5) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(5,this.value); // Acionar a alteração do atributo do anel
-				});			
-			} else if (indice==6) {
-				_vSelectAneis[indice].change( function(){
-					_clusterVisChart.acAlteraAnel(6,this.value); // Acionar a alteração do atributo do anel
-				});							
-			}
-	
+        if (indice===0) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(0,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===1) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(1,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===2) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(2,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===3) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(3,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===4) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(4,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===5) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(5,this.value); // Trigger the change of the ring attribute
+            });
+        } else if (indice===6) {
+            _vSelectAneis[indice].change( function(){
+                _clusterVisChart.acAlteraAnel(6,this.value); // Trigger the change of the ring attribute
+            });
+        }
 	}
 	
-  //-----------------------------------	  
-	
+    //-----------------------------------
     function panel() {}
 
 	panel.create = function( idPanel) {
 	  _idPanel = idPanel;
-	  var divPanel = $("<div/>",{
+	  let divPanel = $("<div/>",{
 		  class:"CV-panel"
 	  }).css({"width":_width, "height": _height});
 	  $("#"+_idPanel).append(divPanel);
 	  
-					//------------- Select para a ordem de classificação
+        //------------- Select for sort order
 	  _addSelectOrder("#"+ _idPanel + " .CV-panel");
 	  _addCheckBoxScale("#"+ _idPanel + " .CV-panel");
 	  _addBotoesSelect("#" + _idPanel +" .CV-panel");
 
 	  return panel;
-	}
+	};
 
 	//---------------------
 	panel.update = function() {
 	  _addItemsSelectOrder();
-	}
+	};
 	
 	//---------------------
-	// Remove todos os itens que foram colocados  e deixa apenas os que fazem parte do Ring	
+	// Remove all items that have been placed and leave only those that are part of the Ring
 	panel.alteraSelectOrder = function () {
-	  var selOption,i,vRings, indiceAttrSort;
+	  let selOption,i,vRings, indiceAttrSort;
 	  
 	  if (_clusterVisChart.data() != null ) {
 	    vRings = _clusterVisChart.obtemRings();
@@ -218,7 +215,7 @@ define([], function () {
 			selOption.remove();
 
 		for (i=0; i<vRings.length; i++) {
-		  if ( vRings[i].typeAttr == "V")
+		  if ( vRings[i].typeAttr === "V")
 		     _selectOrder.append(new Option(_clusterVisChart.data().nodes.valueTitle[vRings[i].indexAttr], vRings[i].indexAttr+1000));
 		  else
 			_selectOrder.append(new Option(_clusterVisChart.data().nodes.labelTitle[vRings[i].indexAttr], vRings[i].indexAttr));
@@ -227,29 +224,29 @@ define([], function () {
 		indiceAttrSort = _clusterVisChart.indexAttrSort();
 		if (indiceAttrSort < 1000)
 			for (i=0; i<vRings.length; i++) {
-				if (indiceAttrSort == vRings[i].indexAttr) {
+				if (indiceAttrSort === vRings[i].indexAttr) {
 					_selectOrder[0].selectedIndex = i;
 					break;
 				}
 			}
 		else
 			for (i=0; i<vRings.length; i++) {
-				if (indiceAttrSort == vRings[i].indexAttr+1000) {
+				if (indiceAttrSort === vRings[i].indexAttr+1000) {
 					_selectOrder[0].selectedIndex = i;
 					break;
 				}
 			}				
 
 	    }	  
-	}
+	};
 
 	//---------------------
-	// Inclui os select para todos os aneis adicionados	
-	// É chamado n olusterVisChart, pois tem que estar depois do addAttribute
-	panel.incluiSelectAneis = function ( vAttrSelecionaveis) {
-		var i,j,indexProcurado;
-		var vRings = _clusterVisChart.obtemRings();
-		var divAneis = "#"+ _idPanel + " .CV-aneis";
+	// Includes select for all added rings
+	// It is called clusterVisChart, since it has to be after addAttribute
+	panel.incluiSelectAneis = function (vAttrSelecionaveis) {
+		let i,j,indexProcurado;
+		let vRings = _clusterVisChart.obtemRings();
+		let divAneis = "#"+ _idPanel + " .CV-aneis";
 
 		for (i=0; i<vAttrSelecionaveis.length; i++)
 			_vAttrSelecionaveis[i] = vAttrSelecionaveis[i];
@@ -263,7 +260,7 @@ define([], function () {
 			$(divAneis).append(	_vDivAneis[i]);		
 		}
 		
-// Preenche os selects
+        // Fill in the selects
 		for (j=0; j<vRings.length; j++)
 			for (i=0; i<vAttrSelecionaveis.length; i++) {
 				if ( vAttrSelecionaveis[i] >= 1000)
@@ -273,56 +270,56 @@ define([], function () {
 		}
 
 		
-// Atribui valor inicial aos selects
+        // Assigns initial value to selects
 		for (i=0; i<vRings.length; i++) {		
-			if (vRings[i].typeAttr == "V")
+			if (vRings[i].typeAttr === "V")
 				indexProcurado = vRings[i].indexAttr + 1000;
 			else
 				indexProcurado = vRings[i].indexAttr;
 		
 			for (j=0; j< vAttrSelecionaveis.length; j++) {
-				if (vAttrSelecionaveis[j] == indexProcurado) {
+				if (vAttrSelecionaveis[j] === indexProcurado) {
 					_vSelectAneis[i][0].selectedIndex = j;
 					break;
 				}
 			}
 		}
 		
-// Anexa o evento change
+        // Attach event change
 		for (i=0; i<vRings.length; i++) {
-			if (i==0) {
+			if (i===0) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(0,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(0,this.value); // Trigger the change of the ring attribute
 				});
-			} else if (i==1) {
+			} else if (i===1) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(1,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(1,this.value); // Trigger the change of the ring attribute
 				});			
-			} else if (i==2) {
+			} else if (i===2) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(2,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(2,this.value); // Trigger the change of the ring attribute
 				});			
-			} else if (i==3) {
+			} else if (i===3) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(3,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(3,this.value); // Trigger the change of the ring attribute
 				});			
-			} else if (i==4) {
+			} else if (i===4) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(4,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(4,this.value); // Trigger the change of the ring attribute
 				});			
-			} else if (i==5) {
+			} else if (i===5) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(5,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(5,this.value); // Trigger the change of the ring attribute
 				});			
-			} else if (i==6) {
+			} else if (i===6) {
 				_vSelectAneis[i].change( function(){
-					_clusterVisChart.acAlteraAnel(6,this.value); // Acionar a alteração do atributo do anel
+					_clusterVisChart.acAlteraAnel(6,this.value); // Trigger the change of the ring attribute
 				});							
 			}	
 		}
-	}
+	};
 	
   	return panel; 
   };
 
-})
+});
