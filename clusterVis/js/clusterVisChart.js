@@ -196,8 +196,8 @@ define(["model","libCava"], function (Model,LibCava) {
  */
     function _appendBars(data) {
 	  let i, j,k, achei, maxDoAnel, categoriasAux=[], categorias=[];
-	  let barScale = d3.scale.linear(),
-		  circleScale = d3.scale.ordinal();
+	  //let barScale = d3.scale.linear();
+	  let circleScale = d3.scale.ordinal();
 		  
       if (_grpBars != null)
 	     _grpBars.remove();

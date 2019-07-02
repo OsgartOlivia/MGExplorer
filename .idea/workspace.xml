@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible">
+    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/js/linkView.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/linkView.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/js/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/view.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/historyTree/js/historyTreeChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/historyTree/js/historyTreeChart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/historyTree/js/historyTreePanel.js" beforeDir="false" afterPath="$PROJECT_DIR$/historyTree/js/historyTreePanel.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -18,20 +18,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="114" column="58" lean-forward="true" selection-start-line="114" selection-start-column="58" selection-end-line="114" selection-end-column="58" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+        <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="270">
-              <caret line="505" column="13" lean-forward="true" selection-start-line="505" selection-start-column="13" selection-end-line="505" selection-end-column="13" />
+            <state relative-caret-position="219">
+              <caret line="199" column="6" selection-start-line="199" selection-start-column="6" selection-end-line="199" selection-end-column="6" />
             </state>
           </provider>
         </entry>
@@ -93,7 +84,6 @@
         <option value="$PROJECT_DIR$/matrixGlyph/js/matrixGlyphPanel.js" />
         <option value="$PROJECT_DIR$/lib/libCava.js" />
         <option value="$PROJECT_DIR$/iris/js/irisPanel.js" />
-        <option value="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/clusterVisPanel.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/require-ClusterVis-Config.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/testaClusterVisOld.js" />
@@ -102,6 +92,9 @@
         <option value="$PROJECT_DIR$/dashboard/js/linkView.js" />
         <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
         <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
+        <option value="$PROJECT_DIR$/historyTree/js/historyTreeChart.js" />
+        <option value="$PROJECT_DIR$/historyTree/js/historyTreePanel.js" />
+        <option value="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" />
       </list>
     </option>
   </component>
@@ -127,29 +120,12 @@
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
+              <item name="clusterVis" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
+              <item name="clusterVis" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -212,7 +188,7 @@
       <workItem from="1561619947271" duration="9088000" />
       <workItem from="1561707276762" duration="4556000" />
       <workItem from="1561969643160" duration="14078000" />
-      <workItem from="1562051672521" duration="8978000" />
+      <workItem from="1562051672521" duration="9454000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -256,11 +232,18 @@
       <option name="project" value="LOCAL" />
       <updated>1562053176244</updated>
     </task>
-    <option name="localTasksCounter" value="7" />
+    <task id="LOCAL-00007" summary="Ouverture d'un iris à partir d'un iris dans la meme fenetre au lieu d'en ouvrir une nouvelle">
+      <created>1562071563076</created>
+      <option name="number" value="00007" />
+      <option name="presentableId" value="LOCAL-00007" />
+      <option name="project" value="LOCAL" />
+      <updated>1562071563076</updated>
+    </task>
+    <option name="localTasksCounter" value="8" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="95752000" />
+    <option name="totallyTimeSpent" value="96228000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -314,7 +297,8 @@
     <MESSAGE value="Visibilité de tous les types avec possibilité de choisir par quel type commencer + changement d'échelle pour plus de cohérence (pas que sur le premier type de doc mais sur tous les types)" />
     <MESSAGE value="Suppression des warnings + traduction des commentaires en anglais" />
     <MESSAGE value="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible" />
-    <option name="LAST_COMMIT_MESSAGE" value="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible" />
+    <MESSAGE value="Ouverture d'un iris à partir d'un iris dans la meme fenetre au lieu d'en ouvrir une nouvelle" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ouverture d'un iris à partir d'un iris dans la meme fenetre au lieu d'en ouvrir une nouvelle" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/matrixGlyph/testaMatrixGlyph.html">
@@ -431,13 +415,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="5474">
           <caret line="322" column="4" lean-forward="true" selection-start-line="322" selection-start-column="4" selection-end-line="322" selection-end-column="4" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="12512">
-          <caret line="736" lean-forward="true" selection-start-line="736" selection-end-line="736" />
         </state>
       </provider>
     </entry>
@@ -566,6 +543,27 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="270">
           <caret line="505" column="13" lean-forward="true" selection-start-line="505" selection-start-column="13" selection-end-line="505" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/historyTree/js/historyTreeChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="8" column="86" selection-start-line="8" selection-start-column="86" selection-end-line="8" selection-end-column="86" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/historyTree/js/historyTreePanel.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="612">
+          <caret line="36" column="3" selection-start-line="36" selection-start-column="3" selection-end-line="36" selection-end-column="3" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="219">
+          <caret line="199" column="6" selection-start-line="199" selection-start-column="6" selection-end-line="199" selection-end-column="6" />
         </state>
       </provider>
     </entry>

@@ -6,32 +6,32 @@
 define(["model","libCava"], function (Model,LibCava) {
   return function HistoryTree (idDiv, dashboard) {
 
-	var _historyTreePanel = null,  // Representa o panel associado aao grafico
-		_nodoHeight = 14,    // Altura do espaço para cada nodo sem as margens
-//		_nodoHeight = 20,    // Usada para fazer a history maior
-		_leftText = 18,      // Distância do texto a coordenada esquerda do nodo
-//		_leftText = 24,      // Usada para fazer a history maior		
+	let _historyTreePanel = null,  // Represents the panel associated with the graphic
+		_nodoHeight = 14,    // Space height for each node without the margins
+//		_nodoHeight = 20,    // Used to make history greater
+		_leftText = 18,      // Distance from the text to the left coordinate of the node
+//		_leftText = 24,      // Used to make history greater
 		_nodeMargin = 1,
-//		_nodeMargin = 2,	 // Usada para fazer a history maior
+//		_nodeMargin = 2,	 // Used to make history greater
 		_rectHeight = _nodoHeight - _nodeMargin*2,
 		_treeLayout = d3.layout.tree().nodeSize([0, _nodoHeight ]),
-		_vNodes = [],				// Vetor com os objetos de todos os nodos
+		_vNodes = [],				// Vector with objects of all nodes
 		
 		_dashboard = dashboard,
 
-		_grpHistory = null,   // Grupo que representa a árvore do histórico
-		_grpNodes = null;     // Seleção que contém todos os grupos que armazenam os nodos
+		_grpHistory = null,   // Group representing history tree
+		_grpNodes = null;     // Selection that contains all groups that store nodes
 		
-// ---------------- Modelo 
-    var model = Model();
-	var lcv   = LibCava();
+// ---------------- Model
+    let model = Model();
+	//let lcv   = LibCava();
 
-// ---------------- Atributos geométricos do grafico	
+// ---------------- Geometric attributes of the graph
         model.margin = {top: 4, right: 4, bottom: 4, left: 4};
         model.box = { width:150, height:150};	
 		
-// ---------------- Acoes de inicializacao
-    var _svg = d3.select("#"+idDiv).append("svg"),  // Cria o svg sem dimensoes 
+// ---------------- Initialization Actions
+    let _svg = d3.select("#"+idDiv).append("svg"),  // Create dimensionless svg
 	    _grpChart = _svg.append("g");
 		_grpHistory = _grpChart.append("g").attr("class","HistoryTreeChart");
 		
@@ -41,7 +41,7 @@ define(["model","libCava"], function (Model,LibCava) {
 
 //===================================================
     model.when(["box", "margin"], function (box, margin) {
-      model.widthChart = box.width - margin.left - margin.right,
+      model.widthChart = box.width - margin.left - margin.right;
       model.heightChart = box.height - margin.top - margin.bottom;
     });
 	
@@ -55,18 +55,16 @@ define(["model","libCava"], function (Model,LibCava) {
     });
 	
   //--------------------- 
-    model.when(["data"], function (data ) {
-	
+    model.when(["data"], function () {
 		_appendNodos();
-	
 	});
 
-//--------------------------------- Funcoes privadas
+//--------------------------------- Private functions
 
 /**
  * _appendNodes
  * 
- * Adiciona os elementos SVG relativos aos nodos
+ * Adds the SVG elements relative to the nodes
  */
     function _appendNodos() {
 		if (_grpNodes != null)
@@ -76,11 +74,11 @@ define(["model","libCava"], function (Model,LibCava) {
 	      .data(_vNodes)
           .enter()
 		  .append("g")
-			.attr("class", function (d) { if (d.id == "view-1-c")
+			.attr("class", function (d) { if (d.id === "view-1-c")
 											return "HT-grpNodos HT-grpRoot";
 										  else
 											return "HT-grpNodos"})
-			.attr("transform", function(d, i) { return "translate(" + d.y + "," + d.x + ")"; 	})
+			.attr("transform", function(d) { return "translate(" + d.y + "," + d.x + ")"; 	})
 			.classed("HT-NodeHidden", function(d){ return d.hidden});
 			
         _grpNodes.append("rect")
@@ -89,7 +87,7 @@ define(["model","libCava"], function (Model,LibCava) {
 		  .attr("height", _rectHeight) 
 		  .attr("width",  _rectHeight)
 		  .on("click", function (d) {
-			if (d.id != "view-1-c") {
+			if (d.id !== "view-1-c") {
 				if (!d.hidden) {
 					_dashboard.closeView(d.view);
 				} else {
@@ -112,19 +110,19 @@ define(["model","libCava"], function (Model,LibCava) {
 /*		  
 		_grpNodes.append("circle")
 			.attr("class","HT-node")
-			.attr("cx", 3)		  // Metade do raio	
-			.attr("cy", 10)       // Metade da altura
+			.attr("cx", 3)		  // Half the radius
+			.attr("cy", 10)       // Half the height
 			.attr("r",6);
 */		
 	}
 
     function _chartZoomTree() {
-		var zoomTranslate = _zoomListenerTree.translate();	
+		let zoomTranslate = _zoomListenerTree.translate();
 		_grpChart.attr("transform",
 				"translate("+zoomTranslate[0]+","+zoomTranslate[1] + ")");
 	}
 	
-//--------------------------------- Funcoes publicas	  
+//--------------------------------- Public functions
 	
     function chart() {}
 	
@@ -135,18 +133,18 @@ define(["model","libCava"], function (Model,LibCava) {
 	  model.box = _;
  
 	  return chart;
-	}
+	};
 	
 	//---------------------
-    // Essa função é necessário em todas as técnicas
-    // É chamada internamente na conectChart	
+    // This function is required in all techniques
+    // It is called internally in conectChart
 	chart.panel = function(_) {
 	  if (!arguments.length)
 	     return _historyTreePanel;	 
 	  _historyTreePanel = _;
  
 	  return chart;
-	}	
+	};
 
  	//---------------------	 
   	chart.data = function(_) {
@@ -159,9 +157,9 @@ define(["model","libCava"], function (Model,LibCava) {
 	  _vNodes.forEach(function(n, i) {
 		n.x = i * _nodoHeight;
 	  });	  
-//	  _clusterVisPanel.update();   // Por enquanto está somente aqui
+//	  _clusterVisPanel.update();   // For now it's only here.
 	  return chart;
-	}
+	};
 
 
 	
