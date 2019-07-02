@@ -41,7 +41,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             TC_Iris = 2,
             TC_GlyphMatrix = 3,
 
-            MG_WidthChart = 300;
+            MG_WidthChart = 350;
         //MG_WidthChart = 450;  // Used to generate figure 4.2
 
         let GLYPH_STAR = 4;
@@ -60,12 +60,12 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
             _chart = {   // Structure with the view and chart to be instantiated and stored in the manager
                 view : null,  	// View associated with the node and edges
-                chart : null 	// Graph of nodes and edges
+                chart : null, 	// Graph of nodes and edges
             },
 
             _historyTree = {   // Structure with the view and chart of the history tree
                 view : null,
-                chart : null
+                chart : null,
             },
 
             _selectedQuery = 0,
@@ -312,59 +312,13 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         }
 
 //---------------	
-        function _fActionNodeNE_IC(node, parentId) {
-            _showIris(node,parentId);
+        function _fActionNodeNE_IC(node, parentId, parentChart) {
+            _showIris(node,parentId, parentChart);
         }
 
 //---------------
         function _fActionNodeNE_GM(node, parentId) {
             _showGlyphMatrix(node,parentId);
-            /*
-                    var data,posicaoPai,title;
-
-                    if (node.cluster) {
-                        data = _subGraph.clusterMatrixGlyph(node,_data);
-                    } else {
-                        data = _subGraph.normalMatrixGlyph(node,_data);
-                    }
-
-                    posicaoPai = _dashboard.getChart(parentId).view.getPosition();
-                    _chart.view = _dashboard
-                                    .configureView({barTitle:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
-                                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
-
-                    _chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
-                    _chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
-
-                    if (node.cluster) {
-                        title = node.key + "\'s cluster";
-                        _chart.view.setTitle(title);
-                    } else {
-                        title = node.labels[ATN_ShortName] + " and coauthors"
-                        _chart.view.setTitle(title);
-                    }
-
-                    _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "GM", hidden:false,
-                                                x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
-
-                    setTimeout( function(){   // Foi colocado aqui para dar tempo do model funcionar
-                        _chart.chart
-                            .indexAttrSort(0)     // Atributo 0 numérico. Deve estar antes de data()
-                            .indexAttrLegend(0)     //  Deve estar antes de data()
-                            .indexAttrCellColor(1001)
-                //			.glyph(_glyphCircle)
-                //			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])
-                            .glyph(_glyphStar)
-                            .cellColorsMap(["#99E6E6"]);
-
-                        _chart.chart
-                            .data(data);
-
-                        _chart.chart.setTTMatrixCell( _tooltips.matrixCell(data,_glyphStar,ATN_ShortName) );
-                        _historyTree.chart.data (_dashboard.getTree());
-                        _chart.view.show(true);
-                    }, 100);
-            */
         }
 
 //---------------	
@@ -442,7 +396,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         function _fActionNodeIC_IC(nodeIris, parentId) {
             let vOrder = _dashboard.getChart(parentId).chart.getVOrder();
             let node = _dashboard.getChart(parentId).chart.dataVisToNode(vOrder[nodeIris.indexData]);
-            _showIris(node,parentId);
+            _showIris(node,parentId, true);
         }
 //---------------
         function _fActionNodeIC_GM(nodeIris, parentId) {
@@ -459,8 +413,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         }
 
 //---------------	
-        function _fActionNodeGM_IC(node, parentId) {
-            _showIris(node, parentId);
+        function _fActionNodeGM_IC(node, parentId, parentChart) {
+            _showIris(node, parentId, parentChart);
         }
 
 //---------------	
@@ -472,11 +426,11 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 //=======================
 // General Actions
 //=======================
-        function _fActionNotApplicable(node, parentId) {
+        function _fActionNotApplicable() {
             alert("Not applicable!!");
         }
 //---------------	
-        function _fActionNotImplemented(node, parentId) {
+        function _fActionNotImplemented() {
             alert("Not implemented!!");
         }
 
@@ -487,7 +441,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 //---------------------------------
         function _showClusterVis(node, parentId) {
             let data,posicaoPai, title;
-            console.log(node);
+
             if (node.cluster) {
                 data = _subGraph.clusterClusterVis(node,_data);
             } else {
@@ -533,7 +487,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
         }
 //---------------------------------	
-        function _showIris(node, parentId) {
+        function _showIris(node, parentId, isFromIris) {
             let data,posicaoPai,title;
 
             if (node.cluster) {
@@ -542,13 +496,15 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             }
 
             data = _subGraph.normalIris(node,_data);
-
             posicaoPai = _dashboard.getChart(parentId).view.getPosition();
-            _chart.view = _dashboard
-                .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
-                .newView(posicaoPai.x + 20, posicaoPai.y + 20);
 
-            _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+            if (isFromIris === undefined) {
+                _chart.view = _dashboard
+                    .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
+                _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+            }
+
             _chart.view.conectChart(_chart.chart,IrisPanel);
 
             title = node.labels[ATN_ShortName] + " and coauthors";
@@ -569,7 +525,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 //---------------------------------	
         function _showGlyphMatrix(node, parentId) {
             let data,posicaoPai,title;
-
             if (node.cluster) {
                 data = _subGraph.clusterMatrixGlyph(node,_data);
             } else {

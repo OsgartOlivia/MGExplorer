@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="">
+    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/inf-UFRGS-MGExplorer.html" beforeDir="false" afterPath="$PROJECT_DIR$/inf-UFRGS-MGExplorer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris/js/irisChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/iris/js/irisChart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/js/linkView.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/linkView.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/js/view.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/view.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,46 +19,19 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
+        <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1326">
-              <caret line="78" column="36" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/iris/css/irisChart.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="663">
-              <caret line="39" column="16" selection-start-line="39" selection-start-column="10" selection-end-line="39" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="9214">
-              <caret line="542" column="34" selection-start-line="542" selection-start-column="34" selection-end-line="542" selection-end-column="34" />
+            <state relative-caret-position="289">
+              <caret line="114" column="58" lean-forward="true" selection-start-line="114" selection-start-column="58" selection-end-line="114" selection-end-column="58" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/inf-UFRGS-MGExplorer.html">
+        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3111">
-              <caret line="183" column="28" selection-start-line="183" selection-start-column="28" selection-end-line="183" selection-end-column="28" />
+            <state relative-caret-position="270">
+              <caret line="505" column="13" lean-forward="true" selection-start-line="505" selection-start-column="13" selection-end-line="505" selection-end-column="13" />
             </state>
           </provider>
         </entry>
@@ -67,8 +40,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>#</find>
-      <find>Model</find>
       <find>i_CalcGeometryFisheyeArea</find>
       <find>vAttrEdgesSelecionaveis</find>
       <find>acChangeAttrBar</find>
@@ -97,6 +68,8 @@
       <find>consol</find>
       <find>coauthors</find>
       <find>console</find>
+      <find>_fActionNodeNE_IC</find>
+      <find>_onContextMenu</find>
     </findStrings>
     <replaceStrings>
       <replace>_fishEyeArea</replace>
@@ -124,9 +97,10 @@
         <option value="$PROJECT_DIR$/clusterVis/js/clusterVisPanel.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/require-ClusterVis-Config.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/testaClusterVisOld.js" />
-        <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
-        <option value="$PROJECT_DIR$/dashboard/js/view.js" />
         <option value="$PROJECT_DIR$/iris/js/irisChart.js" />
+        <option value="$PROJECT_DIR$/dashboard/js/view.js" />
+        <option value="$PROJECT_DIR$/dashboard/js/linkView.js" />
+        <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
         <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
       </list>
     </option>
@@ -238,7 +212,7 @@
       <workItem from="1561619947271" duration="9088000" />
       <workItem from="1561707276762" duration="4556000" />
       <workItem from="1561969643160" duration="14078000" />
-      <workItem from="1562051672521" duration="616000" />
+      <workItem from="1562051672521" duration="8978000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -275,14 +249,21 @@
       <option name="project" value="LOCAL" />
       <updated>1561715129065</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible">
+      <created>1562053176244</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1562053176244</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="87390000" />
+    <option name="totallyTimeSpent" value="95752000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-7" y="-7" width="1550" height="838" extended-state="7" />
+    <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
@@ -332,7 +313,8 @@
     <MESSAGE value="Gestion du déplacement, les barres suivent le mouvement correctement" />
     <MESSAGE value="Visibilité de tous les types avec possibilité de choisir par quel type commencer + changement d'échelle pour plus de cohérence (pas que sur le premier type de doc mais sur tous les types)" />
     <MESSAGE value="Suppression des warnings + traduction des commentaires en anglais" />
-    <option name="LAST_COMMIT_MESSAGE" value="Suppression des warnings + traduction des commentaires en anglais" />
+    <MESSAGE value="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible" />
+    <option name="LAST_COMMIT_MESSAGE" value="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/matrixGlyph/testaMatrixGlyph.html">
@@ -477,13 +459,6 @@
     <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard-v2.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/js/view.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="73" column="8" selection-start-line="73" selection-start-column="8" selection-end-line="73" selection-end-column="8" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dataBases/databaseLib.js">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
@@ -545,13 +520,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1326">
-          <caret line="78" column="36" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/iris/css/irisChart.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
@@ -559,17 +527,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+    <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="9214">
-          <caret line="542" column="34" selection-start-line="542" selection-start-column="34" selection-end-line="542" selection-end-column="34" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="3111">
-          <caret line="183" column="28" selection-start-line="183" selection-start-column="28" selection-end-line="183" selection-end-column="28" />
+        <state relative-caret-position="-733">
+          <caret line="78" column="36" selection-start-line="78" selection-start-column="36" selection-end-line="78" selection-end-column="36" />
         </state>
       </provider>
     </entry>
@@ -577,6 +538,34 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="510">
           <caret line="30" column="44" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/js/linkView.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="153">
+          <caret line="9" column="6" selection-start-line="9" selection-start-column="6" selection-end-line="9" selection-end-column="6" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/js/view.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1445">
+          <caret line="85" column="49" lean-forward="true" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="289">
+          <caret line="114" column="58" lean-forward="true" selection-start-line="114" selection-start-column="58" selection-end-line="114" selection-end-column="58" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="270">
+          <caret line="505" column="13" lean-forward="true" selection-start-line="505" selection-start-column="13" selection-end-line="505" selection-end-column="13" />
         </state>
       </provider>
     </entry>
