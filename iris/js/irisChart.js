@@ -14,6 +14,7 @@ define(["model","libCava"], function (Model,LibCava) {
             _innerRadius = 0,  // (calculated) radius of the circle where the centroid is inserted
             _outerRadius = 0,
             _maxHeightBar = 0, // (calculated) distance occupied by the bars - Change causes change in the maximum number of bars of the Iris - Original 40
+            _numTotalBars = 0,
             _numMaxBars = 0,
             _grpIris = null,   // Group representing IRIS
             _grpBars = null,       // Selection that contains all groups of bars
@@ -64,7 +65,7 @@ define(["model","libCava"], function (Model,LibCava) {
             },
 
             _nbOfTypesDoc = 4,     // number of types of documents in the base
-            _colorsBars = ["#B1D877", "#DE6D43", "#4D4D4D", "#f441e5"];     // colors for the different types
+            _colorsBars = ["#B1D877", "#4287f5", "#4D4D4D", "#f441e5"];     // colors for the different types
 
         // ---------------- Model
         let model = Model();
@@ -77,12 +78,9 @@ define(["model","libCava"], function (Model,LibCava) {
         model.pOuterRadius = 0.57;    // Percentage relative to graph width for _OuterRadius calculation
         model.pMaxHeightBar =  0.10;  // Percentage relative to graph width for _MaxHeightBar calculation
         model.pFocusWidthBar =  0.0275;  // Percentage relative to graph width for calculation of _focusArea.widthBar
-//        model.pFocusWidthBar =  0.05,  // Percentage relative to graph width for calculation of _focusArea.widthBar
-//        model.barScale = d3.scale.linear();
         model.pMinWidthBar = 0.01;       // Percentage relative to graph width for calculation of _minArea.widthBar Original 4
 
         model.indexAttBar = 0;           // Index of the attribute that will be plotted in the toolbar
-//	    model.indexAttText = 0;          // Index of the attribute whose text will be printed
 
         model.redraw = 0;
 
@@ -167,10 +165,10 @@ define(["model","libCava"], function (Model,LibCava) {
                 _grpIris.attr("transform", "translate(" + _xIrisCenter + "," + _yIrisCenter + ")");
 
                 _calcGeometry();
+
                 _grpIris.select(".IC-focus")
                     .attr("d", d3.svg.arc().innerRadius(_innerRadius)
-                    //			.outerRadius(geometry.innerRadius+geometry.maxHeightBar)   // To just leave on the bars
-                        .outerRadius(_outerRadius /*+12*/)          // Change to avoid adding
+                        .outerRadius(_outerRadius)          // Change to avoid adding
                         .startAngle( -_degreeToRadian(_focusArea.angleSector/2) + Math.PI/2)
                         .endAngle( _degreeToRadian(_focusArea.angleSector/2) + Math.PI/2) );
 
@@ -187,6 +185,17 @@ define(["model","libCava"], function (Model,LibCava) {
                     _grpBars.remove();
 
                 chart.putBarsOnIris();
+                let nbBarsMissing = 0; //to display the number of coauthors not shown
+                if (_numMaxBars < _numTotalBars) {
+                    nbBarsMissing = _numTotalBars - _numMaxBars;
+                }
+                _grpIris.append("text")
+                        .text((nbBarsMissing>0?"+ " + nbBarsMissing + " coauthors":"")) //only display text if there are coauthors not shown
+                        .attr("x", (-2.5*_innerRadius))
+                        .attr("y", 0)
+                        .style("font-family", "Arial")
+                        .style("font-size", "10px")
+
             } // End
         );
 //--------------------------------- Private functions
@@ -211,21 +220,7 @@ define(["model","libCava"], function (Model,LibCava) {
 
             // The calculation of the number of bars must be performed after the calculation of the area elements
             _numMaxBars = _focusArea.numBars + 2*_fishEyeArea.numBars + 2*_minArea.numBars;
-
-            /*
-                if (this.dataChart.children.data.length <= geometry.numMaxBars) {  // If the amount of data is smaller than the slots for the view
-                                                                // recalculates by removing the hidden area
-                                                                // redistribute what is left over to the angles of the bar sections
-                                                                // You are not changing the dimensions of the bars
-                    geometry.hiddenArea.angleBar = 0;
-                    geometry.hiddenArea.angleSector = 0;
-                    this._calcMinArea();
-                    var sobra = 180 - fisheyeArea.angleSector - focusArea.angleSector/2 - minArea.angleSector;
-                    geometry.minArea.angleSector += sobra;
-                    geometry.minArea.angleBar = geometry.minArea.angleSector/ geometry.minArea.numBars;
-                    geometry.numMaxBars = focusArea.numBars + 2*fisheyeArea.numBars + 2*minArea.numBars;
-                }
-            */
+            _numTotalBars = model.data.children.data.length; // number of coauthors of the selected author
 
             // The calculation of the index in the dataVis vector where the center of the focus is to be calculated after the elements of the areas
             _focusArea.indexCenter = _minArea.numBars + _fishEyeArea.numBars + Math.floor(_focusArea.numBars/2);
@@ -245,7 +240,6 @@ define(["model","libCava"], function (Model,LibCava) {
             //--------
             function i_CalcFishEyeArea() {
                 let index = 0;
-
                 _fishEyeArea.angleSector = 0.0;
                 _fishEyeArea.geometry = [ {width:0.0, angle:0.0}];
                 for (let widthBar= _minArea.widthBar+1; widthBar< _focusArea.widthBar; widthBar++) {
@@ -273,7 +267,7 @@ define(["model","libCava"], function (Model,LibCava) {
             function i_InicDataVisVector() {
                 let angleRotBar;
 
-                _dataVis = d3.range( _numMaxBars ).map( function(d,i) { return {angleRot:0.0, width:0, widthText:0, indexData:0 };});
+                _dataVis = d3.range( _numMaxBars ).map( function() { return {angleRot:0.0, width:0, widthText:0, indexData:0 };});
 
                 // Determines as the initial rotation angle of the bar with index 0 the angle of the upper line of the sector of the not visible area
                 angleRotBar = 180 + _hiddenArea.angleSector/2;
@@ -570,7 +564,7 @@ define(["model","libCava"], function (Model,LibCava) {
             return chart;
         };
 
-        chart.getVOrder = function(_) {
+        chart.getVOrder = function() {
             return _vOrder;
         };
 
@@ -641,7 +635,7 @@ define(["model","libCava"], function (Model,LibCava) {
             }
 
             _grpBars.append("text")
-                .attr("class", "IC-grpBar")
+                .attr("class", "IC-node")
                 .text( function(d) { return _text(d); })
                 .attr("x", _innerRadius + _maxHeightBar)
                 .attr("y", function(d){return d.widthText/2*0.48;})
