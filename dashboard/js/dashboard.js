@@ -18,7 +18,8 @@ define( ["view"], function (View) {
         let DS_NodeEdge = 0,
             DS_ClusterVis = 1,
             DS_Iris = 2,
-            DS_GlyphMatrix = 3;
+            DS_GlyphMatrix = 3,
+            DS_Iris_Solo = 4;
 
         let _configView = {
                 barTitle : true,
@@ -46,7 +47,9 @@ define( ["view"], function (View) {
 
 
         _dashboardArea.div = d3.select("#"+idDiv);
-        _dashboardArea.div.classed("DS-viewArea", true).on("contextmenu", _onContextMenu);
+        _dashboardArea.div.classed("DS-viewArea", true)
+            .on("contextmenu", _onContextMenu)
+            .on("dblclick", _dblClickAction);
 
         _dashboardArea.width  = _dashboardArea.div.node().scrollWidth;
         _dashboardArea.height = _dashboardArea.div.node().scrollHeight;
@@ -128,6 +131,13 @@ define( ["view"], function (View) {
                 }
 
             }
+        }
+
+        function _dblClickAction() {
+            let clickedElem = d3.select(d3.event.target);
+            let viewDiv = _findParentDiv(clickedElem);
+            let data = _contextMenu.vItens[DS_Iris_Solo];
+            data[0].fActionNode(clickedElem.datum(),viewDiv.node().id)
         }
 
 //------------

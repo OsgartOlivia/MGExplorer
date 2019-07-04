@@ -40,9 +40,10 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             TC_ClusterVis = 1,
             TC_Iris = 2,
             TC_GlyphMatrix = 3,
+            TC_Iris_Solo = 4,
 
-            MG_WidthChart = 350;
-        //MG_WidthChart = 450;  // Used to generate figure 4.2
+            MG_WidthChart = 350,
+            MG_HeightChart = 350;
 
         let GLYPH_STAR = 4;
         let _IdChartRoot = 0;  // Id of the root chart of the holding. In this NodeEdge application
@@ -75,7 +76,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _subGraph =  LibCava().subGraph(),
             _tooltips =  LibCava().tooltips(),
 
-            //_glyphCircle = NumericGlyph(1),
             _glyphStar = NumericGlyph(GLYPH_STAR);
 
         _glyphStar.indexMapAttr([ ATE_QtPublicacoes-1000,ATE_QtProceedings-1000,ATE_QtBooks-1000,ATE_QtJournals-1000]);
@@ -107,7 +107,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             .configureView({barTitle:true, btClose:false, draggable:true, resizable:true,aspectRatio:true})
             .newView(0,0);
 
-        _chart.chart = NodeEdgeChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+        _chart.chart = NodeEdgeChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
         _chart.chart.indexAttrSize(ATN_Degree);
         _chart.view.conectChart(_chart.chart,NodeEdgePanel);
 
@@ -127,12 +127,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         _dashboard.historyChart(_historyTree.chart);
         _dashboard.configureView({barTitle:true, btTool:true, btClose:false, draggable:true, resizable:true,aspectRatio:true});
 
-//	console.log( _dashboard.getTree());
-//	console.log( _IdChartRoot);
-//	console.log(_dashboard.addChart ( _IdChartRoot,{id:_chart.view.idChart(),x:0, y:0,chart:_chart.chart, view:_chart.view})	);
-//	console.log(_dashboard.addChart ( _IdChartRoot,{id:_chart.view.idChart(),x:0, y:0,chart:_chart.chart, view:_chart.view})	);
-//	console.log(_chartManager.addChart ( 3,{chart:_chart.chart, view:_chart.view})	);
-
         _showChartRoot(_IdChartRoot, false);
 
 //--------------------------------- Private functions
@@ -150,7 +144,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     .configureView({barTitle:true, btClose:false, draggable:true, resizable:true,aspectRatio:true})
                     .newView(0,0);
 
-                _chart.chart = NodeEdgeChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+                _chart.chart = NodeEdgeChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
                 _chart.chart.indexAttrSize(ATN_Degree);
                 _chart.view.conectChart(_chart.chart,NodeEdgePanel);
 
@@ -300,6 +294,10 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 {label:"Iris"		,	fActionNode:_fActionNodeGM_IC},
                 {label:"GlyphMatrix",  	fActionNode:_fActionNodeGM_GM}
             ]);
+
+            _dashboard.setItensContextMenu(TC_Iris_Solo, [
+                {label: "Iris",        fActionNode:_fActionNodeIC_IC_SameView}
+            ]);
         }
 //=================== Context menu actions for nodes
 //=======================
@@ -337,7 +335,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 .configureView({barTitle:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                 .newView(posicaoPai.x + 20, posicaoPai.y + 20);
 
-            _chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+            _chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
             _chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
 
             title = "Edges: " + edge.source.key + " - " + edge.target.key;
@@ -396,13 +394,20 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         function _fActionNodeIC_IC(nodeIris, parentId) {
             let vOrder = _dashboard.getChart(parentId).chart.getVOrder();
             let node = _dashboard.getChart(parentId).chart.dataVisToNode(vOrder[nodeIris.indexData]);
-            _showIris(node,parentId, true);
+            _showIris(node,parentId);
         }
 //---------------
         function _fActionNodeIC_GM(nodeIris, parentId) {
             let vOrder = _dashboard.getChart(parentId).chart.getVOrder();
             let node = _dashboard.getChart(parentId).chart.dataVisToNode(vOrder[nodeIris.indexData]);
             _showGlyphMatrix(node,parentId);
+        }
+
+//---------------
+        function _fActionNodeIC_IC_SameView(nodeIris, parentId) {
+            let vOrder = _dashboard.getChart(parentId).chart.getVOrder();
+            let node = _dashboard.getChart(parentId).chart.dataVisToNode(vOrder[nodeIris.indexData]);
+            _showIris(node,parentId, true);
         }
 
 //=======================
@@ -413,8 +418,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         }
 
 //---------------	
-        function _fActionNodeGM_IC(node, parentId, parentChart) {
-            _showIris(node, parentId, parentChart);
+        function _fActionNodeGM_IC(node, parentId) {
+            _showIris(node, parentId);
         }
 
 //---------------	
@@ -453,7 +458,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                 .newView(posicaoPai.x + 20, posicaoPai.y + 20);
 
-            _chart.chart = ClusterVisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+            _chart.chart = ClusterVisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
             _chart.view.conectChart(_chart.chart,ClusterVisPanel);
 
             if (node.cluster) {
@@ -487,7 +492,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
         }
 //---------------------------------	
-        function _showIris(node, parentId, isFromIris) {
+        function _showIris(node, parentId, isFromDblClick) {
             let data,posicaoPai,title;
 
             if (node.cluster) {
@@ -498,11 +503,11 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             data = _subGraph.normalIris(node,_data);
             posicaoPai = _dashboard.getChart(parentId).view.getPosition();
 
-            if (isFromIris === undefined) {
+            if (isFromDblClick===undefined) {
                 _chart.view = _dashboard
                     .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                     .newView(posicaoPai.x + 20, posicaoPai.y + 20);
-                _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+                _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
             }
 
             _chart.view.conectChart(_chart.chart,IrisPanel);
@@ -536,7 +541,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                 .newView(posicaoPai.x + 20, posicaoPai.y + 20);
 
-            _chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_WidthChart});
+            _chart.chart = MatrixGlyphChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
             _chart.view.conectChart(_chart.chart,MatrixGlyphPanel);
 
             if (node.cluster) {
