@@ -74,9 +74,9 @@ define(["model","libCava"], function (Model,LibCava) {
         // ---------------- Geometric attributes of the graph
         model.margin = {top: 2, right: 2, bottom: 2, left: 2};
         model.box = { width:150, height:150};
-        model.pInnerRadius = 0.15;    // Percentage relative to graph width for _innerRadius calculation
+        model.pInnerRadius = 0.13;    // Percentage relative to graph width for _innerRadius calculation
         model.pOuterRadius = 0.57;    // Percentage relative to graph width for _OuterRadius calculation
-        model.pMaxHeightBar =  0.10;  // Percentage relative to graph width for _MaxHeightBar calculation
+        model.pMaxHeightBar =  0.15;  // Percentage relative to graph width for _MaxHeightBar calculation
         model.pFocusWidthBar =  0.0275;  // Percentage relative to graph width for calculation of _focusArea.widthBar
         model.pMinWidthBar = 0.01;       // Percentage relative to graph width for calculation of _minArea.widthBar Original 4
 
@@ -98,7 +98,15 @@ define(["model","libCava"], function (Model,LibCava) {
 
         _grpIris.append("text")
             .text("")
+            .classed("IC-totalLabel", true); // Includes total label
+
+        _grpIris.append("text")
+            .text("")
             .classed("IC-centroidDegree",true);    // Includes degree title attribute
+
+        _grpIris.append("text")
+            .text("")
+            .classed("IC-authorsMissing", true);
 
         // ------      Inclusion of the arc (sector) that represents the background of the focus
         _grpIris.append("path").attr("class","IC-focus");
@@ -172,14 +180,23 @@ define(["model","libCava"], function (Model,LibCava) {
                         .startAngle( -_degreeToRadian(_focusArea.angleSector/2) + Math.PI/2)
                         .endAngle( _degreeToRadian(_focusArea.angleSector/2) + Math.PI/2) );
 
+                let subName = (data.root.data.labels[ _cfgIndexAttr.titleCentroid]).split(',');
+
                 _grpIris.select("text.IC-centroidTitle")
-                    .text( _adjustLengthText(data.root.data.labels[ _cfgIndexAttr.titleCentroid],13))
-                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px");
+                    .text( _adjustLengthText(subName[0],13) + (subName.length===1?" ":"..."))
+                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
+                    .append("title")
+                    .text(data.root.data.labels[ _cfgIndexAttr.titleCentroid]);
+
+                _grpIris.select("text.IC-totalLabel")
+                    .attr("y", _innerRadius * 0.30)  // 30% of the radius
+                    .text("Total of")
+                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.50)+"px" );
 
                 _grpIris.select("text.IC-centroidDegree")
-                    .attr("y", _innerRadius * 0.30)  // 30% of the radius
-                    .text( data.children.data.length + " " + _cfgIndexAttr.titleDegree )
-                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.70)+"px" );
+                    .attr("y", _innerRadius * 0.50)  // 40% of the radius
+                    .text(data.children.data.length + " " + _cfgIndexAttr.titleDegree )
+                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.50)+"px" );
 
                 if (_grpBars != null)
                     _grpBars.remove();
@@ -189,12 +206,12 @@ define(["model","libCava"], function (Model,LibCava) {
                 if (_numMaxBars < _numTotalBars) {
                     nbBarsMissing = _numTotalBars - _numMaxBars;
                 }
-                _grpIris.append("text")
-                        .text((nbBarsMissing>0?"+ " + nbBarsMissing + " coauthors":"")) //only display text if there are coauthors not shown
-                        .attr("x", (-2.5*_innerRadius))
+                _grpIris.select("text.IC-authorsMissing")
+                        .attr("x", (-2.7*_innerRadius))
                         .attr("y", 0)
+                        .text((nbBarsMissing>0?nbBarsMissing + " coauthors hidden":"")) //only display text if there are coauthors not shown
                         .style("font-family", "Arial")
-                        .style("font-size", "10px")
+                        .style("font-size", "8px");
 
             } // End
         );
@@ -640,7 +657,7 @@ define(["model","libCava"], function (Model,LibCava) {
                 .attr("x", _innerRadius + _maxHeightBar)
                 .attr("y", function(d){return d.widthText/2*0.48;})
                 .classed("IC-active", function(d,i){ return _focusArea.indexCenter===i;})
-                .style("font-size", function (d) { return (d.widthText*0.70)+"px";} )  // Size reduced by 30%
+                .style("font-size", function (d) { return (d.widthText*0.55)+"px";} )  // Size reduced by 30%
                 .append("title")
                 .text ( function (d) { return _tooltipComplete(d)});
 
