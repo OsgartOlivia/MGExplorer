@@ -25,6 +25,13 @@ define(["model","libCava"], function (Model,LibCava) {
 
             _vOrder = null,      // Indirect ordering vector
 
+            _orders = {
+                publications: [0,1,2,3],
+                journals: [1,2,3,0],
+                books: [2,3,0,1],
+                proceedings: [3,0,1,2],
+            },
+
             _focusArea = {
                 widthBar: 0,       // (calculated) Width of bar in the area of maximum width (focus) Original: 11
                 angleBar: 0.0,     // (calculated) Angle of the sector occupied by the bars that are in Focus
@@ -65,7 +72,7 @@ define(["model","libCava"], function (Model,LibCava) {
             },
 
             _nbOfTypesDoc = 4,     // number of types of documents in the base
-            _colorsBars = ["#B1D877", "#4287f5", "#4D4D4D", "#f441e5"];     // colors for the different types
+            _colorsBars = ["#1f77b4", "#2ca02c", "#d62728", "#ff7d0e"];     // colors for the different types
 
         // ---------------- Model
         let model = Model();
@@ -207,7 +214,7 @@ define(["model","libCava"], function (Model,LibCava) {
                     nbBarsMissing = _numTotalBars - _numMaxBars;
                 }
                 _grpIris.select("text.IC-authorsMissing")
-                        .attr("x", (-2.7*_innerRadius))
+                        .attr("x", (-2.8*_innerRadius))
                         .attr("y", 0)
                         .text((nbBarsMissing>0?nbBarsMissing + " coauthors hidden":"")) //only display text if there are coauthors not shown
                         .style("font-family", "Arial")
@@ -361,6 +368,29 @@ define(["model","libCava"], function (Model,LibCava) {
         }
 
         /**
+         *
+         * _getTheRightOrder
+         *
+         * Returns the order in which we need to display the types of documents
+         *
+         * @param i
+         * @returns {number[]}
+         * @private
+         */
+        function _getTheRightOrder(i) {
+            switch (i) {
+                case 0:
+                    return _orders.publications;
+                case 1:
+                    return _orders.journals;
+                case 2:
+                    return _orders.books;
+                case 3:
+                    return _orders.proceedings;
+            }
+        }
+
+        /**
          * _calcWidthBar
          *
          * Calculates the bar width of the chart
@@ -387,13 +417,15 @@ define(["model","libCava"], function (Model,LibCava) {
          * @private
          */
         function _calcXBar(d, beginning, end) {
+            let order = _getTheRightOrder(end);
             let start = 0;
             if (beginning < end) {
-                let tmpBegin = beginning + _nbOfTypesDoc;
-                while (tmpBegin >= end) {
-                    start += _calcWidthBar(d, beginning);
-                    tmpBegin--;
-                    beginning++;
+                let i = 0;
+                beginning = beginning + _nbOfTypesDoc;
+                while (beginning >= end) {
+                    start += _calcWidthBar(d, order[i]);
+                    beginning--;
+                    i++;
                 }
             } else {
                 while (beginning >= end) {
@@ -616,39 +648,24 @@ define(["model","libCava"], function (Model,LibCava) {
                         chart.rotate(_focusArea.indexCenter-i,-1,i+1);
                 });
 
-            let j;
-            for (j = model.indexAttBar; j < _nbOfTypesDoc; j++) {
-                let previous = ((j - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
+            let order = _getTheRightOrder(model.indexAttBar);
+            for (let j = 0; j < order.length; j++) {
+                let previous = ((order[j] - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
                 _grpBars.append("rect")
                     .attr("class", "IC-node")
-                    .attr("x", function (d) {
+                    .attr("x", function(d) {
                         let prevWidth = 0;
-                        if (j !== model.indexAttBar) {
-                            prevWidth = _calcXBar(d, previous, model.indexAttBar); //calculates from where the new bar should begin
+                        if (j !== 0) {
+                            prevWidth = _calcXBar(d, previous, model.indexAttBar);
                         }
                         return _innerRadius+prevWidth;
                     })
-                    .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
+                    .attr("y", function (d) { return Math.round(-d.width/2) })
                     .attr("height", function (d) { return d.width; })
-                    .attr("width",  function (d) { return _calcWidthBar(d, j); })
-                    .attr("fill", _colorsBars[j])
+                    .attr("width",  function (d) { return _calcWidthBar(d, order[j]); })
+                    .attr("fill", _colorsBars[order[j]])
                     .append("title")
-                    .text ( function (d) { return _tooltip(d, j)});
-            }
-            for (j = 0; j < model.indexAttBar; j++) {
-                let previous = ((j - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
-                _grpBars.append("rect")
-                    .attr("class", "IC-node")
-                    .attr("x", function (d) {
-                        let prevWidth = _calcXBar(d, previous, model.indexAttBar); //calculates from where the new bar should begin
-                        return _innerRadius+prevWidth;
-                    })
-                    .attr("y",      function (d) { return Math.round(-d.width / 2 ) })
-                    .attr("height", function (d) { return d.width; })
-                    .attr("width",  function (d) { return _calcWidthBar(d, j); })
-                    .attr("fill", _colorsBars[j])
-                    .append("title")
-                    .text ( function (d) { return _tooltip(d, j)});
+                    .text ( function (d) { return _tooltip(d, order[j])});
             }
 
             _grpBars.append("text")

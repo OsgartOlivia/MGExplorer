@@ -8,8 +8,7 @@
 .IC-centroidBack {
   stroke: blue;
   stroke-width: 0.5;
-/*  fill: #e7ebff;*/
-  fill: #D8F2FF;  
+  fill: #D8F2FF;
 }
 
 .IC-centroidTitle {
@@ -27,14 +26,11 @@
 	fill: rgb(210,210,210);
 }
 
-.IC-node {
+rect.IC-node {
+    stroke: black;
+	stroke-width: 0.25;
 	cursor:pointer;
 }
-
-/*.IC-grpBar rect {
-    fill: #D2691E;
-	cursor:pointer;
-}*/
 
 .IC-grpBar text.IC-active {
 	fill:#F48D2E;
@@ -43,9 +39,6 @@
 .IC-grpBar text {
     fill: black;
 	font-family: Arial;
-/*    font-size  : 10px; */
-    font-weight:bold;  
-/*	alignment-baseline:central; */
-/*	letter-spacing: -1px; */ 
+    font-weight:bold;
 	cursor:pointer;
 }
