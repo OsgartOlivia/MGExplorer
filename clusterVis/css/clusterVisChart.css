@@ -21,10 +21,14 @@
   stroke-width: 0.5;   
 }
 
+.CV-grpBars text {
+    stroke: none;
+    fill: black;
+}
+
 .CV-grpBars {
 /*  fill: #D2691E; original */
   fill: #993300;
-  
 }
 
 .CV-grpLinks {
@@ -54,4 +58,3 @@
   stroke-width: 1.5;   
 }
  
-   

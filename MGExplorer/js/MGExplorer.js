@@ -12,9 +12,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             ATN_LinhaPesq = 3,
             ATN_Area = 4,
 
-            //ATN_AnoUltima = 1000,
             ATN_QtLinhaPesq = 1001,
-            //ATN_QtArea = 1002,
 
             ATN_QtPublicacoes = 1003,
             ATN_QtJournals = 1004,
@@ -22,19 +20,13 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             ATN_QtProceedings = 1006,
 
             ATN_ConnectComp = 1007,
-            //ATN_EdgeBetW = 1008,
 
-            //ATN_CloseCent = 1009,
-            //ATN_BetCent = 1010,
             ATN_Degree = 1011,
 
             ATE_QtPublicacoes = 1000,   // ATE: Attribute edge
             ATE_QtJournals = 1001,
             ATE_QtBooks = 1002,
             ATE_QtProceedings = 1003,
-            //ATE_Year = 1004,
-            //ATE_English = 1005,
-            //ATE_QtCompGrafica = 1014,
 
             TC_NodeEdge = 0,   // Technique
             TC_ClusterVis = 1,
@@ -349,8 +341,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     .indexAttrSort(0)     // Numeric attribute 0. Must be before date ()
                     .indexAttrLegend(0)     //  Must be before date ()
                     .indexAttrCellColor(1001)
-                    //			.glyph(_glyphCircle)
-                    //			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])
                     .glyph(_glyphStar)
                     .cellColorsMap(["#99E6E6"]);
 
@@ -361,7 +351,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _historyTree.chart.data (_dashboard.getTree());
                 _chart.view.show(true);
             }, 100);
-
         }
 
 //=======================
@@ -373,7 +362,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
 //---------------	
         function _fActionNodeCV_IC(node, parentId) {
-            _showIris(node, parentId);
+            _showIris(node, parentId, false, true);
         }
 
 //---------------
@@ -465,7 +454,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 title = node.key + "\'s cluster";
                 _chart.view.setTitle(title);
             } else {
-                title = node.labels[ATN_ShortName] + " and coauthors";
+                title = node.labels[ATN_ShortName] + " and coauthors (" + data.nodes.dataNodes.length + " clusters)";
                 _chart.view.setTitle(title);
             }
 
@@ -492,7 +481,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
         }
 //---------------------------------	
-        function _showIris(node, parentId, isFromDblClick) {
+        function _showIris(node, parentId, isFromDblClick, isFromCV) {
             let data,posicaoPai,title;
 
             if (node.cluster) {
@@ -501,9 +490,10 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             }
 
             data = _subGraph.normalIris(node,_data);
+
             posicaoPai = _dashboard.getChart(parentId).view.getPosition();
 
-            if (isFromDblClick===undefined) {
+            if (isFromDblClick===undefined || isFromDblClick===false) {
                 _chart.view = _dashboard
                     .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                     .newView(posicaoPai.x + 20, posicaoPai.y + 20);
@@ -512,7 +502,12 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
             _chart.view.conectChart(_chart.chart,IrisPanel);
 
-            title = node.labels[ATN_ShortName] + " and coauthors";
+            if (isFromCV===undefined) {
+                title = node.labels[ATN_ShortName] + " and " + data.children.data.length + " coauthors";
+            } else {
+                title = node.labels[ATN_ShortName] + " and coauthors from previous cluster";
+            }
+
             _chart.view.setTitle(title);
 
             _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "IC", hidden:false,

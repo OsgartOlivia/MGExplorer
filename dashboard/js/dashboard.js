@@ -136,8 +136,10 @@ define( ["view"], function (View) {
         function _dblClickAction() {
             let clickedElem = d3.select(d3.event.target);
             let viewDiv = _findParentDiv(clickedElem);
-            let data = _contextMenu.vItens[DS_Iris_Solo];
-            data[0].fActionNode(clickedElem.datum(),viewDiv.node().id)
+            if (clickedElem.classed("IC-node")) {
+                let data = _contextMenu.vItens[DS_Iris_Solo];
+                data[0].fActionNode(clickedElem.datum(),viewDiv.node().id)
+            }
         }
 
 //------------

@@ -11,7 +11,7 @@
   fill: #D8F2FF;
 }
 
-.IC-centroidTitle {
+.IC-centroidTitle, .IC-centroidSubtitle {
 	text-anchor: middle;
 	font-weight:bold; 
 	fill: black;
