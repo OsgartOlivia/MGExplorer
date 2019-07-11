@@ -105,14 +105,6 @@ define(["model","libCava"], function (Model,LibCava) {
 
         _grpIris.append("text")
             .text("")
-            .classed("IC-totalLabel", true); // Includes total label
-
-        _grpIris.append("text")
-            .text("")
-            .classed("IC-centroidDegree",true);    // Includes degree title attribute
-
-        _grpIris.append("text")
-            .text("")
             .classed("IC-authorsMissing", true);
 
         // ------      Inclusion of the arc (sector) that represents the background of the focus
@@ -188,22 +180,20 @@ define(["model","libCava"], function (Model,LibCava) {
                         .endAngle( _degreeToRadian(_focusArea.angleSector/2) + Math.PI/2) );
 
                 let subName = (data.root.data.labels[ _cfgIndexAttr.titleCentroid]).split(',');
-
-                _grpIris.select("text.IC-centroidTitle")
-                    .text( _adjustLengthText(subName[0],13) + (subName.length===1?" ":"..."))
-                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
-                    .append("title")
-                    .text(data.root.data.labels[ _cfgIndexAttr.titleCentroid]);
-
-                _grpIris.select("text.IC-totalLabel")
-                    .attr("y", _innerRadius * 0.30)  // 30% of the radius
-                    .text("Total of")
-                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.50)+"px" );
-
-                _grpIris.select("text.IC-centroidDegree")
-                    .attr("y", _innerRadius * 0.50)  // 40% of the radius
-                    .text(data.children.data.length + " " + _cfgIndexAttr.titleDegree )
-                    .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.50)+"px" );
+                if (subName.length===1) {
+                    let subName = (data.root.data.labels[ _cfgIndexAttr.titleCentroid]).split('.');
+                    _grpIris.select("text.IC-centroidTitle")
+                        .text( _adjustLengthText(subName[2],13))
+                        .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
+                        .append("title")
+                        .text(data.root.data.labels[0]);
+                } else {
+                    _grpIris.select("text.IC-centroidTitle")
+                        .text( _adjustLengthText(subName[0],13))
+                        .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
+                        .append("title")
+                        .text(data.root.data.labels[1]);
+                }
 
                 if (_grpBars != null)
                     _grpBars.remove();
