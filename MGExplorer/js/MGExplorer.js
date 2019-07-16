@@ -362,7 +362,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
 //---------------	
         function _fActionNodeCV_IC(node, parentId) {
-            _showIris(node, parentId, false, true);
+            _showIris(node, parentId, undefined, true);
         }
 
 //---------------
@@ -396,7 +396,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         function _fActionNodeIC_IC_SameView(nodeIris, parentId) {
             let vOrder = _dashboard.getChart(parentId).chart.getVOrder();
             let node = _dashboard.getChart(parentId).chart.dataVisToNode(vOrder[nodeIris.indexData]);
-            _showIris(node,parentId, true);
+            _showIris(node,parentId, _dashboard.getChart(parentId));
         }
 
 //=======================
@@ -481,7 +481,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
         }
 //---------------------------------	
-        function _showIris(node, parentId, isFromDblClick, isFromCV) {
+        function _showIris(node, parentId, parent, isFromCV) {
             let data,posicaoPai,title;
 
             if (node.cluster) {
@@ -493,11 +493,14 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
             posicaoPai = _dashboard.getChart(parentId).view.getPosition();
 
-            if (isFromDblClick===undefined || isFromDblClick===false) {
+            if (parent===undefined) {
                 _chart.view = _dashboard
                     .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
                     .newView(posicaoPai.x + 20, posicaoPai.y + 20);
                 _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
+            } else {
+                _chart.view = parent.view;
+                _chart.chart = parent.chart;
             }
 
             _chart.view.conectChart(_chart.chart,IrisPanel);

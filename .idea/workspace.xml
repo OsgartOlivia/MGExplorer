@@ -3,8 +3,7 @@
   <component name="ChangeListManager">
     <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris/css/irisChart.css" beforeDir="false" afterPath="$PROJECT_DIR$/iris/css/irisChart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris/js/irisChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/iris/js/irisChart.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,32 +16,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/inf-UFRGS-MGExplorer.html">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="595">
-              <caret line="35" column="37" selection-start-line="35" selection-start-column="37" selection-end-line="35" selection-end-column="37" />
-              <folding>
-                <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1275">
-              <caret line="21" column="29" selection-start-line="21" selection-start-column="29" selection-end-line="21" selection-end-column="29" />
-            </state>
-          </provider>
-        </entry>
-      </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/iris/css/irisChart.css">
+        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="24" column="11" lean-forward="true" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
+            <state relative-caret-position="238">
+              <caret line="495" selection-start-line="495" selection-end-line="495" />
             </state>
           </provider>
         </entry>
@@ -50,8 +28,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="656" column="36" lean-forward="true" selection-start-line="656" selection-start-column="36" selection-end-line="656" selection-end-column="36" />
+            <state relative-caret-position="227">
+              <caret line="593" column="8" selection-start-line="593" selection-start-column="8" selection-end-line="593" selection-end-column="8" />
             </state>
           </provider>
         </entry>
@@ -125,11 +103,11 @@
         <option value="$PROJECT_DIR$/nodeEdge/css/nodeEdgeChart.css" />
         <option value="$PROJECT_DIR$/nodeEdge/js/nodeEdgeChart.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" />
-        <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
         <option value="$PROJECT_DIR$/MGExplorer/css/MGExplorer.css" />
         <option value="$PROJECT_DIR$/inf-UFRGS-MGExplorer.html" />
         <option value="$PROJECT_DIR$/iris/js/irisChart.js" />
         <option value="$PROJECT_DIR$/iris/css/irisChart.css" />
+        <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
       </list>
     </option>
   </component>
@@ -164,12 +142,6 @@
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
               <item name="iris" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -182,6 +154,17 @@
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
               <item name="iris" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
+              <item name="MGExplorer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
+              <item name="MGExplorer" type="462c0819:PsiDirectoryNode" />
               <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
@@ -237,7 +220,7 @@
       <workItem from="1562745348837" duration="12837000" />
       <workItem from="1562828121181" duration="7851000" />
       <workItem from="1562917444382" duration="1481000" />
-      <workItem from="1563262390931" duration="1750000" />
+      <workItem from="1563262390931" duration="3187000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -337,18 +320,25 @@
       <option name="project" value="LOCAL" />
       <updated>1562847661724</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="Suppression de l'ouverture du menu sur les bars d'Iris">
+      <created>1563266744056</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1563266744056</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="173153000" />
+    <option name="totallyTimeSpent" value="174590000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
     <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.19828156" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.19828156" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.3286119" />
@@ -384,7 +374,8 @@
     <MESSAGE value="Traduction commentaires + suppression warnings" />
     <MESSAGE value="Clean fichiers css" />
     <MESSAGE value="Ajout du nombre de cluster dans le titre + visualisation des auteurs d'un cluster au survol d'un auteur" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout du nombre de cluster dans le titre + visualisation des auteurs d'un cluster au survol d'un auteur" />
+    <MESSAGE value="Suppression de l'ouverture du menu sur les bars d'Iris" />
+    <option name="LAST_COMMIT_MESSAGE" value="Suppression de l'ouverture du menu sur les bars d'Iris" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/lib/jquery-1.11.3.min.js">
@@ -635,13 +626,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="56">
-          <caret line="508" column="13" lean-forward="true" selection-start-line="508" selection-start-column="13" selection-end-line="508" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/inf-UFRGS-MGExplorer.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -666,17 +650,24 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="656" column="36" lean-forward="true" selection-start-line="656" selection-start-column="36" selection-end-line="656" selection-end-column="36" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/iris/css/irisChart.css">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="24" column="11" lean-forward="true" selection-start-line="24" selection-start-column="11" selection-end-line="24" selection-end-column="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="227">
+          <caret line="593" column="8" selection-start-line="593" selection-start-column="8" selection-end-line="593" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="238">
+          <caret line="495" selection-start-line="495" selection-end-line="495" />
         </state>
       </provider>
     </entry>
