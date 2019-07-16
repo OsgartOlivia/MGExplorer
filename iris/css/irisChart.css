@@ -26,7 +26,7 @@
 	fill: rgb(210,210,210);
 }
 
-rect.IC-node {
+.IC-bars {
     stroke: black;
 	stroke-width: 0.25;
 	cursor:pointer;

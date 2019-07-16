@@ -642,7 +642,7 @@ define(["model","libCava"], function (Model,LibCava) {
             for (let j = 0; j < order.length; j++) {
                 let previous = ((order[j] - 1 + _nbOfTypesDoc) % _nbOfTypesDoc);
                 _grpBars.append("rect")
-                    .attr("class", "IC-node")
+                    .attr("class", "IC-bars")
                     .attr("x", function(d) {
                         let prevWidth = 0;
                         if (j !== 0) {
