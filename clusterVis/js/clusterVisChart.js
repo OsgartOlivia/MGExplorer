@@ -284,7 +284,8 @@ define(["model","libCava"], function (Model,LibCava) {
                 .text("")
                 .classed("CV-names", true); // For showing names on mouseover
 
-            let x = _ringScale(_vRings[_vRings.length-1].pX) + _vRings[_vRings.length-1].barCircleScale(_vRings[_vRings.length-1].maxValue);
+            let index = _findMaxValue();
+            let x = _ringScale(_vRings[_vRings.length-1].pX) + _vRings[index].barCircleScale(_vRings[index].maxValue);
             let y = -(_barsArea.widthBar/2)*2.5;
             _grpBars.selectAll("text.CV-names")
                 .attr("x", x)
@@ -312,7 +313,16 @@ define(["model","libCava"], function (Model,LibCava) {
                 })
                 .style("font-size", "10px" )
                 .style("font-family", "Arial")
-                .style("color", "black")
+                .style("color", "black");
+
+            function _findMaxValue() {
+                let i, max = 0;
+                for (i = 0; i < _vRings.length; i++){
+                    if (_vRings[i].maxValue>max)
+                        max = i;
+                }
+                return max;
+            }
         }
 
         /**
