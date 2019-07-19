@@ -468,11 +468,9 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _chart.chart     // Changed to make the first ring always categorical
                 .addAttribute(ATN_Category,"L")
                 .addAttribute(ATN_QtPublicacoes-1000,"V")
-                //				.addAttribute(ATN_LinhaPesq,"L")
                 .addAttribute(ATN_QtProceedings-1000,"V")
                 .addAttribute(ATN_QtJournals-1000,"V")
                 .addAttribute(ATN_QtBooks-1000,"V");
-//				.addAttribute(ATN_LinhaPesq,"L");
 
             _historyTree.chart.data (_dashboard.getTree());
             _chart.chart.panel().alteraSelectOrder();
@@ -500,6 +498,11 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _chart.chart = IrisChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
             } else {
                 _chart.view = parent.view;
+                _dashboard.sameView();
+                let idParts = _chart.view.idChart().split("-");
+                let newId = parseInt(idParts[1], 10);
+                newId++;
+                _chart.view.setIdChart("view-" + newId + "-c");
                 _chart.chart = parent.chart;
             }
 
@@ -558,8 +561,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     .indexAttrSort(0)     // Numeric attribute 0. Must be before date ()
                     .indexAttrLegend(0)     //  Must be before date ()
                     .indexAttrCellColor(1001)
-                    //			.glyph(_glyphCircle)
-                    //			.cellColorsMap(["#99E6E6","#ffd636","#ff5959"])
                     .glyph(_glyphStar)
                     .cellColorsMap(["#99E6E6"]);
 

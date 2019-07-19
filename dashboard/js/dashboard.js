@@ -217,6 +217,18 @@ define( ["view"], function (View) {
         function dashboard() {}
 
         //---------------------
+        dashboard.sameView = function () {
+            _lastIndex++;
+            let idView = "view-" + _lastIndex;
+            let objView = View(idView,this);
+
+            _vIdViews.push(idView);
+            _vObjViews.push(objView);
+            _activeView = objView;
+
+        };
+
+        //---------------------
         dashboard.newView = function (x, y) {
             _lastIndex++;
             let idView = "view-" + _lastIndex;

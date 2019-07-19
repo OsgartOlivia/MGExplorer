@@ -139,14 +139,11 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
                     class:"view-panel"
                 }).css({"position":"absolute", "top":_yPanel,"display":"none"}).draggable();
                 $(idView).append(panelDiv);
-//		}		
 
                 if (_config.draggable) {     //----------- Make the view draggable
                     _divView.draggable({
                         handle: $(idBar),
                         start: function() {
-//			  dashboard.activeView().divView().css("z-index",90);
-//			  _divView.css("z-index",100);
                             _divView.css("z-index",dashboard.nextZIndex());
 
                             dashboard.activeView (thisView);
@@ -165,7 +162,6 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
                             }
                             selLinkFilhos.attr("x1",_center.cx).attr("y1",_center.cy);
 
-//				}
                             dashboard.refreshSvg();
                         },
                         stop: function( event, ui ) {
@@ -204,11 +200,6 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
                     aspectRatio: config.aspectRatio,
                     autoHide   : true,
                     start      : function() {
-//		    dashboard.activeView().divView().css("z-index",90);
-
-//		    _divView.css("z-index",100);
-//		    $(".resizable-helper").css( "z-index",105);
-
                         _divView.css("z-index",dashboard.nextZIndex());
                         $(".resizable-helper").css( "z-index",dashboard.nextZIndex()	);
 
@@ -269,6 +260,11 @@ define( ["jquery","jqueryui","d3"], function ($,JQueryUI,d3) {
 //---------------------	
         view.idChart = function() {
             return _idChart;
+        };
+
+//---------------------
+        view.setIdChart = function(idChart) {
+            _idChart = idChart;
         };
 
 //---------------------

@@ -291,15 +291,6 @@ define(["model","libCava"], function (Model,LibCava) {
                 .attr("x", x)
                 .attr("y", 0)
                 .attr("text-anchor", "start")
-                /*.attr("transform", function(d) {
-                    if (d.x >= 180) {
-                        return "rotate(90," + x + "," + y + ")";
-                    } else if (0 < d.x < 180) {
-                        return "rotate(270," + x + "," + y + ")";
-                    } else {
-                        return "rotate(0," + x + "," + y + ")";
-                    }
-                })*/
                 .text(function (d) {
                     if (d.highLight === true) {
                         let names = d.labels[0].split(",");
