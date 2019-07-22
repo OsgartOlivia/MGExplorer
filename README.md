@@ -1,13 +1,17 @@
-# MGExplorer 
+# MG-Explorer 
 
-## Contexte
+## Context
 
-Ce projet a été initialement mis en place par un doctorant de M.Winckler dans le cadre d'une thèse sur la recherche incrémentale d'informations.
+This project was initially created and developed by one of M.Winckler's student for a thesis
+on the incremental search for information.
 
-## Mon travail
+In our case, we collect data about authors and co-authors from **dlpb** (https://dblp.uni-trier.de/).
 
-J'utilise actuellement ce projet dans le but d'améliorer l'utilisabilité des techniques de visualisation employées, mais également pour ajouter de nouvelles techniques de visualisation de données.
+## My work
 
-## Lancer le projet
+I currently am on this project in order to increase the usability of the used visualization techniques.
+Moreover, my second goal is to add new visualization techniques.
 
-Il vous suffit d'ouvrir dans un navigateur le fichier ***inf-UFRGS-MGExplorer.html***
+## Run the project
+
+You need to open via your localhost or your Webstorm the file `inf-UFRGS-MGExplorer.html`

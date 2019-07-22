@@ -27,20 +27,17 @@
 }
 
 .CV-grpBars {
-/*  fill: #D2691E; original */
   fill: #993300;
 }
 
 .CV-grpLinks {
   stroke: steelblue;
   stroke-opacity: .3; 
-/*  stroke-opacity: 1; */
   fill: none;
 }
 
 .CV-grpLinks2 {
   stroke: red;
-/*  stroke-opacity: 0.7; */
   stroke-opacity: 1;
 
   fill: none;

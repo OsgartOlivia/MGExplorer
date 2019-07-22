@@ -7,17 +7,14 @@
 }
 
 .view-view {
-/*    shape-rendering: crispEdges; */
-	position: absolute; 
-/*	border: 1px solid black; */
-	border: 1px solid #3399FF; 
-/*	background-color:#eee; */
+	position: absolute;
+	border: 1px solid #3399FF;
 	background-color:#e7f7ff;
 }
 
 .view-bar {
 	position: absolute;
-    top: 0px;	
+    top: 0;
 	width:100%;
 	background-color:LightSteelBlue;
 	cursor:move;	
@@ -56,5 +53,4 @@
 .view-chart {
 	position: absolute;
 	width:100%;
-/*	border: 1px solid black; */
 }
