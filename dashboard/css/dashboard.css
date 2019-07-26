@@ -1,4 +1,4 @@
-@CHARSET "ISO-8859-1";
+@CHARSET "UTF-8";
 .DS-linkChartShow {
 	stroke: #3399FF;
 	stroke-width: 2.0; 	
@@ -23,7 +23,7 @@
     top: 0;
     background-color: #F0F0F0;
     width: 72px;
-	height: 72px;
+	height: 85px;
     border: 1px #ccc solid;
     border-radius: 4px; 
     box-shadow: #333 2px 2px 4px;

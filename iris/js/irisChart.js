@@ -182,11 +182,19 @@ define(["model","libCava"], function (Model,LibCava) {
                 let subName = (data.root.data.labels[ _cfgIndexAttr.titleCentroid]).split(',');
                 if (subName.length===1) {
                     let subName = (data.root.data.labels[ _cfgIndexAttr.titleCentroid]).split('.');
-                    _grpIris.select("text.IC-centroidTitle")
-                        .text( _adjustLengthText(subName[2],13))
-                        .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
-                        .append("title")
-                        .text(data.root.data.labels[0]);
+                    if (subName.length===2) {
+                        _grpIris.select("text.IC-centroidTitle")
+                            .text( _adjustLengthText(subName[1],13))
+                            .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
+                            .append("title")
+                            .text(data.root.data.labels[0]);
+                    } else {
+                        _grpIris.select("text.IC-centroidTitle")
+                            .text( _adjustLengthText(subName[2],13))
+                            .style("font-size", (_dataVis[ _focusArea.indexCenter].widthText*0.60)+"px")
+                            .append("title")
+                            .text(data.root.data.labels[0]);
+                    }
                 } else {
                     _grpIris.select("text.IC-centroidTitle")
                         .text( _adjustLengthText(subName[0],13))
@@ -220,8 +228,6 @@ define(["model","libCava"], function (Model,LibCava) {
          * Calculates all geometric parameters for Iris display
          */
         function _calcGeometry() {
-
-            //let maxValue = 0;  // Maximum value of the attribute that will be represented by the bars
 
             i_CalcFocusArea();
             i_CalcFishEyeArea();
@@ -593,6 +599,10 @@ define(["model","libCava"], function (Model,LibCava) {
         //---------------------
         chart.dataVisToNode = function( index ) {
             return model.data.children.data[index];
+        };
+
+        chart.getSourceObject = function () {
+          return model.data.root.data;
         };
 
         //---------------------

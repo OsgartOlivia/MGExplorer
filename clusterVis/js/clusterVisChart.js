@@ -296,7 +296,11 @@ define(["model","libCava"], function (Model,LibCava) {
                         let names = d.labels[0].split(",");
                         if (names.length === 1) {
                             names = d.labels[0].split(".");
-                            return names[2];
+                            if (names.length === 2) {
+                                return names[1];
+                            } else {
+                                return names[2];
+                            }
                         }
                         return names[0];
                     }
