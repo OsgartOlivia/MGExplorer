@@ -19,7 +19,8 @@ define( ["view"], function (View) {
             DS_ClusterVis = 1,
             DS_Iris = 2,
             DS_GlyphMatrix = 3,
-            DS_Iris_Solo = 4;
+            DS_Iris_Solo = 4,
+            DS_Papers_List = 5;
 
         let _configView = {
                 barTitle : true,
@@ -106,7 +107,8 @@ define( ["view"], function (View) {
                 if (clickedElem.classed("NE-node") || clickedElem.classed("NE-edge") ||
                     clickedElem.classed("CV-node") ||
                     clickedElem.classed("IC-node") ||
-                    clickedElem.classed("GM-node")) {
+                    clickedElem.classed("GM-node") ||
+                    clickedElem.classed("IC-bars")) {
                     d3.event.preventDefault();
 
                     viewDiv = _findParentDiv(clickedElem);
@@ -128,6 +130,11 @@ define( ["view"], function (View) {
                     else
                     if ( clickedElem.classed("GM-node"))
                         _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
+                    else
+                    if (clickedElem.classed("IC-bars")) {
+                        popupDiv.attr("class", "DS-popup-small");
+                        _execCtxMenuIrisBars(popupDiv,clickedElem, viewDiv.node().id);
+                    }
                 }
 
             }
@@ -208,6 +215,21 @@ define( ["view"], function (View) {
                 .on("click", function(d) {
                     _contextMenu.showing = false;
                     d3.select(".DS-popup").remove();
+                    d.fActionNode(clickedElem.datum(),parentId);
+                })
+                .append("label")
+                .text(function(d) { return d.label;} );
+        }
+
+//------------
+        function _execCtxMenuIrisBars(popupDiv,clickedElem, parentId) {
+            popupDiv.selectAll("div")
+                .data(_contextMenu.vItens[DS_Papers_List])
+                .enter()
+                .append("div")
+                .on("click", function(d) {
+                    _contextMenu.showing = false;
+                    d3.select(".DS-popup-small").remove();
                     d.fActionNode(clickedElem.datum(),parentId);
                 })
                 .append("label")

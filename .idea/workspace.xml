@@ -8,19 +8,10 @@
       <change afterPath="$PROJECT_DIR$/papersList/js/papersListPanel.js" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/papersList/js/requirePapersListConfig.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MGExplorer/css/MGExplorer.css" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/css/MGExplorer.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MGExplorer/js/require-MGExplorer-Config.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/require-MGExplorer-Config.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/css/dashboard.css" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/css/dashboard.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dashboard/css/view.css" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/css/view.css" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dashboard/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/dashboard.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/inf-UFRGS-MGExplorer.html" beforeDir="false" afterPath="$PROJECT_DIR$/inf-UFRGS-MGExplorer.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris/css/irisChart.css" beforeDir="false" afterPath="$PROJECT_DIR$/iris/css/irisChart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/iris/js/irisChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/iris/js/irisChart.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/lib/libCava.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libCava.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphChart.css" beforeDir="false" afterPath="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphChart.css" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphPanel.css" beforeDir="false" afterPath="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphPanel.css" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -32,71 +23,7 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="235">
-              <caret line="616" column="16" selection-start-line="616" selection-start-column="16" selection-end-line="616" selection-end-column="16" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papersList/css/papersListChart.css">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/papersList/js/papersListChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2703">
-              <caret line="159" column="13" lean-forward="true" selection-start-line="159" selection-start-column="13" selection-end-line="159" selection-end-column="13" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="34">
-              <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/json/data_papers.json">
-          <provider selected="true" editor-type-id="text-editor">
-            <state>
-              <caret line="318" column="67" lean-forward="true" selection-start-line="318" selection-start-column="67" selection-end-line="318" selection-end-column="67" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/lib/libCava.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1003">
-              <caret line="1191" column="25" lean-forward="true" selection-start-line="1191" selection-start-column="25" selection-end-line="1191" selection-end-column="25" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="527">
-              <caret line="199" column="64" lean-forward="true" selection-start-line="199" selection-start-column="64" selection-end-line="199" selection-end-column="64" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <leaf />
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -229,39 +156,6 @@
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="clusterVis" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="iris" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="json" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="lib" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
               <item name="MGExplorer" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -374,7 +268,7 @@
       <workItem from="1563953510472" duration="10089000" />
       <workItem from="1564039800248" duration="5284000" />
       <workItem from="1564047671248" duration="8322000" />
-      <workItem from="1564126849121" duration="17239000" />
+      <workItem from="1564126849121" duration="17596000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -523,15 +417,28 @@
       <option name="project" value="LOCAL" />
       <updated>1564151600001</updated>
     </task>
-    <option name="localTasksCounter" value="22" />
+    <task id="LOCAL-00022" summary="Récupération des données sous deux formats différents (tous les papiers d'un auteur et les papiers qu'on deux auteurs en commun). Un troisième format (cluster) est à venir">
+      <created>1564151845316</created>
+      <option name="number" value="00022" />
+      <option name="presentableId" value="LOCAL-00022" />
+      <option name="project" value="LOCAL" />
+      <updated>1564151845316</updated>
+    </task>
+    <task id="LOCAL-00023" summary="Ajustement de l'affichage des noms dans iris et clustervis pour coller avec les nouvelles données + passage en utf-8">
+      <created>1564151980265</created>
+      <option name="number" value="00023" />
+      <option name="presentableId" value="LOCAL-00023" />
+      <option name="project" value="LOCAL" />
+      <updated>1564151980265</updated>
+    </task>
+    <option name="localTasksCounter" value="24" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="263359000" />
+    <option name="totallyTimeSpent" value="263716000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
-    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
       <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22075348" />
@@ -577,7 +484,9 @@
     <MESSAGE value="Cleaning code" />
     <MESSAGE value="Ajout d'indication sur l'utilisation de http server" />
     <MESSAGE value="Ajout d'un nouveau fichier json avec des données issues de Open HAL et indentation" />
-    <option name="LAST_COMMIT_MESSAGE" value="Ajout d'un nouveau fichier json avec des données issues de Open HAL et indentation" />
+    <MESSAGE value="Récupération des données sous deux formats différents (tous les papiers d'un auteur et les papiers qu'on deux auteurs en commun). Un troisième format (cluster) est à venir" />
+    <MESSAGE value="Ajustement de l'affichage des noms dans iris et clustervis pour coller avec les nouvelles données + passage en utf-8" />
+    <option name="LAST_COMMIT_MESSAGE" value="Ajustement de l'affichage des noms dans iris et clustervis pour coller avec les nouvelles données + passage en utf-8" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/matrixGlyph/js/matrixGlyphChart.js">
@@ -843,17 +752,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+    <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="235">
-          <caret line="616" column="16" selection-start-line="616" selection-start-column="16" selection-end-line="616" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/papersList/css/papersListChart.css">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        <state relative-caret-position="34">
+          <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
         </state>
       </provider>
     </entry>
@@ -864,10 +766,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/clusterVis/js/clusterVisChart.js">
+    <entry file="file://$PROJECT_DIR$/papersList/css/papersListChart.css">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="34">
-          <caret line="145" column="12" selection-start-line="145" selection-start-column="12" selection-end-line="145" selection-end-column="12" />
+        <state relative-caret-position="204">
+          <caret line="12" lean-forward="true" selection-start-line="12" selection-end-line="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="235">
+          <caret line="616" column="16" selection-start-line="616" selection-start-column="16" selection-end-line="616" selection-end-column="16" />
         </state>
       </provider>
     </entry>

@@ -1,10 +1,12 @@
 require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         "nodeEdgeChart","nodeEdgePanel", "clusterVisChart","clusterVisPanel",
-        "irisChart","irisPanel", "matrixGlyphChart","matrixGlyphPanel","historyTreeChart","historyTreePanel"],
+        "irisChart","irisPanel", "matrixGlyphChart","matrixGlyphPanel","historyTreeChart","historyTreePanel",
+        "papersListChart", "papersListPanel"],
 
     function (Dashboard,DatabaseLib,LibCava,AlgCluster,NumericGlyph,
               NodeEdgeChart,NodeEdgePanel, ClusterVisChart,ClusterVisPanel,
-              IrisChart, IrisPanel, MatrixGlyphChart,MatrixGlyphPanel,HistoryTreeChart, HistoryTreePanel) {
+              IrisChart, IrisPanel, MatrixGlyphChart,MatrixGlyphPanel,HistoryTreeChart, HistoryTreePanel,
+              PapersListChart, PapersListPanel) {
 
         let ATN_ShortName = 0,   // ATN: Node attribute
             ATN_AuthorName = 1,
@@ -33,6 +35,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             TC_Iris = 2,
             TC_GlyphMatrix = 3,
             TC_Iris_Solo = 4,
+            TC_PapersList = 5,
 
             MG_WidthChart = 350,
             MG_HeightChart = 350;
@@ -174,12 +177,12 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     break;
                 case 7: _loadDataProcess("json/dataUFRGS-2004-2011-CG.json",7,idChart);
                     break;
+                case 8: _loadDataProcess("json/data_papers.json", 8, idChart);
             }
         }
 //------ Loads a new dataset
         function _loadDataProcess(url, codArquivo, idChart) {
             d3.json(url, function(data) {
-
                 let objChart = _dashboard.getChart(idChart);
                 let title;
 
@@ -206,6 +209,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                         break;
                     case 7:	title = "Year 2004-2011 - Computer Graphics";
                         break;
+                    case 8: title = "HAL Open Data";
                 }
 
                 objChart.chart.setTTNormalNode( _tooltips.normalNode(_data,ATN_AuthorName,[ATN_Category,ATN_LinhaPesq,ATN_QtLinhaPesq,ATN_QtPublicacoes],"co-authors") );
@@ -254,7 +258,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 }
                 _historyTree.chart.data (_dashboard.getTree());
             });
-
         }
 
 //------ Initializes all context menus
@@ -263,7 +266,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 {label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented, fActionEdge:_fActionNotImplemented},
                 {label:"ClusterVis"	,  	fActionNode:_fActionNodeNE_CV, fActionEdge:_fActionNotImplemented},
                 {label:"Iris"		,	fActionNode:_fActionNodeNE_IC, fActionEdge:_fActionNotApplicable},
-                {label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM}
+                {label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM},
+                {label:"Papers' List", fActionNode:_fActionNodeNE_PL, fActionEdge:_fActionEdgeNE_PL}
             ]);
 
             _dashboard.setItensContextMenu(TC_ClusterVis, [
@@ -290,6 +294,10 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _dashboard.setItensContextMenu(TC_Iris_Solo, [
                 {label: "Iris",        fActionNode:_fActionNodeIC_IC_SameView}
             ]);
+
+            _dashboard.setItensContextMenu(TC_PapersList, [
+                {label: "Papers' List", fActionNode:_fActionNodeIC_PL}
+            ]);
         }
 //=================== Context menu actions for nodes
 //=======================
@@ -309,6 +317,11 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 //---------------
         function _fActionNodeNE_GM(node, parentId) {
             _showGlyphMatrix(node,parentId);
+        }
+
+//---------------
+        function _fActionNodeNE_PL(node, parentId) {
+            _showPapersList(node,parentId, false);
         }
 
 //---------------	
@@ -352,6 +365,12 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _chart.view.show(true);
             }, 100);
         }
+
+//---------------
+        function _fActionEdgeNE_PL(node, parentId) {
+            _showPapersList(node,parentId, true);
+        }
+
 
 //=======================
 // Actions CV: ClusterVis
@@ -399,6 +418,15 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _showIris(node,parentId, _dashboard.getChart(parentId));
         }
 
+//---------------
+        function _fActionNodeIC_PL(nodeIris, parentId) {
+            let chart = _dashboard.getChart(parentId).chart;
+            let vOrder = chart.getVOrder();
+            let sourceNode = chart.getSourceObject();
+            let targetNode = chart.dataVisToNode(vOrder[nodeIris.indexData]);
+            _showPapersList(sourceNode, parentId, true, targetNode);
+        }
+
 //=======================
 // Actions GM: GlyphMatrix
 //=======================
@@ -415,7 +443,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         function _fActionNodeGM_GM(node, parentId) {
             _showGlyphMatrix(node, parentId);
         }
-
 
 //=======================
 // General Actions
@@ -571,6 +598,66 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _historyTree.chart.data (_dashboard.getTree());
                 _chart.view.show(true);
             }, 100);
+        }
+
+        function _showPapersList(node, parentId, isFromEdge, secondNode) {
+            let data,posicaoPai,title;
+            if (!isFromEdge) {
+                data = _subGraph.allPapersList(node, _data);
+
+                posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+
+                _chart.view = _dashboard
+                    .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
+                _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
+
+                _chart.view.conectChart(_chart.chart,PapersListPanel);
+
+                let nbPapers = node.values[3] + node.values[4] + node.values[5] + node.values[6] ;
+                title = node.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
+
+                _chart.view.setTitle(title);
+
+                _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
+                    x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
+
+                _chart.chart.indexAttrBar(ATE_QtPublicacoes);
+                _chart.chart.data(data);
+
+                _historyTree.chart.data(_dashboard.getTree());
+                //_chart.chart.panel().includeSelectAttr(_vAttrEdgesSelecionaveis);
+                _chart.view.show(true);
+            } else {
+                data = _subGraph.duoPapersList(node,secondNode,_data);
+
+                posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+
+                _chart.view = _dashboard
+                    .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
+                _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
+
+                _chart.view.conectChart(_chart.chart,PapersListPanel);
+
+                if (secondNode===undefined) {
+                    title = node.source.labels[ATN_ShortName] + "/" + node.target.labels[ATN_ShortName] + " co-authored papers";
+                } else {
+                    title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + " co-authored papers";
+                }
+
+                _chart.view.setTitle(title);
+
+                _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
+                    x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
+
+                _chart.chart.indexAttrBar(ATE_QtPublicacoes);
+                //_chart.chart.data(data);
+
+                _historyTree.chart.data(_dashboard.getTree());
+                //_chart.chart.panel().includeSelectAttr(_vAttrEdgesSelecionaveis);
+                _chart.view.show(true);
+            }
         }
     }
 );

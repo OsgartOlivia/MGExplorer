@@ -30,6 +30,9 @@ require.config({
     numericGlyph:    '../../matrixGlyph/js/numericGlyph',
 
 	historyTreeChart:	'../../historyTree/js/historyTreeChart',
-	historyTreePanel:	'../../historyTree/js/historyTreePanel'	
+	historyTreePanel:	'../../historyTree/js/historyTreePanel',
+
+    papersListChart: '../../papersList/js/papersListChart',
+    papersListPanel: '../../papersList/js/papersListPanel'
   }
 });
