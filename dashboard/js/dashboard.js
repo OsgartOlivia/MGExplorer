@@ -20,7 +20,10 @@ define( ["view"], function (View) {
             DS_Iris = 2,
             DS_GlyphMatrix = 3,
             DS_Iris_Solo = 4,
-            DS_Papers_List = 5;
+            DS_Papers_List = 5,
+            DS_NodeEdge_HAL = 6;
+
+        let _selectedQuery;
 
         let _configView = {
                 barTitle : true,
@@ -57,6 +60,11 @@ define( ["view"], function (View) {
         _dashboardArea.svg = _dashboardArea.div.append("svg")
             .attr("width", _dashboardArea.width)
             .attr("height", _dashboardArea.height);
+
+        //-----Initialize select Query
+        $("#selectQuery").on("change", function() {
+            _selectedQuery = parseInt(this.value);
+        });
 
 //--------------------------------- Private functions
         function _addLink( viewParent, viewChild) {
@@ -98,28 +106,29 @@ define( ["view"], function (View) {
         function _onContextMenu() {
             let clickedElem,viewDiv,popupDiv,mousePos;
 
+            _selectedQuery = parseInt($("#selectQuery")[0].selectedIndex);
+
             if (_contextMenu.showing) {
                 d3.event.preventDefault();
                 _contextMenu.showing = false;
                 d3.select(".DS-popup").remove();
             } else {
                 clickedElem = d3.select(d3.event.target);
-                if (clickedElem.classed("NE-node") || clickedElem.classed("NE-edge") ||
+                if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge") ||
                     clickedElem.classed("CV-node") ||
                     clickedElem.classed("IC-node") ||
-                    clickedElem.classed("GM-node") ||
-                    clickedElem.classed("IC-bars")) {
+                    clickedElem.classed("GM-node")) && _selectedQuery!==8) {
                     d3.event.preventDefault();
 
                     viewDiv = _findParentDiv(clickedElem);
                     mousePos = d3.mouse(viewDiv.node());
 
                     popupDiv = viewDiv.append("div")
-                        .attr("class", "DS-popup")
+                        .attr("class", "DS-popup medium-size")
                         .style("left", mousePos[0] + "px")
                         .style("top", mousePos[1] + "px");
                     _contextMenu.showing = true;
-                    if (clickedElem.classed("NE-node") || clickedElem.classed("NE-edge") )
+                    if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) && _selectedQuery !== 8)
                         _execCtxMenuNodeEdge(popupDiv,clickedElem, viewDiv.node().id);
                     else
                     if (clickedElem.classed("CV-node"))
@@ -130,11 +139,32 @@ define( ["view"], function (View) {
                     else
                     if ( clickedElem.classed("GM-node"))
                         _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
-                    else
-                    if (clickedElem.classed("IC-bars")) {
-                        popupDiv.attr("class", "DS-popup-small");
-                        _execCtxMenuIrisBars(popupDiv,clickedElem, viewDiv.node().id);
-                    }
+                }
+
+                if (clickedElem.classed("IC-bars") && _selectedQuery === 8) {
+                    d3.event.preventDefault();
+
+                    viewDiv = _findParentDiv(clickedElem);
+                    mousePos = d3.mouse(viewDiv.node());
+
+                    popupDiv = viewDiv.append("div")
+                        .attr("class", "DS-popup small-size")
+                        .style("left", mousePos[0] + "px")
+                        .style("top", mousePos[1] + "px");
+                    _contextMenu.showing = true;
+                    _execCtxMenuIrisBars(popupDiv,clickedElem, viewDiv.node().id);
+                } else if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) && _selectedQuery===8) {
+                    d3.event.preventDefault();
+
+                    viewDiv = _findParentDiv(clickedElem);
+                    mousePos = d3.mouse(viewDiv.node());
+
+                    popupDiv = viewDiv.append("div")
+                        .attr("class", "DS-popup big-size")
+                        .style("left", mousePos[0] + "px")
+                        .style("top", mousePos[1] + "px");
+                    _contextMenu.showing = true;
+                    _execCtxMenuNodeEdgeHAL(popupDiv,clickedElem, viewDiv.node().id);
                 }
 
             }
@@ -162,6 +192,24 @@ define( ["view"], function (View) {
         function _execCtxMenuNodeEdge(popupDiv,clickedElem, parentId) {
             popupDiv.selectAll("div")
                 .data(_contextMenu.vItens[DS_NodeEdge])
+                .enter()
+                .append("div")
+                .on("click", function(d) {
+                    _contextMenu.showing = false;
+                    d3.select(".DS-popup").remove();
+                    if ( clickedElem.classed("NE-node"))
+                        d.fActionNode(clickedElem.datum(),parentId);
+                    else
+                        d.fActionEdge(clickedElem.datum(),parentId);
+                })
+                .append("label")
+                .text(function(d) { return d.label;} );
+        }
+
+//------------
+        function _execCtxMenuNodeEdgeHAL(popupDiv,clickedElem, parentId) {
+            popupDiv.selectAll("div")
+                .data(_contextMenu.vItens[DS_NodeEdge_HAL])
                 .enter()
                 .append("div")
                 .on("click", function(d) {
@@ -229,7 +277,7 @@ define( ["view"], function (View) {
                 .append("div")
                 .on("click", function(d) {
                     _contextMenu.showing = false;
-                    d3.select(".DS-popup-small").remove();
+                    d3.select(".DS-popup").remove();
                     d.fActionNode(clickedElem.datum(),parentId);
                 })
                 .append("label")

@@ -35,7 +35,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             TC_Iris = 2,
             TC_GlyphMatrix = 3,
             TC_Iris_Solo = 4,
-            TC_PapersList = 5,
+            TC_PapersList_Solo = 5,
+            TC_NodeEdge_HAL = 6,
 
             MG_WidthChart = 350,
             MG_HeightChart = 350;
@@ -267,7 +268,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 {label:"ClusterVis"	,  	fActionNode:_fActionNodeNE_CV, fActionEdge:_fActionNotImplemented},
                 {label:"Iris"		,	fActionNode:_fActionNodeNE_IC, fActionEdge:_fActionNotApplicable},
                 {label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM},
-                {label:"Papers' List", fActionNode:_fActionNodeNE_PL, fActionEdge:_fActionEdgeNE_PL}
             ]);
 
             _dashboard.setItensContextMenu(TC_ClusterVis, [
@@ -295,9 +295,17 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 {label: "Iris",        fActionNode:_fActionNodeIC_IC_SameView}
             ]);
 
-            _dashboard.setItensContextMenu(TC_PapersList, [
+            _dashboard.setItensContextMenu(TC_PapersList_Solo, [
                 {label: "Papers' List", fActionNode:_fActionNodeIC_PL}
             ]);
+
+            _dashboard.setItensContextMenu(TC_NodeEdge_HAL, [
+                {label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented, fActionEdge:_fActionNotImplemented},
+                {label:"ClusterVis"	,  	fActionNode:_fActionNodeNE_CV, fActionEdge:_fActionNotImplemented},
+                {label:"Iris"		,	fActionNode:_fActionNodeNE_IC, fActionEdge:_fActionNotApplicable},
+                {label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM},
+                {label:"Papers' List", fActionNode:_fActionNodeNE_PL, fActionEdge:_fActionEdgeNE_PL}
+            ])
         }
 //=================== Context menu actions for nodes
 //=======================
