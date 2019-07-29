@@ -621,8 +621,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
 
                 _chart.view.conectChart(_chart.chart,PapersListPanel);
-
-                let nbPapers = node.values[3] + node.values[4] + node.values[5] + node.values[6] ;
+                let nbPapers = data.root.data.documents.length ;
                 title = node.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
 
                 _chart.view.setTitle(title);

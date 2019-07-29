@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="Réglage pour que la nouvelle technique ne soit accessible que depuis la sélection de la base Open HAL puisque les autres n'ont pas encore les données nécessaires + réglage de la taille du menu en conséquence">
+    <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json/dataUFRGS-2004.json" beforeDir="false" afterPath="$PROJECT_DIR$/json/dataUFRGS-2004.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/json/data_papers.json" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/lib/libCava.js" beforeDir="false" afterPath="$PROJECT_DIR$/lib/libCava.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/papersList/js/papersListChart.js" beforeDir="false" afterPath="$PROJECT_DIR$/papersList/js/papersListChart.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -17,7 +17,44 @@
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300" />
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="168">
+              <caret line="619" column="22" lean-forward="true" selection-start-line="619" selection-start-column="22" selection-end-line="619" selection-end-column="22" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/lib/libCava.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="233">
+              <caret line="1168" column="43" selection-start-line="1168" selection-start-column="43" selection-end-line="1168" selection-end-column="43" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/papersList/js/papersListChart.js">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-153">
+              <caret line="79" column="39" lean-forward="true" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/json/data_HALOpen.json">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="378">
+              <caret line="496" column="20" selection-start-line="496" selection-start-column="13" selection-end-line="496" selection-end-column="20" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -29,8 +66,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>+</find>
-      <find>titleDegree</find>
       <find>IC-centroidDegree</find>
       <find>oncli</find>
       <find>_onContextMenu</find>
@@ -45,7 +80,6 @@
       <find>131</find>
       <find>sort</find>
       <find>_sort</find>
-      <find>console</find>
       <find>carro</find>
       <find>wagner</find>
       <find>117</find>
@@ -59,6 +93,9 @@
       <find>_dataVis</find>
       <find>@CHA</find>
       <find>redraw</find>
+      <find>console</find>
+      <find>33</find>
+      <find>&quot;src&quot;:33</find>
     </findStrings>
     <replaceStrings>
       <replace>_fishEyeArea</replace>
@@ -108,19 +145,20 @@
         <option value="$PROJECT_DIR$/papersList/css/papersList.css" />
         <option value="$PROJECT_DIR$/json/data_papers.json" />
         <option value="$PROJECT_DIR$/iris/js/irisChart.js" />
-        <option value="$PROJECT_DIR$/lib/libCava.js" />
         <option value="$PROJECT_DIR$/papersList/css/papersListChart.css" />
         <option value="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphPanel.css" />
         <option value="$PROJECT_DIR$/matrixGlyph/css/matrixGlyphChart.css" />
         <option value="$PROJECT_DIR$/MGExplorer/css/MGExplorer.css" />
         <option value="$PROJECT_DIR$/iris/css/irisChart.css" />
         <option value="$PROJECT_DIR$/dashboard/css/view.css" />
-        <option value="$PROJECT_DIR$/papersList/js/papersListChart.js" />
         <option value="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" />
-        <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
         <option value="$PROJECT_DIR$/dashboard/css/dashboard.css" />
         <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
         <option value="$PROJECT_DIR$/json/dataUFRGS-2004.json" />
+        <option value="$PROJECT_DIR$/papersList/js/papersListChart.js" />
+        <option value="$PROJECT_DIR$/json/data_HALOpen.json" />
+        <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
+        <option value="$PROJECT_DIR$/lib/libCava.js" />
       </list>
     </option>
   </component>
@@ -155,19 +193,23 @@
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
               <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="css" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
-              <item name="dashboard" type="462c0819:PsiDirectoryNode" />
-              <item name="js" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
-              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
               <item name="json" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
+              <item name="lib" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
+              <item name="MGExplorer" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
+              <item name="MG-Explorer" type="462c0819:PsiDirectoryNode" />
+              <item name="MGExplorer" type="462c0819:PsiDirectoryNode" />
+              <item name="js" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="MG-Explorer" type="b2602c69:ProjectViewProjectNode" />
@@ -262,7 +304,7 @@
       <workItem from="1564039800248" duration="5284000" />
       <workItem from="1564047671248" duration="8322000" />
       <workItem from="1564126849121" duration="18941000" />
-      <workItem from="1564386246040" duration="1700000" />
+      <workItem from="1564386246040" duration="3129000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -439,17 +481,25 @@
       <option name="project" value="LOCAL" />
       <updated>1564387237160</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="Suppression de fausses données ajoutées à la main pour les premiers tests de la technique">
+      <created>1564387986665</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1564387986665</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="266761000" />
+    <option name="totallyTimeSpent" value="268190000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
+    <editor active="true" />
     <layout>
       <window_info id="Favorites" order="0" side_tool="true" />
-      <window_info content_ui="combo" id="Project" order="1" visible="true" weight="0.22075348" />
+      <window_info active="true" content_ui="combo" id="Project" order="1" visible="true" weight="0.22075348" />
       <window_info id="Structure" order="2" side_tool="true" weight="0.25" />
       <window_info anchor="bottom" id="Terminal" order="0" weight="0.3286119" />
       <window_info anchor="bottom" id="Event Log" order="1" side_tool="true" weight="0.3286119" />
@@ -471,7 +521,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)" />
     <MESSAGE value="Visualisation des différents types de documents sur le graph IRIS, reste à gérer le déplacement" />
     <MESSAGE value="Gestion du déplacement, les barres suivent le mouvement correctement" />
     <MESSAGE value="Visibilité de tous les types avec possibilité de choisir par quel type commencer + changement d'échelle pour plus de cohérence (pas que sur le premier type de doc mais sur tous les types)" />
@@ -496,7 +545,8 @@
     <MESSAGE value="Ajustement de l'affichage des noms dans iris et clustervis pour coller avec les nouvelles données + passage en utf-8" />
     <MESSAGE value="Ajout de la nouvelle technique de visualisation Papers' List, accessible depuis nodeEdge sur un node (fonctionnel mais pas fini), depuis Iris sur une barre entre deux auteurs (non fonctionnel) et depuis un lien dans nodeEdge (non fonctionnel)&#10;&#10;La technique permet donc pour l'instant de visualiser les papiers publiés par un auteur, avec affichage du titre, de la catégorie et des co-auteurs" />
     <MESSAGE value="Réglage pour que la nouvelle technique ne soit accessible que depuis la sélection de la base Open HAL puisque les autres n'ont pas encore les données nécessaires + réglage de la taille du menu en conséquence" />
-    <option name="LAST_COMMIT_MESSAGE" value="Réglage pour que la nouvelle technique ne soit accessible que depuis la sélection de la base Open HAL puisque les autres n'ont pas encore les données nécessaires + réglage de la taille du menu en conséquence" />
+    <MESSAGE value="Suppression de fausses données ajoutées à la main pour les premiers tests de la technique" />
+    <option name="LAST_COMMIT_MESSAGE" value="Suppression de fausses données ajoutées à la main pour les premiers tests de la technique" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/matrixGlyph/js/matrixGlyphChart.js">
@@ -700,24 +750,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/lib/libCava.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1003">
-          <caret line="1191" column="25" lean-forward="true" selection-start-line="1191" selection-start-column="25" selection-end-line="1191" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/iris/js/irisChart.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="527">
           <caret line="199" column="64" lean-forward="true" selection-start-line="199" selection-start-column="64" selection-end-line="199" selection-end-column="64" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/json/data_HALOpen.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state>
-          <caret line="318" column="67" lean-forward="true" selection-start-line="318" selection-start-column="67" selection-end-line="318" selection-end-column="67" />
         </state>
       </provider>
     </entry>
@@ -742,13 +778,6 @@
           <folding>
             <element signature="n#style#0;n#div#0;n#body#0;n#html#0;n#!!top" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="304">
-          <caret line="133" column="78" selection-start-line="133" selection-start-column="16" selection-end-line="133" selection-end-column="78" />
         </state>
       </provider>
     </entry>
@@ -783,10 +812,31 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="168">
+          <caret line="619" column="22" lean-forward="true" selection-start-line="619" selection-start-column="22" selection-end-line="619" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/json/data_HALOpen.json">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="378">
+          <caret line="496" column="20" selection-start-line="496" selection-start-column="13" selection-end-line="496" selection-end-column="20" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/papersList/js/papersListChart.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-3864">
-          <caret line="32" column="78" lean-forward="true" selection-start-line="32" selection-start-column="78" selection-end-line="32" selection-end-column="78" />
+        <state relative-caret-position="-153">
+          <caret line="79" column="39" lean-forward="true" selection-start-line="79" selection-start-column="39" selection-end-line="79" selection-end-column="39" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/lib/libCava.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="1168" column="43" selection-start-line="1168" selection-start-column="43" selection-end-line="1168" selection-end-column="43" />
         </state>
       </provider>
     </entry>

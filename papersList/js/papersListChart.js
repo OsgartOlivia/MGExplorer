@@ -77,7 +77,6 @@ define(["model","libCava"], function (Model,LibCava) {
         //---------------------
         model.when(["data","widthChart","heightChart","redraw"],
             function _createPapersList () {
-                console.log(model.data);
                 if (_grpPapers != null)
                     _grpPapers.remove();
 
