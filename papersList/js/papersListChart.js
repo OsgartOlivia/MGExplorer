@@ -11,7 +11,7 @@ define(["model","libCava"], function (Model,LibCava) {
             _sortByText = true,
             _grpPapersList = null,   // Group representing IRIS
             _grpPapers = null,       // Selection that contains all groups of bars
-            _maxLenghtTitleIndex = 6.8,
+            _maxLenghtTitleIndex = 7,
             _indexFirstData = 0,   // Index in the "dataVis" vector where the first element of the data vector is located
             // Used only when the amount of elements in this.data is less than or equal to "dataVis"
 
@@ -52,11 +52,12 @@ define(["model","libCava"], function (Model,LibCava) {
 
 
         // ---------------- Initialization Actions
+        d3.select("#" + idDiv).attr("class", "PapersListView");
+
         let _svg = d3.select("#"+idDiv).append("svg"),  // Create dimensionless svg
             _sort  = lcv.sortIris(),                     // Creates sorting function
             _grpChart = _svg.append("g");
 
-        _svg.attr("class", "PapersListView");
         _grpPapersList = _grpChart.append("g").attr("class","PapersListChart");
 
         //===================================================

@@ -1,12 +1,12 @@
 @CHARSET "UTF-8";
 
-.PapersListChart {
-    overflow: scroll;
+.PapersListView {
+    /*overflow: scroll;*/
 }
 
 .PL-title {
     fill: black;
-    font-family: Arial;
+    font-family: Arial, serif;
     font-weight:bold;
     cursor:pointer;
 }

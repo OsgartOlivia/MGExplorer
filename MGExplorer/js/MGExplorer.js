@@ -633,11 +633,10 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _chart.chart.data(data);
 
                 _historyTree.chart.data(_dashboard.getTree());
-                //_chart.chart.panel().includeSelectAttr(_vAttrEdgesSelecionaveis);
                 _chart.view.show(true);
             } else {
                 data = _subGraph.duoPapersList(node,secondNode,_data);
-
+                console.log(data);
                 posicaoPai = _dashboard.getChart(parentId).view.getPosition();
 
                 _chart.view = _dashboard
@@ -650,7 +649,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 if (secondNode===undefined) {
                     title = node.source.labels[ATN_ShortName] + "/" + node.target.labels[ATN_ShortName] + " co-authored papers";
                 } else {
-                    title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + " co-authored papers";
+                    let nbPapers = data.root.data.documents.length;
+                    title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
                 }
 
                 _chart.view.setTitle(title);
@@ -659,10 +659,9 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
 
                 _chart.chart.indexAttrBar(ATE_QtPublicacoes);
-                //_chart.chart.data(data);
+                _chart.chart.data(data);
 
                 _historyTree.chart.data(_dashboard.getTree());
-                //_chart.chart.panel().includeSelectAttr(_vAttrEdgesSelecionaveis);
                 _chart.view.show(true);
             }
         }
