@@ -178,7 +178,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                     break;
                 case 7: _loadDataProcess("json/dataUFRGS-2004-2011-CG.json",7,idChart);
                     break;
-                case 8: _loadDataProcess("json/data_papers.json", 8, idChart);
+                case 8: _loadDataProcess("json/data_HALOpen.json", 8, idChart);
             }
         }
 //------ Loads a new dataset

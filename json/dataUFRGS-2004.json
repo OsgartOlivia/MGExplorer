@@ -798,13 +798,7 @@
                           "Area N.I.","Sistemas de Computacao","Sistemas de Informacao","Inteligencia Artificial","Eng. da Computacao",
                           "Informatica Te�rica"],
            "dataEdges": [
-                  { "src":131, "tgt":133, "labels":null, "values":[1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0],
-                    "papers":  [
-                      { "type":  "publication", "year":  "2004", "title": "TitleP", "authors": [131,133], "link": "www.smg.com" },
-                      { "type":  "book", "year":  "2004", "title": "TitleB", "authors": [131,133], "link": "www.ssss.com" },
-                      { "type":  "proceeding", "year":  "2004", "title": "TitlePP", "authors": [131,133], "link": "www.qqqq.com" }
-                    ],
-                    "qtPapers":  3},
+                  { "src":131, "tgt":133, "labels":null, "values":[1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0] },
                   { "src":302, "tgt":317, "labels":null, "values":[5,2,0,3,5,5,0,0,0,0,5,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,3,2,0,0,0,0,0,0,0,0,0,5] },
                   { "src":207, "tgt":279, "labels":null, "values":[1,0,0,1,1,0,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0] },
                   { "src":135, "tgt":140, "labels":null, "values":[1,0,0,1,1,1,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,0,0,1,0,0,0,0,0] },
