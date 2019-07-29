@@ -612,54 +612,36 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             let data,posicaoPai,title;
             if (!isFromEdge) {
                 data = _subGraph.allPapersList(node, _data);
-
-                posicaoPai = _dashboard.getChart(parentId).view.getPosition();
-
-                _chart.view = _dashboard
-                    .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
-                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
-                _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
-
-                _chart.view.conectChart(_chart.chart,PapersListPanel);
-                let nbPapers = data.root.data.documents.length ;
-                title = node.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
-
-                _chart.view.setTitle(title);
-
-                _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
-                    x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
-
-                _chart.chart.indexAttrBar(ATE_QtPublicacoes);
-                _chart.chart.data(data);
-
-                _historyTree.chart.data(_dashboard.getTree());
-                _chart.view.show(true);
             } else {
-                data = _subGraph.duoPapersList(node,secondNode,_data);
-
-                posicaoPai = _dashboard.getChart(parentId).view.getPosition();
-
-                _chart.view = _dashboard
-                    .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
-                    .newView(posicaoPai.x + 20, posicaoPai.y + 20);
-                _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
-
-                _chart.view.conectChart(_chart.chart,PapersListPanel);
-
-                let nbPapers = data.root.data.documents.length;
-                title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
-
-                _chart.view.setTitle(title);
-
-                _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
-                    x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
-
-                _chart.chart.indexAttrBar(ATE_QtPublicacoes);
-                _chart.chart.data(data);
-
-                _historyTree.chart.data(_dashboard.getTree());
-                _chart.view.show(true);
+                data = _subGraph.duoPapersList(node, secondNode, _data);
             }
+
+            posicaoPai = _dashboard.getChart(parentId).view.getPosition();
+
+            _chart.view = _dashboard
+                .configureView({barTitle:true, btTool:true, btClose:true, draggable:true, resizable:true,aspectRatio:true, visible:false})
+                .newView(posicaoPai.x + 20, posicaoPai.y + 20);
+            _chart.chart = PapersListChart(_chart.view.idChart()).box ( {width:MG_WidthChart, height:MG_HeightChart});
+
+            _chart.view.conectChart(_chart.chart,PapersListPanel);
+
+            let nbPapers = data.root.data.documents.length ;
+
+            if (!isFromEdge) {
+                title = node.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
+            } else {
+                title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
+            }
+            _chart.view.setTitle(title);
+
+            _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
+                x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
+
+            _chart.chart.indexAttrBar(ATE_QtPublicacoes);
+            _chart.chart.data(data);
+
+            _historyTree.chart.data(_dashboard.getTree());
+            _chart.view.show(true);
         }
     }
 );
