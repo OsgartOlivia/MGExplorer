@@ -375,8 +375,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         }
 
 //---------------
-        function _fActionEdgeNE_PL(node, parentId) {
-            _showPapersList(node,parentId, true);
+        function _fActionEdgeNE_PL(edge, parentId) {
+            _showPapersList(edge.source,parentId,true,edge.target);
         }
 
 
@@ -636,7 +636,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 _chart.view.show(true);
             } else {
                 data = _subGraph.duoPapersList(node,secondNode,_data);
-                console.log(data);
+
                 posicaoPai = _dashboard.getChart(parentId).view.getPosition();
 
                 _chart.view = _dashboard
@@ -646,12 +646,8 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
                 _chart.view.conectChart(_chart.chart,PapersListPanel);
 
-                if (secondNode===undefined) {
-                    title = node.source.labels[ATN_ShortName] + "/" + node.target.labels[ATN_ShortName] + " co-authored papers";
-                } else {
-                    let nbPapers = data.root.data.documents.length;
-                    title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
-                }
+                let nbPapers = data.root.data.documents.length;
+                title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
 
                 _chart.view.setTitle(title);
 
