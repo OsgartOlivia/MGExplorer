@@ -389,7 +389,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
 //---------------	
         function _fActionNodeCV_IC(node, parentId) {
-            _showIris(node, parentId, undefined, true);
+            _showIris(node, parentId);
         }
 
 //---------------
@@ -514,7 +514,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
         }
 //---------------------------------	
-        function _showIris(node, parentId, parent, isFromCV) {
+        function _showIris(node, parentId, parent) {
             let data,posicaoPai,title;
 
             if (node.cluster) {
@@ -543,11 +543,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
             _chart.view.conectChart(_chart.chart,IrisPanel);
 
-            if (isFromCV===undefined) {
-                title = node.labels[ATN_ShortName] + " and " + data.children.data.length + " coauthors";
-            } else {
-                title = node.labels[ATN_ShortName] + " and coauthors from previous cluster";
-            }
+            title = node.labels[ATN_ShortName] + " and " + data.children.data.length + " coauthors";
 
             _chart.view.setTitle(title);
 

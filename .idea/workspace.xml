@@ -4,6 +4,7 @@
     <list default="true" id="6e513296-c241-4441-8689-2f41690fe2b4" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" beforeDir="false" afterPath="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/dashboard/js/dashboard.js" beforeDir="false" afterPath="$PROJECT_DIR$/dashboard/js/dashboard.js" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/.tmp/" />
     <ignored path="$PROJECT_DIR$/temp/" />
@@ -19,8 +20,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="202">
-              <caret line="639" column="16" selection-start-line="639" selection-start-column="16" selection-end-line="639" selection-end-column="16" />
+            <state relative-caret-position="236">
+              <caret line="391" column="36" selection-start-line="391" selection-start-column="36" selection-end-line="391" selection-end-column="36" />
             </state>
           </provider>
         </entry>
@@ -28,8 +29,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1208">
-              <caret line="279" column="40" selection-start-line="279" selection-start-column="40" selection-end-line="279" selection-end-column="40" />
+            <state relative-caret-position="136">
+              <caret line="117" column="44" lean-forward="true" selection-start-line="117" selection-start-column="44" selection-end-line="117" selection-end-column="44" />
             </state>
           </provider>
         </entry>
@@ -159,12 +160,12 @@
         <option value="$PROJECT_DIR$/dashboard/css/view.css" />
         <option value="$PROJECT_DIR$/clusterVis/js/clusterVisChart.js" />
         <option value="$PROJECT_DIR$/dashboard/css/dashboard.css" />
-        <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
         <option value="$PROJECT_DIR$/json/dataUFRGS-2004.json" />
         <option value="$PROJECT_DIR$/papersList/js/papersListChart.js" />
         <option value="$PROJECT_DIR$/json/data_HALOpen.json" />
         <option value="$PROJECT_DIR$/papersList/css/papersListChart.css" />
         <option value="$PROJECT_DIR$/lib/libCava.js" />
+        <option value="$PROJECT_DIR$/dashboard/js/dashboard.js" />
         <option value="$PROJECT_DIR$/MGExplorer/js/MGExplorer.js" />
       </list>
     </option>
@@ -308,7 +309,7 @@
       <workItem from="1564039800248" duration="5284000" />
       <workItem from="1564047671248" duration="8322000" />
       <workItem from="1564126849121" duration="18941000" />
-      <workItem from="1564386246040" duration="7321000" />
+      <workItem from="1564386246040" duration="9180000" />
     </task>
     <task id="LOCAL-00001" summary="Commentaires passés en anglais, début d'ajout des quatres types de documents dans le chart Iris (en recherche encore)">
       <created>1561387930978</created>
@@ -506,11 +507,25 @@
       <option name="project" value="LOCAL" />
       <updated>1564393370304</updated>
     </task>
-    <option name="localTasksCounter" value="29" />
+    <task id="LOCAL-00029" summary="Visualisation de la collaboration de deux auteurs (avec la nouvelle technique de visu) depuis NodeEdge">
+      <created>1564393687596</created>
+      <option name="number" value="00029" />
+      <option name="presentableId" value="LOCAL-00029" />
+      <option name="project" value="LOCAL" />
+      <updated>1564393687596</updated>
+    </task>
+    <task id="LOCAL-00030" summary="Suppression de duplication de code">
+      <created>1564393833758</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1564393833758</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="272382000" />
+    <option name="totallyTimeSpent" value="274241000" />
   </component>
   <component name="ToolWindowManager">
     <frame x="-7" y="-7" width="1550" height="838" extended-state="6" />
@@ -539,8 +554,6 @@
     <option name="version" value="1" />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Visibilité de tous les types avec possibilité de choisir par quel type commencer + changement d'échelle pour plus de cohérence (pas que sur le premier type de doc mais sur tous les types)" />
-    <MESSAGE value="Suppression des warnings + traduction des commentaires en anglais" />
     <MESSAGE value="Nom d'un co-auteur cliquable pour ouvrir de nouveau graphs + ajout de l'indicateur du nombre d'auteurs non visible" />
     <MESSAGE value="Ouverture d'un iris à partir d'un iris dans la meme fenetre au lieu d'en ouvrir une nouvelle" />
     <MESSAGE value="Suppression de warning + commentaires en anglais" />
@@ -564,7 +577,9 @@
     <MESSAGE value="Suppression de fausses données ajoutées à la main pour les premiers tests de la technique" />
     <MESSAGE value="Correction de l'affichage du nombre de documents rédigés par un auteur et de la requete vers le fichier json contenant les données qui récupérait des documents non rédigés par l'auteur sélectionné mais par un co-auteur" />
     <MESSAGE value="Visualisation de la collaboration de deux auteurs (avec la nouvelle technique de visu) depuis Iris" />
-    <option name="LAST_COMMIT_MESSAGE" value="Visualisation de la collaboration de deux auteurs (avec la nouvelle technique de visu) depuis Iris" />
+    <MESSAGE value="Visualisation de la collaboration de deux auteurs (avec la nouvelle technique de visu) depuis NodeEdge" />
+    <MESSAGE value="Suppression de duplication de code" />
+    <option name="LAST_COMMIT_MESSAGE" value="Suppression de duplication de code" />
   </component>
   <component name="editorHistoryManager">
     <entry file="file://$PROJECT_DIR$/matrixGlyph/js/matrixGlyphChart.js">
@@ -837,13 +852,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1208">
-          <caret line="279" column="40" selection-start-line="279" selection-start-column="40" selection-end-line="279" selection-end-column="40" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/lib/libCava.js">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="403">
@@ -851,10 +859,17 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dashboard/js/dashboard.js">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="136">
+          <caret line="117" column="44" lean-forward="true" selection-start-line="117" selection-start-column="44" selection-end-line="117" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/MGExplorer/js/MGExplorer.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="202">
-          <caret line="639" column="16" selection-start-line="639" selection-start-column="16" selection-end-line="639" selection-end-column="16" />
+        <state relative-caret-position="236">
+          <caret line="391" column="36" selection-start-line="391" selection-start-column="36" selection-end-line="391" selection-end-column="36" />
         </state>
       </provider>
     </entry>

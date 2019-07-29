@@ -114,10 +114,11 @@ define( ["view"], function (View) {
                 d3.select(".DS-popup").remove();
             } else {
                 clickedElem = d3.select(d3.event.target);
-                if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge") ||
+                if (((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge"))
+                    && _selectedQuery !== 8) ||
                     clickedElem.classed("CV-node") ||
                     clickedElem.classed("IC-node") ||
-                    clickedElem.classed("GM-node")) && _selectedQuery!==8) {
+                    clickedElem.classed("GM-node")) {
                     d3.event.preventDefault();
 
                     viewDiv = _findParentDiv(clickedElem);
