@@ -1,7 +1,7 @@
 @CHARSET "UTF-8";
 
-.PapersListView {
-    /*overflow: scroll;*/
+.container {
+    overflow: auto;
 }
 
 .PL-title {

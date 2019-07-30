@@ -11,7 +11,9 @@ define(["model","libCava"], function (Model,LibCava) {
             _sortByText = true,
             _grpPapersList = null,   // Group representing IRIS
             _grpPapers = null,       // Selection that contains all groups of bars
+            _names = null,          // Selection that contains the names of the members of a cluster
             _maxLenghtTitleIndex = 7,
+            _maxNamesLenght = 87,
             _indexFirstData = 0,   // Index in the "dataVis" vector where the first element of the data vector is located
             // Used only when the amount of elements in this.data is less than or equal to "dataVis"
 
@@ -52,12 +54,12 @@ define(["model","libCava"], function (Model,LibCava) {
 
 
         // ---------------- Initialization Actions
-        d3.select("#" + idDiv).attr("class", "PapersListView");
-
-        let _svg = d3.select("#"+idDiv).append("svg"),  // Create dimensionless svg
+        let _container = d3.select("#"+idDiv).append("div").attr("class", "container");
+        let _svg = _container.append("svg"),  // Create dimensionless svg
             _sort  = lcv.sortIris(),                     // Creates sorting function
             _grpChart = _svg.append("g");
 
+        _svg.attr("class", "PaperListView");
         _grpPapersList = _grpChart.append("g").attr("class","PapersListChart");
 
         //===================================================
@@ -78,8 +80,76 @@ define(["model","libCava"], function (Model,LibCava) {
         //---------------------
         model.when(["data","widthChart","heightChart","redraw"],
             function _createPapersList () {
-                if (_grpPapers != null)
+                if (_grpPapers !== null)
                     _grpPapers.remove();
+
+                let endOfNames = 0;
+
+                if (model.data.children.cluster===true) {
+                    if (_names !== null)
+                        _names.remove();
+
+                    let names = " ";
+                    for (let i = 0; i < model.data.children.data.length; i++) {
+                        names += model.data.children.data[i].labels[0];
+                        if (i !== model.data.children.data.length-1) {
+                            names += ", ";
+                        }
+                    }
+
+                    let tempNamesTab;
+                    tempNamesTab = names.split(",");
+
+                    let finalNamesTab = [];
+                    let j = 0;
+                    let pas = Math.round(model.widthChart/_maxNamesLenght);
+
+                    for (let i = 0; i < tempNamesTab.length; i+=pas) {
+                        finalNamesTab[j] = tempNamesTab[i] + ", ";
+                        for (let k = 1; k < pas; k++) {
+                            if (i+k < tempNamesTab.length  && i+k !== tempNamesTab.length-1) {
+                                finalNamesTab[j] += tempNamesTab[i+k] + ", ";
+                            } else if (i+k < tempNamesTab.length  && i+k === tempNamesTab.length-1) {
+                                finalNamesTab[j] += tempNamesTab[i+k];
+                            }
+                        }
+                        j++;
+                    }
+
+                    _names = _grpPapersList.selectAll(".PL-grpNames")
+                        .data(finalNamesTab)
+                        .enter()
+                        .append("g")
+                        .attr("class", "PL-names");
+
+
+                    _names.append("text")
+                        .attr("class", "PL-names")
+                        .text("Cluster : ")
+                        .attr("x", 10)
+                        .attr("y", 12)
+                        .style("font-size", "12px")
+                        .append("title")
+                        .text(names);
+
+                    let y = 0;
+                    let i = 0;
+
+                    _names.append("text")
+                        .attr("class", "PL-names")
+                        .text(function () {
+                            let result = finalNamesTab[i];
+                            i++;
+                            return result;
+                        })
+                        .attr("x", 55)
+                        .attr("y", function () { return y += 12})
+                        .style("font-size", "12px")
+                        .append("title")
+                        .text(names);
+
+                    endOfNames = y-15;
+                }
 
                 _grpPapers =  _grpPapersList.selectAll(".PL-grpPapers")
                     .data(model.data.root.data.documents)
@@ -87,7 +157,7 @@ define(["model","libCava"], function (Model,LibCava) {
                     .append("g")
                     .attr("class", "PL-grpPapers");
 
-                let x = 5, y = -20;
+                let x = 5, y = (model.data.children.cluster===true?endOfNames:-15);
                 _grpPapers.append("rect")
                     .attr("class", "PL-type")
                     .attr("x", x)
@@ -101,9 +171,12 @@ define(["model","libCava"], function (Model,LibCava) {
                     .text ( function (d) { return d.type });
 
                 x = 25;
-                y = -10;
+                y = (model.data.children.cluster===true?endOfNames+5:-9);
                 let maxLenghtTitle = model.widthChart/_maxLenghtTitleIndex;
-                _grpPapers.append("text")
+
+                _grpPapers.append("a")
+                    .attr("xlink:href", function (d) { return d.link })
+                    .append("text")
                     .attr("class", "PL-title")
                     .text(function (d) {
                         if (d.title.length <= maxLenghtTitle)
@@ -117,7 +190,7 @@ define(["model","libCava"], function (Model,LibCava) {
                     .text(function (d) {return d.title});
 
                 x = 25;
-                y = 5;
+                y = (model.data.children.cluster===true?endOfNames+17:5);
 
                 _grpPapers.append("text")
                     .attr("class", "PL-authors")
@@ -197,9 +270,21 @@ define(["model","libCava"], function (Model,LibCava) {
             for (let i = 0; i < model.data.children.data.length; i++) {
                 if (model.data.children.data[i].id === id) {
                     return model.data.children.data[i].labels[0];
+                } else if (model.data.children.data[i].idOrig === id) {
+                    return model.data.children.data[i].labels[0];
                 }
             }
-            return "Not known";
+            if (model.data.children.others.length===0) {
+                return "Not known";
+            } else {
+                for (let j = 0; j < model.data.children.others.length; j++) {
+                    if (model.data.children.others[j].id === id) {
+                        return model.data.children.others[j].labels[0];
+                    } else if (model.data.children.others[j].idOrig === id) {
+                        return model.data.children.others[j].labels[0];
+                    }
+                }
+            }
         }
 
 

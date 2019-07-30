@@ -286,16 +286,19 @@ define(["model","libCava"], function (Model,LibCava) {
 
             let index = _findMaxValue();
             let x = _ringScale(_vRings[_vRings.length-1].pX) + _vRings[index].barCircleScale(_vRings[index].maxValue);
-            let y = -(_barsArea.widthBar/2)*2.5;
+
             _grpBars.selectAll("text.CV-names")
                 .attr("x", x)
                 .attr("y", 0)
                 .attr("text-anchor", "start")
-                .text(function (d) {
-                    if (d.highLight === true) {
-                        let names = d.labels[0].split(",");
+                .text(function (n) {
+                    if (n.highLight === true) {
+                        if (_isTheFirstOccurence(n.id, d.cluster)) {
+                            d.cluster.push(n);
+                        }
+                        let names = n.labels[0].split(",");
                         if (names.length === 1) {
-                            names = d.labels[0].split(".");
+                            names = n.labels[0].split(".");
                             if (names.length === 2) {
                                 return names[1];
                             } else {
@@ -309,6 +312,17 @@ define(["model","libCava"], function (Model,LibCava) {
                 .style("font-size", "10px" )
                 .style("font-family", "Arial")
                 .style("color", "black");
+
+            function _isTheFirstOccurence(id, tab) {
+                if (tab.length===0) return true;
+                else {
+                    for (let i=0; i < tab.length; i++) {
+                        if (tab[i].id === id)
+                            return false;
+                    }
+                    return true;
+                }
+            }
 
             function _findMaxValue() {
                 let i, max = 0;

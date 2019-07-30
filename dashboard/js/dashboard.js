@@ -21,7 +21,8 @@ define( ["view"], function (View) {
             DS_GlyphMatrix = 3,
             DS_Iris_Solo = 4,
             DS_Papers_List = 5,
-            DS_NodeEdge_HAL = 6;
+            DS_NodeEdge_HAL = 6,
+            DS_ClusterVis_HAL = 7;
 
         let _selectedQuery;
 
@@ -114,60 +115,69 @@ define( ["view"], function (View) {
                 d3.select(".DS-popup").remove();
             } else {
                 clickedElem = d3.select(d3.event.target);
-                if (((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge"))
-                    && _selectedQuery !== 8) ||
-                    clickedElem.classed("CV-node") ||
-                    clickedElem.classed("IC-node") ||
-                    clickedElem.classed("GM-node")) {
+
+                if (_selectedQuery !== 8) {
+                    if (clickedElem.classed("NE-node")
+                        || clickedElem.classed("NE-edge")
+                        || clickedElem.classed("CV-node")
+                        || clickedElem.classed("IC-node")
+                        || clickedElem.classed("GM-node")) {
+
+                        d3.event.preventDefault();
+
+                        viewDiv = _findParentDiv(clickedElem);
+                        mousePos = d3.mouse(viewDiv.node());
+
+                        popupDiv = viewDiv.append("div")
+                            .attr("class", "DS-popup medium-size")
+                            .style("left", mousePos[0] + "px")
+                            .style("top", mousePos[1] + "px");
+                        _contextMenu.showing = true;
+
+                        if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) && _selectedQuery !== 8)
+                            _execCtxMenuNodeEdge(popupDiv,clickedElem, viewDiv.node().id);
+                        else
+                        if (clickedElem.classed("CV-node"))
+                            _execCtxMenuClusterVis(popupDiv,clickedElem, viewDiv.node().id);
+                        else
+                        if ( clickedElem.classed("IC-node"))
+                            _execCtxMenuIris(popupDiv,clickedElem, viewDiv.node().id);
+                        else
+                        if ( clickedElem.classed("GM-node"))
+                            _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
+                    }
+                } else {
                     d3.event.preventDefault();
 
                     viewDiv = _findParentDiv(clickedElem);
                     mousePos = d3.mouse(viewDiv.node());
 
-                    popupDiv = viewDiv.append("div")
-                        .attr("class", "DS-popup medium-size")
-                        .style("left", mousePos[0] + "px")
-                        .style("top", mousePos[1] + "px");
-                    _contextMenu.showing = true;
-                    if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) && _selectedQuery !== 8)
-                        _execCtxMenuNodeEdge(popupDiv,clickedElem, viewDiv.node().id);
-                    else
-                    if (clickedElem.classed("CV-node"))
-                        _execCtxMenuClusterVis(popupDiv,clickedElem, viewDiv.node().id);
-                    else
-                    if ( clickedElem.classed("IC-node"))
-                        _execCtxMenuIris(popupDiv,clickedElem, viewDiv.node().id);
-                    else
-                    if ( clickedElem.classed("GM-node"))
-                        _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
+                    if (clickedElem.classed("IC-bars")) {
+                        popupDiv = viewDiv.append("div")
+                            .attr("class", "DS-popup small-size")
+                            .style("left", mousePos[0] + "px")
+                            .style("top", mousePos[1] + "px");
+                        _contextMenu.showing = true;
+
+                        _execCtxMenuIrisBars(popupDiv,clickedElem, viewDiv.node().id);
+                    } else if (clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) {
+                        popupDiv = viewDiv.append("div")
+                            .attr("class", "DS-popup big-size")
+                            .style("left", mousePos[0] + "px")
+                            .style("top", mousePos[1] + "px");
+                        _contextMenu.showing = true;
+
+                        _execCtxMenuNodeEdgeHAL(popupDiv,clickedElem, viewDiv.node().id);
+                    } else if (clickedElem.classed("CV-node")) {
+                        popupDiv = viewDiv.append("div")
+                            .attr("class", "DS-popup big-size")
+                            .style("left", mousePos[0] + "px")
+                            .style("top", mousePos[1] + "px");
+                        _contextMenu.showing = true;
+
+                        _execCtxMenuClusterVisHAL(popupDiv, clickedElem, viewDiv.node().id);
+                    }
                 }
-
-                if (clickedElem.classed("IC-bars") && _selectedQuery === 8) {
-                    d3.event.preventDefault();
-
-                    viewDiv = _findParentDiv(clickedElem);
-                    mousePos = d3.mouse(viewDiv.node());
-
-                    popupDiv = viewDiv.append("div")
-                        .attr("class", "DS-popup small-size")
-                        .style("left", mousePos[0] + "px")
-                        .style("top", mousePos[1] + "px");
-                    _contextMenu.showing = true;
-                    _execCtxMenuIrisBars(popupDiv,clickedElem, viewDiv.node().id);
-                } else if ((clickedElem.classed("NE-node") || clickedElem.classed("NE-edge")) && _selectedQuery===8) {
-                    d3.event.preventDefault();
-
-                    viewDiv = _findParentDiv(clickedElem);
-                    mousePos = d3.mouse(viewDiv.node());
-
-                    popupDiv = viewDiv.append("div")
-                        .attr("class", "DS-popup big-size")
-                        .style("left", mousePos[0] + "px")
-                        .style("top", mousePos[1] + "px");
-                    _contextMenu.showing = true;
-                    _execCtxMenuNodeEdgeHAL(popupDiv,clickedElem, viewDiv.node().id);
-                }
-
             }
         }
 
@@ -229,6 +239,21 @@ define( ["view"], function (View) {
         function _execCtxMenuClusterVis(popupDiv,clickedElem, parentId) {
             popupDiv.selectAll("div")
                 .data(_contextMenu.vItens[DS_ClusterVis])
+                .enter()
+                .append("div")
+                .on("click", function(d) {
+                    _contextMenu.showing = false;
+                    d3.select(".DS-popup").remove();
+                    d.fActionNode(clickedElem.datum(),parentId);
+                })
+                .append("label")
+                .text(function(d) { return d.label;} );
+        }
+
+//------------
+        function _execCtxMenuClusterVisHAL(popupDiv,clickedElem, parentId) {
+            popupDiv.selectAll("div")
+                .data(_contextMenu.vItens[DS_ClusterVis_HAL])
                 .enter()
                 .append("div")
                 .on("click", function(d) {

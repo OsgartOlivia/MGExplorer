@@ -37,6 +37,7 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             TC_Iris_Solo = 4,
             TC_PapersList_Solo = 5,
             TC_NodeEdge_HAL = 6,
+            TC_ClusterVis_HAL = 7,
 
             MG_WidthChart = 350,
             MG_HeightChart = 350;
@@ -305,7 +306,15 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
                 {label:"Iris"		,	fActionNode:_fActionNodeNE_IC, fActionEdge:_fActionNotApplicable},
                 {label:"GlyphMatrix",  	fActionNode:_fActionNodeNE_GM, fActionEdge:_fActionEdgeNE_GM},
                 {label:"Papers' List", fActionNode:_fActionNodeNE_PL, fActionEdge:_fActionEdgeNE_PL}
-            ])
+            ]);
+
+            _dashboard.setItensContextMenu(TC_ClusterVis_HAL, [
+                {label:"NodeEdge"	,  	fActionNode:_fActionNotImplemented},
+                {label:"ClusterVis"	,  	fActionNode:_fActionNodeCV_CV},
+                {label:"Iris"		,	fActionNode:_fActionNodeCV_IC},
+                {label:"GlyphMatrix",  	fActionNode:_fActionNodeCV_GM},
+                {label:"Papers' List",  fActionNode:_fActionNodeCV_PL}
+            ]);
         }
 //=================== Context menu actions for nodes
 //=======================
@@ -395,6 +404,11 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 //---------------
         function _fActionNodeCV_GM(node, parentId) {
             _showGlyphMatrix(node, parentId);
+        }
+
+//---------------
+        function _fActionNodeCV_PL(node, parentId) {
+            _showPapersList(node, parentId, false, undefined, true);
         }
 
 //=======================
@@ -604,12 +618,21 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             }, 100);
         }
 
-        function _showPapersList(node, parentId, isFromEdge, secondNode) {
+        function _showPapersList(node, parentId, isFromEdge, secondNode, isFromCluster) {
             let data,posicaoPai,title;
-            if (!isFromEdge) {
+
+            if (isFromCluster===undefined)
+                isFromCluster=false;
+
+            if (isFromEdge===undefined)
+                isFromEdge=false;
+
+            if (!isFromEdge && !isFromCluster) {
                 data = _subGraph.allPapersList(node, _data);
-            } else {
+            } else if (isFromEdge) {
                 data = _subGraph.duoPapersList(node, secondNode, _data);
+            } else if (isFromCluster) {
+                data = _subGraph.clusterPapersList(node, _data);
             }
 
             posicaoPai = _dashboard.getChart(parentId).view.getPosition();
@@ -623,10 +646,12 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
 
             let nbPapers = data.root.data.documents.length ;
 
-            if (!isFromEdge) {
+            if (!isFromEdge && !isFromCluster) {
                 title = node.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
-            } else {
+            } else if (isFromEdge) {
                 title = node.labels[ATN_ShortName] + "/" + secondNode.labels[ATN_ShortName] + "'s " + nbPapers + " co-authored papers";
+            } else if (isFromCluster) {
+                title = node.labels[ATN_ShortName] + "'s cluster's " + nbPapers + " co-authored papers";
             }
             _chart.view.setTitle(title);
 
