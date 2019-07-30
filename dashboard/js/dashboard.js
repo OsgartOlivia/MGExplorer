@@ -116,12 +116,28 @@ define( ["view"], function (View) {
             } else {
                 clickedElem = d3.select(d3.event.target);
 
+                if (clickedElem.classed("IC-node") || clickedElem.classed("GM-node")) {
+                    d3.event.preventDefault();
+
+                    viewDiv = _findParentDiv(clickedElem);
+                    mousePos = d3.mouse(viewDiv.node());
+
+                    popupDiv = viewDiv.append("div")
+                        .attr("class", "DS-popup medium-size")
+                        .style("left", mousePos[0] + "px")
+                        .style("top", mousePos[1] + "px");
+
+                    if ( clickedElem.classed("IC-node"))
+                        _execCtxMenuIris(popupDiv,clickedElem, viewDiv.node().id);
+                    else
+                    if ( clickedElem.classed("GM-node"))
+                        _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
+                }
+
                 if (_selectedQuery !== 8) {
                     if (clickedElem.classed("NE-node")
                         || clickedElem.classed("NE-edge")
-                        || clickedElem.classed("CV-node")
-                        || clickedElem.classed("IC-node")
-                        || clickedElem.classed("GM-node")) {
+                        || clickedElem.classed("CV-node")) {
 
                         d3.event.preventDefault();
 
@@ -139,12 +155,6 @@ define( ["view"], function (View) {
                         else
                         if (clickedElem.classed("CV-node"))
                             _execCtxMenuClusterVis(popupDiv,clickedElem, viewDiv.node().id);
-                        else
-                        if ( clickedElem.classed("IC-node"))
-                            _execCtxMenuIris(popupDiv,clickedElem, viewDiv.node().id);
-                        else
-                        if ( clickedElem.classed("GM-node"))
-                            _execCtxMenuGlyphMatrix(popupDiv,clickedElem, viewDiv.node().id);
                     }
                 } else {
                     d3.event.preventDefault();
