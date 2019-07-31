@@ -3,7 +3,7 @@
  *
  */
 
-define(["model","libCava"], function (Model,LibCava) {
+define(["model","libCava"], function (Model) {
 
     return function PapersListChart (idDiv) {
 
@@ -15,30 +15,11 @@ define(["model","libCava"], function (Model,LibCava) {
             _maxLenghtTitleIndex = 7.8,
             _maxNamesLenght = 87,
             _data = null,
-            _indexFirstData = 0,   // Index in the "dataVis" vector where the first element of the data vector is located
-            // Used only when the amount of elements in this.data is less than or equal to "dataVis"
 
-            _vOrder = null,      // Indirect ordering vector
-
-            _orders = {
-                publications: [0,1,2,3],
-                journals: [1,2,3,0],
-                books: [2,3,0,1],
-                proceedings: [3,0,1,2],
-            },
-
-            _cfgIndexAttr = {          // Contains the indexes of the attributes that can be configured in the graph
-                titleCentroid: 0,       // Index of the attribute to be printed in the center of the circle (Must be Label)
-                titleDegree: "co-authors",     // Text to be used after degree value in centroid
-                textBar: 0             // Text that will be printed after the bars
-            },
-
-            _nbOfTypesDoc = 4,     // number of types of documents in the base
             _colorsRect = ["#1f77b4", "#2ca02c", "#d62728", "#ff7d0e"];     // colors for the different types
 
         // ---------------- Model
         let model = Model();
-        let lcv   = LibCava();
 
         // ---------------- Geometric attributes of the graph
         model.margin = {top: 2, right: 2, bottom: 2, left: 2};
@@ -57,7 +38,6 @@ define(["model","libCava"], function (Model,LibCava) {
         // ---------------- Initialization Actions
         let _container = d3.select("#"+idDiv).append("div").attr("class", "container");
         let _svg = _container.append("svg"),  // Create dimensionless svg
-            _sort  = lcv.sort(),                     // Creates sorting function
             _grpChart = _svg.append("g");
 
         _svg.attr("class", "PaperListView");
@@ -91,8 +71,8 @@ define(["model","libCava"], function (Model,LibCava) {
 
                 let endOfNames = 0;
 
-                if (model.data.root.data.documents.length * 36 >= 350) {
-                    _svg.attr("height", model.data.root.data.documents.length * 36);
+                if (model.data.root.data.documents.length * 38 >= 350) {
+                    _svg.attr("height", model.data.root.data.documents.length * 38);
                 }
 
                 if (model.data.children.cluster===true) {
@@ -256,29 +236,6 @@ define(["model","libCava"], function (Model,LibCava) {
 
         /**
          *
-         * _getTheIndex
-         *
-         * Returns the order in which we need to display the types of documents
-         *
-         * @param i
-         * @returns {number[]}
-         * @private
-         */
-        function _getTheRightOrder(i) {
-            switch (i) {
-                case 0:
-                    return _orders.publications;
-                case 1:
-                    return _orders.journals;
-                case 2:
-                    return _orders.books;
-                case 3:
-                    return _orders.proceedings;
-            }
-        }
-
-        /**
-         *
          * _findAuthorById
          *
          * Returns the author depending on his id
@@ -321,7 +278,6 @@ define(["model","libCava"], function (Model,LibCava) {
             return chart;
         };
 
-
         //---------------------
         // This function is required in all techniques
         // It is called internally in conectChart
@@ -339,12 +295,6 @@ define(["model","libCava"], function (Model,LibCava) {
                 return model.data;
             model.data = _;
 
-            // Configure to sort node names
-            _sort.inic(model.data.children.labelTitle.length, model.data.children.valueTitle.length)
-                .data(model.data.children.data);
-            _sort.exec(_cfgIndexAttr.textBar);
-            _vOrder = _sort.getVetOrder();
-
             _papersListPanel.update();
             return chart;
         };
@@ -352,18 +302,6 @@ define(["model","libCava"], function (Model,LibCava) {
         //---------------------
         chart.dataVisToNode = function( index ) {
             return model.data.children.data[index];
-        };
-
-        //---------------------
-        chart.indexAttrBar = function(_) {
-            if (!arguments.length)
-                return model.indexAttBar+1000;
-            model.indexAttBar = _-1000;
-            return chart;
-        };
-
-        chart.getVOrder = function() {
-            return _vOrder;
         };
 
         //======== Actions Functions
@@ -382,16 +320,6 @@ define(["model","libCava"], function (Model,LibCava) {
                 return d3.ascending(x.date, y.date);
             });
             model.redraw += 1;
-        };
-
-        //---------------------
-        chart.acChangeAttrBar = function(atributo) {
-            model.indexAttBar = atributo;
-            if ( !_sortByText) {
-                _sort.exec(model.indexAttBar+1000);
-                _vOrder = _sort.getVetOrder();
-            }
-            return chart;
         };
 
         //---------------------

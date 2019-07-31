@@ -577,7 +577,9 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
         function _showGlyphMatrix(node, parentId) {
             let data,posicaoPai,title;
             if (node.cluster) {
-                data = _subGraph.clusterMatrixGlyph(node,_data);
+                alert("Not implemented!!");
+                return;
+                //data = _subGraph.clusterMatrixGlyph(node,_data);
             } else {
                 data = _subGraph.normalMatrixGlyph(node,_data);
             }
@@ -658,7 +660,6 @@ require(["dashboard","databaseLib","libCava","algCluster","numericGlyph",
             _dashboard.addChart ( parentId,{id:_chart.view.idChart(), title:title, typeChart: "PL", hidden:false,
                 x:_chart.view.getPosition().x, y:_chart.view.getPosition().y, chart:_chart.chart, view:_chart.view});
 
-            _chart.chart.indexAttrBar(ATE_QtPublicacoes);
             _chart.chart.data(data);
 
             _historyTree.chart.data(_dashboard.getTree());

@@ -20,7 +20,7 @@ define([], function () {
                 selOption.remove();
 
             _selectOrder.append(new Option("Text", 0));
-            _selectOrder.append(new Option("Year", 1));  // 100 starts numeric index
+            _selectOrder.append(new Option("Year", 1));
 
             _selectOrder[0].selectedIndex = 0;
 
