@@ -1,7 +1,10 @@
 @CHARSET "UTF-8";
 
 .container {
-    overflow: auto;
+    min-height: 350px;
+    height: 350px;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .PL-title {

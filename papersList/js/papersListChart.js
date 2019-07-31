@@ -12,8 +12,9 @@ define(["model","libCava"], function (Model,LibCava) {
             _grpPapersList = null,   // Group representing IRIS
             _grpPapers = null,       // Selection that contains all groups of bars
             _names = null,          // Selection that contains the names of the members of a cluster
-            _maxLenghtTitleIndex = 7,
+            _maxLenghtTitleIndex = 7.8,
             _maxNamesLenght = 87,
+            _data = null,
             _indexFirstData = 0,   // Index in the "dataVis" vector where the first element of the data vector is located
             // Used only when the amount of elements in this.data is less than or equal to "dataVis"
 
@@ -56,7 +57,7 @@ define(["model","libCava"], function (Model,LibCava) {
         // ---------------- Initialization Actions
         let _container = d3.select("#"+idDiv).append("div").attr("class", "container");
         let _svg = _container.append("svg"),  // Create dimensionless svg
-            _sort  = lcv.sortIris(),                     // Creates sorting function
+            _sort  = lcv.sort(),                     // Creates sorting function
             _grpChart = _svg.append("g");
 
         _svg.attr("class", "PaperListView");
@@ -83,7 +84,16 @@ define(["model","libCava"], function (Model,LibCava) {
                 if (_grpPapers !== null)
                     _grpPapers.remove();
 
+                _data = model.data;
+
+                if (_sortByText)
+                    chart.sortByText();
+
                 let endOfNames = 0;
+
+                if (model.data.root.data.documents.length * 36 >= 350) {
+                    _svg.attr("height", model.data.root.data.documents.length * 36);
+                }
 
                 if (model.data.children.cluster===true) {
                     if (_names !== null)
@@ -193,7 +203,7 @@ define(["model","libCava"], function (Model,LibCava) {
                 y = (model.data.children.cluster===true?endOfNames+17:5);
 
                 _grpPapers.append("text")
-                    .attr("class", "PL-authors")
+                    .attr("class", "PL-infos")
                     .text(function (d) {
                         let authorsNames = "";
                         for (let i = 0; i < d.authors.length; i++) {
@@ -201,11 +211,22 @@ define(["model","libCava"], function (Model,LibCava) {
                             if (i !== d.authors.length-1)
                                 authorsNames += ", ";
                         }
-                        return authorsNames;
+                        return authorsNames + " - " + d.date + " - " + d.link.slice(d.link.length-2);
                     })
                     .attr("x", x)
                     .attr("y", function () {return y += 35;})
-                    .style("font-size", "12px");
+                    .style("font-size", "12px")
+                    .append("title")
+                    .text(function (d) {
+                        let authorsNames = "";
+                        for (let i = 0; i < d.authors.length; i++) {
+                            authorsNames += _findAuthorById(d.authors[i]);
+                            if (i !== d.authors.length-1)
+                                authorsNames += ", ";
+                        }
+                        return authorsNames + " - " + d.date + " - " + d.link.slice(d.link.length-2);
+                    });
+
             } // End
         );
 //--------------------------------- Private functions
@@ -346,18 +367,20 @@ define(["model","libCava"], function (Model,LibCava) {
         };
 
         //======== Actions Functions
-        chart.acSortExecText = function() {
-            _sortByText = true;
-            _sort.exec(_cfgIndexAttr.textBar);
-            _vOrder = _sort.getVetOrder();
+        chart.sortByText = function() {
+            _sortByText = false;
+            _data.root.data.documents.sort(function(x, y) {
+                return d3.ascending(x.title, y.title);
+            });
             model.redraw += 1;
         };
 
         //---------------------
-        chart.acSortExecAttribute = function() {
+        chart.sortByYear = function() {
             _sortByText = false;
-            _sort.exec(model.indexAttBar+1000);
-            _vOrder = _sort.getVetOrder();
+            _data.root.data.documents.sort(function(x, y) {
+                return d3.ascending(x.date, y.date);
+            });
             model.redraw += 1;
         };
 
